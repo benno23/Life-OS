@@ -1891,21 +1891,11 @@
  window.__DEMO_MCP = mcp;
 })();</script>
 
-<script>try {
- let t = "lifeos";
- if (t === "signal" || t === "bls2") {
-  t = "lifeos";
-  localStorage.setItem("dash-theme", t);
- }
- if (t === "aurora") {
-  t = null;
-  localStorage.removeItem("dash-theme");
- }
- if (!t) t = "lifeos";
- if (t && t !== "konsole") document.documentElement.setAttribute("data-theme", t);
-} catch (e) {
- document.documentElement.setAttribute("data-theme", "lifeos");
-}
+<script>document.documentElement.setAttribute("data-theme", "lifeos");
+
+try {
+ if ("lifeos" !== "lifeos") localStorage.setItem("dash-theme", "lifeos");
+} catch (e) {}
 
 try {
  if (localStorage.getItem("gz.nav") !== "oben" && window.matchMedia("(min-width: 60rem)").matches) {
@@ -2975,7 +2965,6 @@ td.theme { min-width: 18rem; color: var(--ink-soft); }
 }
 
 
-:root:not([data-theme="lifeos"]) .nur-lifeos { display: none !important; }
 :root[data-theme="lifeos"] .nur-konsole { display: none !important; }
 
 
@@ -4963,8 +4952,6 @@ div.rsb-tile { cursor: default; }
 .ckb-region { display: flex; flex-wrap: wrap; gap: 6px; }
 
 .ei .ckb-karte { min-height: 0; }
-:root:not([data-theme="lifeos"]) .ei .ckb-karte { background: #ACC5F5; }   
-:root:not([data-theme="lifeos"]) .ei .ckb-region button.on,:root:not([data-theme="lifeos"]) .ei .ckb-weiter,:root:not([data-theme="lifeos"]) .ei .ei-tag.auf{ color: #ACC5F5 !important; }
 .ckb-karte > b.ei-zitat { font-size: clamp(1.25rem, 5vw, 1.65rem); line-height: 1.2; overflow-wrap: anywhere; }
 .ei-liste { display: grid; gap: 4px; }
 .ckb-zeile.ei-zeile { color: #170800; font-size: .9rem; line-height: 1.45; overflow-wrap: anywhere; }
@@ -6814,10 +6801,6 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
         </svg>
       </button>
       <div class="theme-pop" id="theme-pop" role="menu" aria-label="Design">
-        <button type="button" class="theme-opt" role="menuitemradio" data-theme-choice="" aria-checked="true">
-          <span class="theme-swatch konsole"></span>Konsole</button>
-        <button type="button" class="theme-opt" role="menuitemradio" data-theme-choice="lifeos" aria-checked="false">
-          <span class="theme-swatch lifeos"></span>Life OS</button>
         
         <div class="theme-sep">Navigation</div>
         <button type="button" class="theme-opt" role="menuitemradio" data-nav-choice="links" aria-checked="true">
@@ -10563,7 +10546,7 @@ function ztStdMin(min) {
 
 const ZT_AUTO_AB = "2026-07-18";
 
-const ZT_AUTO_RE = /\s*\[auto:([^\]\s]+)\]\s*$/;
+const ZT_AUTO_RE = /\s*\\?\[auto\\?:((?:[^\]\s\\]|\\.)+)\\?\]\s*$/;
 
 const ZT_AUTO_UEBERLAPP_MS = 2 * 6e4;
 
@@ -10571,7 +10554,7 @@ const ZT_AUTO_BATCH = 20;
 
 const ztAutoKey = n => {
  const m = ZT_AUTO_RE.exec(String(n || ""));
- return m ? m[1] : "";
+ return m ? m[1].replace(/\\(.)/g, "$1") : "";
 };
 
 const ztNotizSauber = n => String(n || "").replace(ZT_AUTO_RE, "");
@@ -12017,6 +12000,8 @@ let notionRunde = 0;
 
 let notionRundeGeplant = false;
 
+let notionRundeVerpasst = false;
+
 let notionLetzterStart = 0;
 
 function notionEnqueueAll() {
@@ -12049,6 +12034,10 @@ function notionPump() {
   notionRundeGeplant = true;
   setTimeout(() => {
    notionRundeGeplant = false;
+   if (document.hidden) {
+    notionRundeVerpasst = true;
+    return;
+   }
    notionEnqueueAll();
    notionPump();
   }, NOTION_REFRESH_MS);
@@ -12797,7 +12786,7 @@ function zmZeile(startMs) {
 }
 
 function zmPlanen() {
- if (zm.lauf || !mcp) return;
+ if (zm.lauf || !mcp || document.hidden) return;
  if (!(state.frisch.has("training") && state.training != null && !state.errors.training)) return;
  if (Date.now() - zm.zuletzt < 30 * 6e4) return;
  zm.lauf = true;
@@ -14408,7 +14397,7 @@ function knListe(res) {
 
 function renderKontextNetz(allDays) {
  const el = $("#kn-body");
- if (!el || !istLifeOS() || !abschnittAn("s-kontext")) return;
+ if (!el || !abschnittAn("s-kontext")) return;
  if (!allDays || !allDays.length) {
   el.innerHTML = '<div class="empty">wird geladen</div>';
   return;
@@ -14865,7 +14854,7 @@ function renderFddStatus() {
 
 function renderFdd() {
  const el = $("#fdd-body"), meta = $("#fdd-meta");
- if (!el || !istLifeOS() || !abschnittAn("s-muster")) return;
+ if (!el || !abschnittAn("s-muster")) return;
  if (fddState.sample === undefined) {
   el.innerHTML = '<div class="empty">verbindet …</div>';
   return;
@@ -14994,7 +14983,7 @@ async function fddFragen(frage) {
 
 function renderInsights(allDays) {
  const liste = $("#ins-liste"), kopf = $("#ins-kopf"), meta = $("#ins-meta");
- if (!liste || !istLifeOS() || !abschnittAn("s-muster")) return;
+ if (!liste || !abschnittAn("s-muster")) return;
  if (!allDays || !allDays.length) {
   liste.innerHTML = '<div class="empty">wird geladen</div>';
   return;
@@ -16068,7 +16057,7 @@ function ktxHmFenster(t) {
 
 function renderKtxHeatmap() {
  const el = $("#ktx-hm"), meta = $("#ktx-hm-meta");
- if (!el || !istLifeOS() || !abschnittAn("s-kontext")) return;
+ if (!el || !abschnittAn("s-kontext")) return;
  const Q = ktxHmQuellen();
  if (!Q[ktxHmState.q]) ktxHmState.q = "koffein";
  const roh = Q[ktxHmState.q].e();
@@ -17849,7 +17838,7 @@ async function kosWechselAufgabe(text, faellig) {
 
 function renderKos() {
  const root = document.getElementById("kos");
- if (!root || !istLifeOS() || !abschnittAn("s-karriere")) return;
+ if (!root || !abschnittAn("s-karriere")) return;
  const jobs = state.jobs == null ? null : kosJobs();
  const basis = jobs ? kosBasis(jobs) : null;
  renderKosWechsel(jobs);
@@ -20176,7 +20165,7 @@ function pcWelleLoop() {
 }
 
 function pacerHtml(preset) {
- return '<div class="pacer" data-preset="' + esc(preset) + '">' + '<div class="pc-kopf"><span class="pc-label">' + esc(PACER[preset].label) + "</span>" + '<span class="pc-meta">Zyklus <b id="pc-zyklus">0 / ' + PACER[preset].zyklen + "</b>" + ' · <b id="pc-zeit">0:00</b></span></div>' + (istLifeOS() ? pcWelleHtml(preset) : '<div class="pc-buehne"><div class="pc-ring"></div><div class="pc-kreis" id="pc-kreis"></div></div>') + '<div class="pc-phase" id="pc-phase">Bereit</div>' + '<div class="pc-sek" id="pc-sek">–</div>' + '<div class="pc-knoepfe"><button type="button" class="hab-save" id="pc-start">Start</button>' + '<button type="button" class="nbtn" id="pc-reset">Zurücksetzen</button></div>' + '<div class="pc-ton" role="group" aria-label="Ton">Ton:' + [ [ "aus", "Aus" ], [ "ton", "Ton" ], [ "stimme", "Ton + Stimme" ] ].map(x => '<button type="button" class="nchip' + (pcTonModus === x[0] ? " on" : "") + '" data-pcton="' + x[0] + '">' + x[1] + "</button>").join("") + "</div>" + '<p class="pc-fertig" id="pc-fertig">Durch. Wie ist es jetzt?</p></div>';
+ return '<div class="pacer" data-preset="' + esc(preset) + '">' + '<div class="pc-kopf"><span class="pc-label">' + esc(PACER[preset].label) + "</span>" + '<span class="pc-meta">Zyklus <b id="pc-zyklus">0 / ' + PACER[preset].zyklen + "</b>" + ' · <b id="pc-zeit">0:00</b></span></div>' + pcWelleHtml(preset) + '<div class="pc-phase" id="pc-phase">Bereit</div>' + '<div class="pc-sek" id="pc-sek">–</div>' + '<div class="pc-knoepfe"><button type="button" class="hab-save" id="pc-start">Start</button>' + '<button type="button" class="nbtn" id="pc-reset">Zurücksetzen</button></div>' + '<div class="pc-ton" role="group" aria-label="Ton">Ton:' + [ [ "aus", "Aus" ], [ "ton", "Ton" ], [ "stimme", "Ton + Stimme" ] ].map(x => '<button type="button" class="nchip' + (pcTonModus === x[0] ? " on" : "") + '" data-pcton="' + x[0] + '">' + x[1] + "</button>").join("") + "</div>" + '<p class="pc-fertig" id="pc-fertig">Durch. Wie ist es jetzt?</p></div>';
 }
 
 function pacerBinden(preset) {
@@ -20311,16 +20300,14 @@ function renderReset() {
  } else eiState.offen = false;
  const m = resState.modus;
  let h = '<div class="res-modi">' + RES_MODI.map(x => '<button type="button" class="nchip' + (m === x ? " on" : "") + '" data-rmod="' + esc(x) + '">' + esc(x) + "</button>").join("") + "</div>";
- if (istLifeOS()) {
-  if (!m) {
-   el.innerHTML = resLxStart();
-   el.dataset.gebaut = "1";
-   resBinden(el);
-   resLxBinden(el);
-   return;
-  }
-  h = '<div class="res-lx-zurueck"><button type="button" class="nbtn" data-rmod="' + esc(m) + '">← Alle Modi</button>' + "<b>" + esc(m) + "</b></div>";
+ if (!m) {
+  el.innerHTML = resLxStart();
+  el.dataset.gebaut = "1";
+  resBinden(el);
+  resLxBinden(el);
+  return;
  }
+ h = '<div class="res-lx-zurueck"><button type="button" class="nbtn" data-rmod="' + esc(m) + '">← Alle Modi</button>' + "<b>" + esc(m) + "</b></div>";
  if (!m) {
   const rl = resLetzter(), rlm = rl ? selName(rl[R.modus]) : null;
   if (rl && RES_MODI.includes(rlm)) h += '<div class="nt-leiste"><button type="button" class="nbtn nt-vorlage" data-ntvorlage="res">↺ Wie zuletzt <small>' + esc([ rlm, rl[R.vorher] || "", selName(rl[R.zeitbudget]) || "" ].filter(Boolean).join(" · ")) + "</small></button></div>";
@@ -20559,36 +20546,7 @@ function lxResBedarf(m) {
 }
 
 function resBedarf(m) {
- if (istLifeOS()) return lxResBedarf(m);
- let h = '<div class="res-block">';
- if (m === "Notfall" && !resState.zustand) {
-  h += '<p class="res-hinweis">Zuerst die Übung, Fragen danach.</p>' + '<div class="res-uebung"><div class="ru-kopf"><b>Physiologischer Seufzer</b>' + "<span>5–10 Wiederholungen</span></div>" + "<p>Zweimal kurz durch die Nase einatmen, dann lang durch den Mund ausatmen. " + "Weiter, bis die Anspannung merklich sinkt.</p></div>" + pacerHtml("physio-sigh") + '<div class="res-schritte"><div class="res-schritt"><div class="rs-kopf"><b>Wenn es nicht reicht</b>' + "<span>2 Min</span></div><p>Erdung 5-4-3-2-1: fünf Dinge benennen, die du siehst, vier die du " + "hörst, drei die du fühlst. Oder kurz raus an die Luft — kein Kälteschock, einfach ein " + "Ortswechsel.</p></div></div>";
- }
- h += '<p class="res-lab">Zustand</p><div class="res-zust">' + RES_ZUSTAND.map(([k, b]) => '<button type="button" class="rz' + (resState.zustand === k ? " on" : "") + '" data-rz="' + esc(k) + '"><b>' + esc(k) + "</b><small>" + esc(b) + "</small></button>").join("") + "</div>";
- h += '<p class="res-lab">Intensität</p><div class="rpe-reihe">' + Array.from({
-  length: 10
- }, (_, i) => '<button type="button" data-rint="' + (i + 1) + '" aria-pressed="' + (resState.intensitaet === i + 1) + '">' + (i + 1) + "</button>").join("") + "</div>";
- h += '<p class="res-lab">Kontext</p><div class="nchips">' + [ [ "körperlich/situativ", "körperlich oder situativ" ], [ "zwischenmenschlich/emotional", "zwischenmenschlich oder emotional" ] ].map(([k, b]) => '<button type="button" class="nchip' + (resState.kontext === k ? " on" : "") + '" data-rk="' + esc(k) + '">' + esc(b) + "</button>").join("") + "</div>";
- if (resState.kontext === "zwischenmenschlich/emotional") {
-  h += '<div class="res-route"><b>Dafür ist eine Atemübung das falsche Werkzeug.</b>' + "<p>Bei einem zwischenmenschlichen Auslöser hilft nicht Regulieren, sondern die Trennung " + "von Fakt und Story — und das braucht ein Gespräch, kein Formular. Schreib im Chat, was " + "passiert ist. Wenn es tiefer geht als eine Reset-Übung tragen kann, sagen wir das dort " + "offen, statt es in eine Schablone zu pressen.</p></div>";
-  h += resNachher(true);
- } else if (resState.zustand) {
-  const v = resVorschlag();
-  if (v.eskalation) h += '<div class="res-eskal"><b>Intensität ' + resState.intensitaet + "/10 — zuerst runterkommen.</b>" + "<p>Physiologischer Seufzer, 5–10 Wiederholungen. Erst danach die Übung für deinen Zustand.</p></div>" + pacerHtml("physio-sigh"); else {
-   const u = v.u;
-   const pWahl = resState.pacerWahl && PACER[resState.pacerWahl] ? resState.pacerWahl : null;
-   const pAktiv = pWahl || u.preset;
-   h += '<div class="res-uebung"><div class="ru-kopf"><b>' + esc(u.name) + "</b>" + (pAktiv ? "<span>" + esc(PACER[pAktiv].label) + "</span>" : "") + "</div>" + "<p>" + esc(u.text) + "</p></div>";
-   if (pAktiv) h += pacerHtml(pAktiv);
-   if (u.alt) h += '<div class="res-alt"><b>' + esc(u.alt.name) + "</b><p>" + esc(u.alt.text) + "</p>" + (u.alt.preset ? '<button type="button" class="nbtn" data-rpreset="' + esc(u.alt.preset) + '">Diesen Pacer nehmen</button>' : "") + "</div>";
-   if (u.dann) h += '<div class="res-alt"><b>Danach: ' + esc(u.dann.name) + "</b><p>" + esc(u.dann.text) + '</p><button type="button" class="nbtn" data-rpreset="' + esc(u.dann.preset) + '">Pacer starten</button></div>';
-   if (u.danach) h += '<p class="res-hinweis">' + esc(u.danach) + "</p>";
-   if (u.mehr) h += '<p class="res-hinweis">' + esc(u.mehr) + "</p>";
-   if (resState.zustand === "racing mind") h += '<p class="res-hinweis">Kreisen eher Inhalte als der Puls? <button type="button" class="nbtn" data-rmod="' + esc(EI_MODUS) + '">Einstein entladen →</button></p>';
-  }
-  h += resNachher();
- }
- return h + "</div>";
+ return lxResBedarf(m);
 }
 
 function resSequenz(m) {
@@ -21236,7 +21194,7 @@ function anMonatName(m) {
 
 function anUnescape(s) {
  if (!s) return s;
- return String(s).replace(/\\([\\`*_{}\[\]()#+\-.!<>=~|"])/g, "$1");
+ return String(s).replace(/\\([\\`*_{}\[\]()#+\-.!<>=~|":])/g, "$1");
 }
 
 function anInlineHtml(txt) {
@@ -21967,7 +21925,7 @@ const gleicheMenge = (a, b) => a.size === b.size && [ ...a ].every(x => b.has(x)
 let glogAbgleichStatus = null;
 
 function glogAbgleichPlanen() {
- if (glogAbgleichStatus || !mcp) return;
+ if (glogAbgleichStatus || !mcp || document.hidden) return;
  if (![ "glog", "gew", "med", "reset" ].every(k => state.frisch.has(k) && state[k] != null)) return;
  glogAbgleichStatus = "laeuft";
  glogAbgleich().catch(() => {}).finally(() => {
@@ -23371,7 +23329,7 @@ function kfSeit(zeit) {
 
 function renderKoffein() {
  const el = $("#kf-body"), meta = $("#kf-meta");
- if (!el || !abschnittAn("s-ernaehrung") || !istLifeOS()) return;
+ if (!el || !abschnittAn("s-ernaehrung")) return;
  if (state.koffein == null) {
   el.innerHTML = '<div class="empty">' + (state.errors.koffein ? "Koffein-Tabelle nicht erreichbar (" + esc(String(state.errors.koffein)) + ")." : "wird geladen") + "</div>";
   if (meta) meta.textContent = "";
@@ -23447,7 +23405,7 @@ function renderKoffein() {
  const jeLabel = art === "tag" ? "mg je Tag" : art === "woche" ? "Ø mg/Tag je Woche" : "Ø mg/Tag je Monat";
  const beschriftJede = tage.length <= 10 ? 1 : Math.ceil(tage.length / 8);
  if (meta) meta.textContent = heute;
- el.innerHTML = '<div class="kf">' + '<div class="kf-links">' + '<div class="kf-zahlen">' + '<div class="kf-z gross"><span class="lxm-klein">Heute</span><b>' + fmt0(mg) + "<i>mg</i></b>" + "<small>" + h.length + (h.length === 1 ? " Getränk" : " Getränke") + "</small></div>" + '<div class="kf-z"><span class="lxm-klein">Letzte Einnahme</span><b>' + (letzt ? esc(letzt.zeit.slice(11, 16)) : "–") + "</b>" + "<small>" + (letzt ? esc(letzt.getraenk) + " · " + kfSeit(letzt.zeit) : "heute noch nichts") + "</small></div>" + "</div>" + (spaet ? '<p class="kf-hinweis">Letzte Einnahme nach ' + KF_GRENZE + " — kann den Schlaf heute Nacht stören.</p>" : "") + '<div class="lxm-klein" style="margin-top:.8rem">Loggen</div>' + kfZeitHtml() + '<div class="kf-knoepfe">' + KF_GETRAENKE.map(([n, m], i) => '<button type="button" class="lx-tap' + (i === 0 ? " kf-haupt" : "") + '" data-kf="' + esc(n) + '" data-mg="' + m + '"' + (kfState.busy ? " disabled" : "") + ">+ " + esc(n) + "<small>" + m + " mg</small></button>").join("") + "</div>" + (kfState.msg ? '<p class="hab-msg ' + kfState.msgArt + '">' + kfState.msg + "</p>" : "") + '<p class="kf-fuss">mg-Werte sind Richtwerte je Getränk, in Notion je Eintrag änderbar.</p>' + "</div>" + '<div class="kf-rechts">' + '<div class="lxm-klein">' + esc(zrLabel) + " · " + esc(jeLabel) + kfSelText(tage, art) + "</div>" + (istLifeOS() ? kfBalkenB(tage, art) : '<div class="kf-balken' + (tage.length > 10 ? " dicht" : "") + '" style="grid-template-columns:repeat(' + Math.max(1, tage.length) + ',minmax(0,1fr))">' + tage.map((t, i) => '<div class="kf-b' + (t.heute ? " heute" : "") + '" title="' + esc(t.d) + ": " + fmt0(t.mg) + " mg" + (art !== "tag" ? " Ø/Tag" : "") + '"><span>' + (t.mg && tage.length <= 14 ? fmt0(t.mg) : "") + '</span><i style="height:' + (t.mg / maxMg * 100).toFixed(0) + '%"></i><em>' + ((tage.length - 1 - i) % beschriftJede === 0 ? esc(t.lab) : "") + "</em></div>").join("") + "</div>") + '<div class="kf-stat">' + "<div><b>" + (schnitt == null ? "–" : fmt0(schnitt)) + "</b><span>Ø mg/Tag</span></div>" + "<div><b>" + (maxTag && maxTag.mg ? fmt0(maxTag.mg) : "–") + "</b><span>" + (maxTag && maxTag.mg ? "max. am " + esc(maxTag.d.slice(8, 10) + "." + maxTag.d.slice(5, 7) + ".") : "höchster Tag") + "</span></div>" + '<div><b class="' + (ueber400 ? "kf-warn" : "") + '">' + ueber400 + "</b><span>Tage über 400 mg</span></div>" + '<div><b class="' + (nachGrenze ? "kf-warn" : "") + '">' + (imZeitraum.length ? Math.round(nachGrenze / imZeitraum.length * 100) + " %" : "–") + "</b><span>nach " + KF_GRENZE + " (" + nachGrenze + "/" + imZeitraum.length + ")</span></div>" + "</div>" + (h.length ? '<ul class="kf-liste">' + h.slice().reverse().map(x => '<li><input type="time" class="kf-lzeit" data-kfid="' + esc(x.id) + '" value="' + esc(x.zeit.slice(11, 16)) + '" title="Uhrzeit korrigieren"' + (kfState.busy ? " disabled" : "") + "><span>" + esc(x.getraenk) + "</span><i>" + (x.mg != null ? fmt0(x.mg) + " mg" : "–") + "</i></li>").join("") + "</ul>" : "") + "</div></div>";
+ el.innerHTML = '<div class="kf">' + '<div class="kf-links">' + '<div class="kf-zahlen">' + '<div class="kf-z gross"><span class="lxm-klein">Heute</span><b>' + fmt0(mg) + "<i>mg</i></b>" + "<small>" + h.length + (h.length === 1 ? " Getränk" : " Getränke") + "</small></div>" + '<div class="kf-z"><span class="lxm-klein">Letzte Einnahme</span><b>' + (letzt ? esc(letzt.zeit.slice(11, 16)) : "–") + "</b>" + "<small>" + (letzt ? esc(letzt.getraenk) + " · " + kfSeit(letzt.zeit) : "heute noch nichts") + "</small></div>" + "</div>" + (spaet ? '<p class="kf-hinweis">Letzte Einnahme nach ' + KF_GRENZE + " — kann den Schlaf heute Nacht stören.</p>" : "") + '<div class="lxm-klein" style="margin-top:.8rem">Loggen</div>' + kfZeitHtml() + '<div class="kf-knoepfe">' + KF_GETRAENKE.map(([n, m], i) => '<button type="button" class="lx-tap' + (i === 0 ? " kf-haupt" : "") + '" data-kf="' + esc(n) + '" data-mg="' + m + '"' + (kfState.busy ? " disabled" : "") + ">+ " + esc(n) + "<small>" + m + " mg</small></button>").join("") + "</div>" + (kfState.msg ? '<p class="hab-msg ' + kfState.msgArt + '">' + kfState.msg + "</p>" : "") + '<p class="kf-fuss">mg-Werte sind Richtwerte je Getränk, in Notion je Eintrag änderbar.</p>' + "</div>" + '<div class="kf-rechts">' + '<div class="lxm-klein">' + esc(zrLabel) + " · " + esc(jeLabel) + kfSelText(tage, art) + "</div>" + kfBalkenB(tage, art) + '<div class="kf-stat">' + "<div><b>" + (schnitt == null ? "–" : fmt0(schnitt)) + "</b><span>Ø mg/Tag</span></div>" + "<div><b>" + (maxTag && maxTag.mg ? fmt0(maxTag.mg) : "–") + "</b><span>" + (maxTag && maxTag.mg ? "max. am " + esc(maxTag.d.slice(8, 10) + "." + maxTag.d.slice(5, 7) + ".") : "höchster Tag") + "</span></div>" + '<div><b class="' + (ueber400 ? "kf-warn" : "") + '">' + ueber400 + "</b><span>Tage über 400 mg</span></div>" + '<div><b class="' + (nachGrenze ? "kf-warn" : "") + '">' + (imZeitraum.length ? Math.round(nachGrenze / imZeitraum.length * 100) + " %" : "–") + "</b><span>nach " + KF_GRENZE + " (" + nachGrenze + "/" + imZeitraum.length + ")</span></div>" + "</div>" + (h.length ? '<ul class="kf-liste">' + h.slice().reverse().map(x => '<li><input type="time" class="kf-lzeit" data-kfid="' + esc(x.id) + '" value="' + esc(x.zeit.slice(11, 16)) + '" title="Uhrzeit korrigieren"' + (kfState.busy ? " disabled" : "") + "><span>" + esc(x.getraenk) + "</span><i>" + (x.mg != null ? fmt0(x.mg) + " mg" : "–") + "</i></li>").join("") + "</ul>" : "") + "</div></div>";
  el.querySelectorAll("[data-kf]").forEach(b => b.addEventListener("click", () => kfLoggen(b.dataset.kf, +b.dataset.mg)));
  kfZeitBinden(el);
  el.querySelectorAll(".kf-lzeit").forEach(inp => inp.addEventListener("change", () => kfZeitKorrigieren(inp.dataset.kfid, inp.value)));
@@ -23463,7 +23421,7 @@ function kfZone(mg) {
 
 function kfSelText(tage, art) {
  const t = kfState.sel && tage.find(x => x.d === kfState.sel);
- if (!t || !istLifeOS()) return "";
+ if (!t) return "";
  const wann = art === "tag" ? kosDatum(t.d) : art === "woche" ? "ab " + t.d.slice(8, 10) + "." + t.d.slice(5, 7) + "." : t.lab;
  return ' · <b class="kfb-wahl">' + esc(wann) + ": " + (art !== "tag" ? "Ø " : "") + fmt0(t.mg) + " mg</b>";
 }
@@ -23641,7 +23599,7 @@ function ernProteinZiel() {
 
 function renderErn(zwang) {
  const el = $("#ern-body"), meta = $("#ern-meta");
- if (!el || !abschnittAn("s-ernaehrung") || !istLifeOS()) return;
+ if (!el || !abschnittAn("s-ernaehrung")) return;
  if (!zwang && el.contains(document.activeElement) && document.activeElement.matches("input,textarea")) return;
  if (state.ern == null) {
   el.innerHTML = '<div class="empty">' + (state.errors.ern ? "Ernährungs-Tabelle nicht erreichbar (" + esc(String(state.errors.ern)) + ")." : "wird geladen") + "</div>";
@@ -25239,7 +25197,7 @@ function lxKachel(titel, zahl, einheit, zeilen, link) {
 
 function renderRecHealth(allDays, days) {
  const el = $("#rec-health");
- if (!el || !istLifeOS() || !abschnittAn("s-recovery")) return;
+ if (!el || !abschnittAn("s-recovery")) return;
  const heute = heuteIso();
  const n = (allDays || []).slice().reverse().find(o => o.dauer != null);
  const schlaf = n ? lxKachel("Schlaf" + (n.d === heute ? " letzte Nacht" : " · " + n.d.slice(8, 10) + "." + n.d.slice(5, 7) + "."), hhmm(n.dauer), "h", [ [ "Schlaf-Score", n.score != null ? fmt0(n.score) : "–" ], [ "Tiefschlaf", n.tief != null ? fmt0(n.tief) + " min" : "–" ], [ "REM", n.rem != null ? fmt0(n.rem) + " min" : "–" ], [ "Wach", n.wach != null ? fmt0(n.wach) + " min" : "–" ], [ state.days ? "Ø " + state.days + " T" : "Ø gesamt", (() => {
@@ -25269,7 +25227,7 @@ function renderRecHealth(allDays, days) {
 
 function renderLgGut() {
  const el = $("#lg-gut");
- if (!el || !istLifeOS()) return;
+ if (!el) return;
  if (state.gut == null) {
   el.innerHTML = lxKachel("Healthy Gut · 7 Tage", "–", "", [ [ "", "wird geladen" ] ], "s-gut");
   return;
@@ -25765,7 +25723,7 @@ function ciAusgefuellt(iso, typ) {
 }
 
 function lxKacheln(root, ids) {
- if (!root || !istLifeOS()) return;
+ if (!root) return;
  ids.forEach(id => {
   const sel = root.querySelector("#" + id);
   if (!sel || sel.dataset.lx === "1") return;
@@ -26625,7 +26583,6 @@ function medBVorschlag(st, pv) {
 }
 
 function medBHtml() {
- if (!istLifeOS()) return "";
  const st = medBStats(), pv = +medState.praeV || null, v = medBVorschlag(st, pv);
  const minSoll = medB.min || (laeuftB() ? Math.round(medTimer.soll / 60) : v.min), aktivMin = [ 5, 10, 15 ].includes(minSoll) ? minSoll : 10;
  const laeuft = medTimer.laeuft || !!medTimer.startZeit || !!medState.abschluss;
@@ -27690,7 +27647,7 @@ function gutBBristolText(b) {
 
 function renderGutB() {
  const el = $("#gut-b");
- if (!el || !istLifeOS()) return;
+ if (!el) return;
  if (state.gut == null) {
   el.innerHTML = '<div class="empty">wird geladen</div>';
   return;
@@ -27845,7 +27802,6 @@ function g3Binden(el) {
 }
 
 function renderG3(allDays) {
- if (!istLifeOS()) return;
  const teile = [ [ "s-muster", "#mu-b", g3Muster ], [ "s-kontext", "#ktx-b", g3Kontext ], [ "s-schlaf", "#sl-b", g3Schlaf ], [ "s-labor", "#lab-b", g3Labor ], [ "s-ernaehrung", "#kf-b", g3Ernaehrung ], [ "s-gewohnheiten", "#hab-b", g3Gewohnheiten ], [ "s-ziele", "#zg-b", g3Ziele ], [ "s-finanzen", "#vx-b", g3Vermoegen ], [ "s-karriere", "#kar-b", g3Karriere ] ];
  for (const [sek, sel, fn] of teile) {
   const el = $(sel);
@@ -28365,7 +28321,7 @@ async function leseSeiten(id, delta, fertig) {
 
 function renderLeseB() {
  const el = $("#lese-b");
- if (!el || !istLifeOS() || state.lese == null) {
+ if (!el || state.lese == null) {
   if (el) el.innerHTML = "";
   return;
  }
@@ -28428,7 +28384,6 @@ function renderLeseB() {
 }
 
 function notizBEinbauen(el, alle) {
- if (!istLifeOS()) return;
  const cap = el.querySelector(".ncap");
  if (!cap) return;
  const heute = heuteIso(), mo = montagVon(heute);
@@ -28470,7 +28425,7 @@ const jfB = {
 
 function renderJfB(frei) {
  const el = $("#jf-b");
- if (!el || !istLifeOS()) return;
+ if (!el) return;
  const heute = heuteIso(), tage30 = g1TageZurueck(30), d30 = tage30[0], mo = montagVon(heute);
  const r30 = frei.filter(x => x.d >= d30), tageMit = new Set(frei.map(x => x.d));
  let serie = 0, d = tageMit.has(heute) ? heute : isoLokal(new Date(Date.parse(heute + "T12:00:00Z") - 864e5));
@@ -28533,7 +28488,6 @@ function dkBEmpfehlung() {
 }
 
 function dkBZeichnen(kopf, fwRecs) {
- if (!istLifeOS()) return;
  if (dkFw()) {
   kopf.innerHTML = "";
   return;
@@ -28591,7 +28545,7 @@ const aufB = {
 
 function renderAufB(offen) {
  const el = $("#auf-b");
- if (!el || !istLifeOS()) return;
+ if (!el) return;
  const heute = heuteIso(), so = isoLokal(new Date(Date.parse(montagVon(heute) + "T12:00:00Z") + 6 * 864e5));
  const im = c => aufB.bereich === "Alle" || selName(c[A.bereich]) === aufB.bereich;
  const sicht = offen.filter(im);
@@ -29152,14 +29106,14 @@ function renderCheckin() {
   const tagPill = (label, da, icon) => statPill(da ? "go" : "warn", icon + " " + label);
   chs.innerHTML = '<a href="#s-checkin" data-jump="s-checkin" data-ci="Morgen" style="text-decoration:none">' + tagPill("Morgen", morgenDa, "☀️") + "</a> · " + '<a href="#s-checkin" data-jump="s-checkin" data-ci="Abend" style="text-decoration:none">' + tagPill("Abend", abendDa, "🌙") + "</a>" + (state.gut == null ? "" : ' · <a href="#s-gut" data-jump="s-gut" style="text-decoration:none">' + tagPill("Healthy Gut", gutHeuteDa, "🌿") + "</a>") + ' · <a href="#s-reset" data-jump="s-reset" style="text-decoration:none">' + tagPill("Regulation", regHeuteDa, "🧘") + "</a>" + (leseSeitenHeute == null ? "" : ' · <a href="#s-lese" data-jump="s-lese" style="text-decoration:none">' + tagPill("Lesen " + leseSeitenHeute + "/" + LESE_ZIEL_SEITEN, leseHeuteDa, "📖") + "</a>");
  }
- let h = !ciState.nachtrag && istLifeOS() && ciNachtragMoeglich() ? '<p class="ci-nt-hinweis">Gestern Abend fehlt. <button type="button" class="nbtn" id="ci-nt-los">Gestern Abend nachtragen</button></p>' : "";
+ let h = !ciState.nachtrag && ciNachtragMoeglich() ? '<p class="ci-nt-hinweis">Gestern Abend fehlt. <button type="button" class="nbtn" id="ci-nt-los">Gestern Abend nachtragen</button></p>' : "";
  if (ciState.nachtrag) h += ""; else h += '<div class="ci-tabs" role="tablist">' + [ "Morgen", "Abend" ].map(t => '<button type="button" role="tab" data-ci="' + t + '" aria-selected="' + (t === typ) + '">' + t + (ciAusgefuellt(iso, t) ? " ✓" : "") + "</button>").join("") + "</div>";
  if (state.gut != null) {
   const gutHeuteDa = gutEintraege().some(x => x.zeit.slice(0, 10) === iso);
   h += '<p class="ci-recvgl ' + (gutHeuteDa ? "gruen" : "gelb") + '">' + statPill(gutHeuteDa ? "go" : "warn", "Healthy Gut: " + (gutHeuteDa ? "erfasst" : "offen")) + ' <a href="#s-gut" data-jump="s-gut" class="ci-recvgl-sub" style="display:inline">zum Healthy-Gut-Log →</a></p>';
  }
- const lxAbend = typ === "Abend" && istLifeOS();
- const lxMorgen = typ === "Morgen" && istLifeOS() || lxAbend;
+ const lxAbend = typ === "Abend";
+ const lxMorgen = typ === "Morgen" || lxAbend;
  if (ciState.nachtrag) h += ciNachtragHtml(); else if (lxAbend) h += lxaState.klassisch ? lxAbendHtml(iso) : ckaHtml(iso); else if (lxMorgen) h += lxmState.klassisch ? lxMorgenHtml(iso) : ckbHtml(iso);
  const zahlen = CI_FELDER[typ].filter(f => f[3] === "zahl");
  if (zahlen.length && !lxMorgen) h += '<div class="ci-zahlen">' + zahlen.map(([k, label, platz]) => '<label class="ci-feld">' + esc(label) + '<input type="text" inputmode="numeric" id="ci-f-' + k + '" placeholder="' + esc(platz) + '" value="' + esc(ciState.werte[k] || "") + '"></label>').join("") + "</div>";
@@ -30385,7 +30339,7 @@ function auVerlaufHtml(recs) {
 }
 
 function renderAusrichtung(force) {
- if (!istLifeOS() || !abschnittAn("s-ausrichtung")) return;
+ if (!abschnittAn("s-ausrichtung")) return;
  const el = $("#au-body"), wfEl = $("#au-wfbox"), hist = $("#au-hist");
  if (!el) return;
  if (!force && (auState.woop || auState.bps || auState.vis && !auState.vis.fertig) && el.dataset.gebaut === "1") return;
@@ -31412,7 +31366,7 @@ function jfListe(el, recs, leer, mehrKey) {
 }
 
 function renderJournal() {
- if (!istLifeOS() || !abschnittAn("s-journal")) return;
+ if (!abschnittAn("s-journal")) return;
  jfEditorBauen();
  jfKnoepfe();
  const kopf = $("#jf-kopf"), hist = $("#jf-hist"), meta = $("#jf-meta"), hm = $("#jf-hist-meta");
@@ -31642,7 +31596,7 @@ function dkTextLesen(fw, text) {
 
 function dkStart(name, entwurf) {
  const k = $("#dk-kopf");
- if (k && istLifeOS()) k.innerHTML = "";
+ if (k) k.innerHTML = "";
  dkState.fw = name;
  dkState.id = entwurf ? entwurf.id || null : null;
  dkState.werte = entwurf ? Object.assign({}, entwurf.werte) : {};
@@ -31880,7 +31834,7 @@ async function dkSpeichern() {
 }
 
 function renderDenken() {
- if (!istLifeOS() || !abschnittAn("s-denken")) return;
+ if (!abschnittAn("s-denken")) return;
  const el = $("#dk-body");
  if (el && !el.dataset.gebaut) dkZeichnen();
  const sv = $("#dk-save");
@@ -32187,7 +32141,7 @@ function renderWochenreflexion() {
  }).join("") + "</ol>";
  const fertigN = WR_SCHRITTE.filter(s => s.keys.some(k => wrWert(k).trim() !== "")).length;
  h += '<p class="lxm-fort"><b>' + fertigN + "/" + n + "</b> Schritte · alles optional, leer bleibt leer</p>";
- const lxw = istLifeOS(), U = 138.2;
+ const lxw = true, U = 138.2;
  const WR_FRAGEN = [ "Die Woche in einem Satz?", "Wie war die Woche insgesamt?", "Was hat Energie gegeben — und was gekostet?", "Welches Muster war das wichtigste?", "Was gehst du nächste Woche an?", "Was zählt nächste Woche?", "Was noch?" ];
  if (lxw) h = h.replace('<div class="wr-kw">', '<div class="wrk-kopf"><span class="rsb-mini">Woche · ~5 Min</span><svg width="54" height="54" viewBox="0 0 54 54" aria-label="Fortschritt"><circle cx="27" cy="27" r="22" fill="none" stroke="color-mix(in srgb, var(--ink) 10%, transparent)" stroke-width="6"/><circle cx="27" cy="27" r="22" fill="none" stroke="var(--accent-hi)" stroke-width="6" stroke-linecap="round" stroke-dasharray="' + U + '" stroke-dashoffset="' + (U * (1 - fertigN / n)).toFixed(1) + '" transform="rotate(-90 27 27)"/><text x="27" y="31" text-anchor="middle" fill="currentColor" font-size="12" font-family="JetBrains Mono">' + fertigN + "/" + n + '</text></svg></div><div class="wr-kw">');
  const sch = (i, inhalt) => lxw ? '<div class="lxa-s ckb-karte" data-s="' + i + '"' + (i === akt ? "" : " hidden") + '><span class="rsb-mini">Schritt ' + (i + 1) + " von " + n + " · " + esc(WR_SCHRITTE[i].titel) + "</span><b>" + esc(WR_FRAGEN[i]) + "</b>" + inhalt + "</div>" : '<div class="lxa-s" data-s="' + i + '"' + (i === akt ? "" : " hidden") + ">" + '<div class="lxm-s-kopf"><span>' + String(i + 1).padStart(2, "0") + "</span>" + esc(WR_SCHRITTE[i].titel) + "</div>" + inhalt + "</div>";
@@ -32729,7 +32683,7 @@ function renderGutForm() {
  });
  lxKacheln(el, [ "gut-f-ereignis", "gut-f-stuhl", "gut-f-schmerz", "gut-f-uebelkeit", "gut-f-comfort", "gut-f-menge", "gut-f-entleerung", "gut-f-befinden", "gut-f-bauchgefuehl", "gut-f-bristol", "gut-f-mahlzeit", "gut-f-blaehung", "gut-f-geruch" ]);
  gutEreignisSichtbar(el);
- if (istLifeOS()) lxGutTrigger(el);
+ lxGutTrigger(el);
  renderGutLx();
  renderGutB();
 }
@@ -32801,7 +32755,7 @@ function lxGutTrigger(el) {
 
 function renderGutLx() {
  const zeit = $("#gut-lx-zeit"), summe = $("#gut-lx-summe"), meta = $("#gut-lx-meta");
- if (!zeit || !istLifeOS()) return;
+ if (!zeit) return;
  if (state.gut == null) {
   zeit.innerHTML = '<div class="empty">wird geladen</div>';
   if (summe) summe.innerHTML = "";
@@ -33852,7 +33806,7 @@ function medPraesenzHtml(k, label) {
 
 function renderMedLx() {
  const box = $("#med-lx");
- if (!box || !istLifeOS()) return;
+ if (!box) return;
  if (medTimer.laeuft && box.dataset.gebaut === "1" && !medTimer.neu) {
   medTimerZeichnen();
   return;
@@ -34164,7 +34118,7 @@ function ztAutoPlan() {
   });
  }
  for (const x of mobNotionEintraege()) {
-  if (!x.id || x.d < ab || !/T\d{2}:\d{2}/.test(x.z) || !(x.min >= 1)) continue;
+  if (!x.id || x.d < ab || !/T\d{2}:\d{2}/.test(x.z) || !(x.min >= 3) || x.abbruch) continue;
   const en = Date.parse(x.z);
   if (isNaN(en)) continue;
   kand.push({
@@ -34217,7 +34171,7 @@ function ztAutoFelder(k) {
 }
 
 function ztAutoPlanen() {
- if (ztAuto.lauf || !mcp) return;
+ if (ztAuto.lauf || !mcp || document.hidden) return;
  if (![ "zeit", "mobl", "training" ].every(k => state.frisch.has(k) && state[k] != null && !state.errors[k])) return;
  if (!state.wpOn || state.wpAusCache || state.errors.wp) return;
  if (Date.now() - ztAuto.zuletzt < 10 * 6e4) return;
@@ -34657,7 +34611,7 @@ function renderZeitHeute() {
  if (!abschnittAn("s-zeit")) return;
  const el = $("#zt-heute");
  if (!el) return;
- if (istLifeOS() && state.zeit != null) {
+ if (state.zeit != null) {
   ztTagRender(el);
   return;
  }
@@ -38004,7 +37958,7 @@ function mobZeigen() {
  if (!abschnittAn("s-mobility")) return;
  if (!mobState.gebaut) {
   mobState.gebaut = true;
-  if (istLifeOS() && mobState.sicht === "plaene" && !mobState.offenPlan) mobState.sicht = "start";
+  if (mobState.sicht === "plaene" && !mobState.offenPlan) mobState.sicht = "start";
   mobRender();
   return;
  }
@@ -38047,10 +38001,9 @@ function mobRender() {
   mobPlayerRender();
   return;
  }
- const sichten = (istLifeOS() ? [ [ "start", "Für dich" ] ] : []).concat([ [ "plaene", "Pläne" ], [ "uebungen", "Übungen" ], [ "verlauf", "Verlauf" ], [ "check", "Mobility-Check" ] ]);
+ const sichten = [ [ "start", "Für dich" ] ].concat([ [ "plaene", "Pläne" ], [ "uebungen", "Übungen" ], [ "verlauf", "Verlauf" ], [ "check", "Mobility-Check" ] ]);
  let h = '<div id="mob-kopf"></div>' + '<div class="lx-seg mob-sicht" role="tablist">' + sichten.map(([k, n]) => '<button type="button" data-mobsicht="' + k + '" class="' + (mobState.sicht === k ? "on" : "") + '" aria-pressed="' + (mobState.sicht === k) + '">' + n + "</button>").join("") + "</div>";
  if (mobState.msg) h += '<p class="mob-msg ' + esc(mobState.msgArt) + '">' + mobState.msg + "</p>";
- if (mobState.sicht === "start" && !istLifeOS()) mobState.sicht = "plaene";
  if (mobState.sicht === "start") h += mobStartHtml(); else if (mobState.sicht === "plaene") h += mobPlaeneHtml(); else if (mobState.sicht === "uebungen") h += mobUebungenHtml(); else if (mobState.sicht === "verlauf") h += mobVerlaufHtml(); else h += mobCheckHtml();
  h += '<p class="mob-sicher">Dehnen soll ziehen, nicht stechen. Bei Schmerz, Taubheit oder Kribbeln abbrechen; bei Verletzungen oder anhaltenden Beschwerden vorher ärztlich oder physiotherapeutisch abklären. Kein Ersatz für Therapie.</p>';
  w.innerHTML = h;
@@ -39264,7 +39217,7 @@ function trsDatum(d) {
 }
 
 function trsZeigen() {
- if (!abschnittAn("s-training") || !istLifeOS()) return;
+ if (!abschnittAn("s-training")) return;
  if (trsState.lauf) return;
  trsRender();
 }
@@ -39272,18 +39225,9 @@ function trsZeigen() {
 function trsKopf() {
  const el = $("#trs-kopf");
  if (!el) return;
- if (istLifeOS()) {
-  el.innerHTML = trsBHtml();
-  trsBBinden(el);
-  return;
- }
- const heute = heuteIso(), von = isoLokal(new Date(Date.parse(heute + "T12:00:00Z") - 6 * 864e5));
- const ein = state.wpOn ? wpEinheiten(true).filter(e => e.d >= von) : null;
- const min = ein ? ein.reduce((a, e) => a + (e.min || 0), 0) : null;
- const v = trsVerlaufAlle(), letzte = v[0];
- const offen14 = state.wpOn ? wpEinheiten(true).filter(e => e.d >= isoLokal(new Date(Date.parse(heute + "T12:00:00Z") - 13 * 864e5)) && !trainSubjektiv(e.id)).length : null;
- const zuord = trsZuordAnzahl();
- el.innerHTML = '<div class="zg-kpis">' + "<div><b>" + (ein ? ein.length : "–") + "</b><span>Einheiten 7 T (Uhr)</span></div>" + "<div><b>" + (min == null ? "–" : Math.round(min)) + "</b><span>Trainingsminuten 7 T</span></div>" + "<div><b>" + (letzte ? esc(trsDatum(letzte.d)) : "–") + "</b><span>" + (letzte ? esc(letzte.t) + (letzte.min != null ? " · " + letzte.min + " Min" : "") : "letzte Session") + "</span></div>" + '<div><b class="' + (offen14 ? "" : "mob-ok") + '">' + (offen14 == null ? "–" : offen14 || "✓") + "</b><span>" + (zuord ? zuord + " Session wartet auf Uhr-Einheit" : "Einheiten ohne Bewertung (14 T)") + "</span></div></div>";
+ el.innerHTML = trsBHtml();
+ trsBBinden(el);
+ return;
 }
 
 function trsRender() {
@@ -40567,17 +40511,6 @@ function bbZeigen() {
  bbRender();
 }
 
-function bbKopf() {
- const v = bbLs("verlauf", []), heute = heuteIso();
- const von = isoLokal(new Date(Date.parse(heute + "T12:00:00Z") - 6 * 864e5));
- const w = v.filter(x => x.d >= von), zaehl = {};
- v.forEach(x => {
-  zaehl[x.t] = (zaehl[x.t] || 0) + 1;
- });
- const oft = Object.keys(zaehl).sort((a, b) => zaehl[b] - zaehl[a])[0];
- return '<div class="zg-kpis"><div><b>' + w.length + "</b><span>Sessions 7 T</span></div>" + "<div><b>" + w.reduce((a, x) => a + (x.min || 0), 0) + "</b><span>Minuten 7 T</span></div>" + "<div><b>" + (v[0] ? esc(v[0].d.slice(8, 10) + "." + v[0].d.slice(5, 7) + ".") : "–") + "</b><span>" + (v[0] ? esc(v[0].t) + " · " + v[0].min + " Min" : "letzte Session (dieses Gerät)") + "</span></div>" + "<div><b>" + (oft ? esc(oft) : "–") + "</b><span>häufigstes Programm</span></div></div>";
-}
-
 function bbRender() {
  const w = $("#bb-root");
  if (!w) return;
@@ -40585,50 +40518,8 @@ function bbRender() {
   bbPlayerRender();
   return;
  }
- if (istLifeOS()) {
-  bbRenderLx(w);
-  return;
- }
- const p = bbProg(bbState.prog), min = bbState.min || p.min;
- let h = bbKopf() + '<p class="mob-msg bb-hinweis">🎧 Nur mit Kopfhörern — der Effekt entsteht erst im Kopf aus zwei leicht verschiedenen Tönen links und rechts. Über Lautsprecher hörst du nur einen Ton. Leise einstellen: gerade gut hörbar.</p>';
- if (bbState.msg) h += '<p class="mob-msg ' + esc(bbState.msgArt) + '">' + bbState.msg + "</p>";
- h += '<div class="mob-plaene">' + BB_PROGRAMME.concat([ bbProg("eigen") ]).map(x => {
-  const on = bbState.prog === x.id;
-  return '<div class="mob-plan' + (on ? " offen" : "") + '"><button type="button" class="mob-plan-kopf" data-bbprog="' + x.id + '" aria-pressed="' + on + '">' + '<span class="mob-plan-t"><b>' + esc(x.t) + "</b><small>" + esc(x.k) + "</small></span>" + '<span class="mob-plan-m"><b>' + esc(x.band) + "</b><small>" + (x.id === "eigen" ? "frei" : x.min + " Min · Träger " + x.c + " Hz") + "</small></span></button>" + (on && x.ev ? '<p class="mob-ex-h">Forschung: ' + esc(x.ev) + "</p>" : "") + (on && x.id === "eigen" ? '<div class="bb-regler"><label>Beat <b id="bb-eb">' + bbState.eigen.b + ' Hz</b><input type="range" min="1" max="40" step="0.5" value="' + bbState.eigen.b + '" id="bb-in-b"></label>' + '<label>Trägerton <b id="bb-ec">' + bbState.eigen.c + ' Hz</b><input type="range" min="100" max="500" step="10" value="' + bbState.eigen.c + '" id="bb-in-c"></label></div>' : "") + "</div>";
- }).join("") + "</div>";
- h += '<div class="mob-filterblock" style="margin-top:.7rem"><div class="lxm-klein">Dauer</div><div class="mob-filter">' + BB_DAUERN.map(d => '<button type="button" class="chip' + (min === d ? " on" : "") + '" data-bbmin="' + d + '">' + d + " Min</button>").join("") + "</div>" + '<div class="lxm-klein">Hintergrund</div><div class="mob-filter">' + [ [ "aus", "nur Beats" ], [ "rosa", "+ rosa Rauschen" ], [ "braun", "+ braunes Rauschen" ] ].map(([k, n]) => '<button type="button" class="chip' + (bbState.rauschen === k ? " on" : "") + '" data-bbnoise="' + k + '">' + n + "</button>").join("") + "</div></div>" + '<div class="mob-plan-akt"><button type="button" class="lx-tap on" id="bb-start">▶ ' + esc(p.t) + " starten · " + min + " Min</button></div>";
- h += '<details class="bb-wissen"><summary>Was die Forschung sagt</summary>' + "<ul><li><b>Wirkung insgesamt:</b> Meta-Analyse über 22 Studien — mittlerer Effekt auf Angst, Schmerz und Kognition (g = 0,45). Wirkt besser, wenn man <b>vorher</b> und <b>länger</b> hört; Rauschen ist dafür nicht nötig.</li>" + "<li><b>Mitschwingen des Gehirns</b> (Entrainment): umstritten — 5 von 14 EEG-Studien sprechen dafür, 8 dagegen. Nötig sind meist 5–15 Min am Stück.</li>" + "<li><b>Frequenzen:</b> Theta und Alpha für Ruhe/Stress, Gamma 40 Hz für Aufmerksamkeit, Delta für Schlaf (schwach belegt). Beta 16 Hz zeigte in Studien keinen Effekt — deshalb nicht im Angebot.</li>" + "<li><b>Trägerton:</b> unter 1000 Hz, Studien nutzen meist 250–400 Hz; 340 Hz war in der Aufmerksamkeitsstudie am besten.</li>" + "<li><b>Sicherheit:</b> leise hören, nicht beim Autofahren. Bei Epilepsie vorher ärztlich abklären. Kein Ersatz für Therapie.</li></ul></details>";
- w.innerHTML = h;
- w.querySelectorAll("[data-bbprog]").forEach(b => b.addEventListener("click", () => {
-  bbState.prog = b.dataset.bbprog;
-  bbState.min = null;
-  bbState.msg = null;
-  bbRender();
- }));
- w.querySelectorAll("[data-bbmin]").forEach(b => b.addEventListener("click", () => {
-  bbState.min = +b.dataset.bbmin;
-  bbRender();
- }));
- w.querySelectorAll("[data-bbnoise]").forEach(b => b.addEventListener("click", () => {
-  bbState.rauschen = b.dataset.bbnoise;
-  bbLsSet("rauschen", bbState.rauschen);
-  bbRender();
- }));
- const ib = $("#bb-in-b"), ic = $("#bb-in-c");
- if (ib) ib.addEventListener("input", () => {
-  bbState.eigen.b = +ib.value;
-  bbLsSet("eigen", bbState.eigen);
-  const l = $("#bb-eb");
-  if (l) l.textContent = ib.value + " Hz";
- });
- if (ic) ic.addEventListener("input", () => {
-  bbState.eigen.c = +ic.value;
-  bbLsSet("eigen", bbState.eigen);
-  const l = $("#bb-ec");
-  if (l) l.textContent = ic.value + " Hz";
- });
- if (ib || ic) [ ib, ic ].forEach(x => x && x.addEventListener("change", () => bbRender()));
- $("#bb-start").addEventListener("click", bbStart);
+ bbRenderLx(w);
+ return;
 }
 
 const BB_WOFUER = {
@@ -41605,6 +41496,11 @@ document.addEventListener("visibilitychange", () => {
   renderBeimZeigen = false;
   render();
  }
+ if (notionRundeVerpasst && mcp) {
+  notionRundeVerpasst = false;
+  notionEnqueueAll();
+  notionPump();
+ }
 });
 
 (function() {
@@ -41792,17 +41688,13 @@ const nav2Grp = {};
  for (const id of tabIds) if (!nav2Grp[id] && !NAV2_AUS.has(id)) nav2Grp[id] = "lx-mehr";
 }
 
-function istLifeOS() {
- return document.documentElement.getAttribute("data-theme") === "lifeos";
-}
-
 function gruppeVon(id) {
- return istLifeOS() ? nav2Grp[id] : tabGrp[id];
+ return nav2Grp[id];
 }
 
 function gruppeVonLink(a) {
  const id = a.getAttribute("href").slice(1);
- return istLifeOS() ? nav2Grp[id] : a.dataset.grp;
+ return nav2Grp[id];
 }
 
 const HASH_ALIAS = {
@@ -41921,7 +41813,7 @@ function navZustand(id) {
 
 function zeigeTab(id, scrollen) {
  if (tabIds.indexOf(id) < 0) id = tabIds[0];
- if (istLifeOS() && NAV2_AUS.has(id)) id = "s-home";
+ if (NAV2_AUS.has(id)) id = "s-home";
  const mit = TAB_PAARE[id] || [];
  document.documentElement.setAttribute("data-tab", id);
  for (const sec of document.querySelectorAll("section[id]")) sec.classList.toggle("on", sec.id === id || mit.includes(sec.id));
@@ -42208,7 +42100,7 @@ for (const a of tabLinks) {
   if (!d) return;
   ev.preventDefault();
   const ga = gruppeVonLink(a);
-  const sicht = tabLinks.filter(x => gruppeVonLink(x) === ga).sort((p, q) => istLifeOS() ? (+p.style.getPropertyValue("--lx-o") || 0) - (+q.style.getPropertyValue("--lx-o") || 0) : 0);
+  const sicht = tabLinks.filter(x => gruppeVonLink(x) === ga).sort((p, q) => (+p.style.getPropertyValue("--lx-o") || 0) - (+q.style.getPropertyValue("--lx-o") || 0));
   const i = sicht.indexOf(a);
   const ziel = sicht[(i + d + sicht.length) % sicht.length];
   ziel.focus();
@@ -42247,7 +42139,7 @@ window.addEventListener("hashchange", () => {
 const LX_UMZUG = [ [ "sup-block", "hk-sup-slot" ], [ "wf-meta", "hk-wf-meta" ], [ "wf-body", "hk-wf-slot" ], [ "hm-card", "hk-hm-slot" ] ];
 
 function homeUmhaengen() {
- const lx = istLifeOS();
+ const lx = true;
  for (const [id, slot] of LX_UMZUG) {
   const el = document.getElementById(id), ziel = document.getElementById(slot);
   if (!el || !ziel) continue;
@@ -42423,7 +42315,9 @@ cacheLaden().finally(uhrArchivEinmischen);
  mcp = await Promise.resolve(window.__DEMO_MCP);
  if (mcp) {
   bitpandaLaden();
-  setInterval(bitpandaLaden, 6e5);
+  setInterval(() => {
+   if (!document.hidden) bitpandaLaden();
+  }, 6e5);
  }
  if (mcp) oqStarten();
  if (!mcp) {
