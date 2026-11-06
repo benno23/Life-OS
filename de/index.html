@@ -6829,7 +6829,7 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
       <button type="button" class="nur-lifeos" data-grp="lx-heute" aria-pressed="false"><svg class="grp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Heute</button>
       <button type="button" class="nur-lifeos" data-grp="lx-koerper" aria-pressed="false"><svg class="grp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.4A4.1 4.1 0 0 1 12 8a4.1 4.1 0 0 1 7 2.6c0 5-7 9.4-7 9.4Z"/></svg>Körper</button>
       <button type="button" class="nur-lifeos" data-grp="lx-geist" aria-pressed="false"><svg class="grp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M5 20l4-6h6l4 6M9 14v-3h6v3"/></svg>Geist</button>
-      <button type="button" class="nur-lifeos" data-grp="lx-insights" aria-pressed="false"><svg class="grp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19l4-7 3 3 7-10"/></svg>Insights</button>
+      <button type="button" class="nur-lifeos" data-grp="lx-insights" aria-pressed="false"><svg class="grp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19l4-7 3 3 7-10"/></svg>Rückblick</button>
       <button type="button" class="nur-lifeos" data-grp="lx-mehr" aria-pressed="false"><svg class="grp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Mehr</button>
     </nav>
     <span id="jump-anchor" hidden></span>
@@ -7071,6 +7071,7 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
 
   <section id="s-checkin">
   <h2>Check-in <span class="h-note">Morgen- und Abendeintrag</span></h2>
+  <div class="ci-kompakt" id="ci-kompakt" hidden></div>
   <div class="grid">
     <div class="card full panel">
       <div class="p-head"><h3>Check-in</h3>
@@ -29014,7 +29015,30 @@ function ckbBinden(el) {
  }));
 }
 
+const ciHeute = {
+ auf: false
+};
+
+function ciHeuteKompakt() {
+ const sec = $("#s-checkin"), bar = $("#ci-kompakt");
+ if (!sec || !bar || state.journal == null) return;
+ const iso = heuteIso(), h = (new Date).getHours();
+ const m = ciAusgefuellt(iso, "Morgen"), a = ciAusgefuellt(iso, "Abend");
+ const dran = !m && h < 17 || h >= 17 && !a;
+ const zu = !dran && !ciHeute.auf && !ciState.nachtrag;
+ sec.classList.toggle("ci-zu", zu);
+ bar.hidden = dran;
+ if (dran) return;
+ const txt = (m ? "Morgen ✓" : "Morgen offen") + " · " + (a ? "Abend ✓" : h < 17 ? "Abend ab 17 Uhr" : "Abend offen");
+ bar.innerHTML = '<span class="ci-k-txt"><b>Check-in</b> ' + esc(txt) + "</span>" + '<button type="button" class="nbtn" id="ci-k-auf">' + (zu ? "öffnen" : "schließen") + "</button>";
+ $("#ci-k-auf").addEventListener("click", () => {
+  ciHeute.auf = !ciHeute.auf;
+  ciHeuteKompakt();
+ });
+}
+
 function renderCheckin() {
+ ciHeuteKompakt();
  const el = $("#ci-body");
  if (!el) return;
  const iso = ciState.nachtrag ? ciGestern() : heuteIso();
@@ -41647,7 +41671,20 @@ for (const sec of document.querySelectorAll("section[id]")) {
 
 const TAB_PAARE = {
  "s-training": [ "s-workouts" ],
- "s-labor": [ "s-koerper" ]
+ "s-labor": [ "s-koerper" ],
+ "s-home": [ "s-checkin" ],
+ "s-recovery": [ "s-schlaf" ],
+ "s-meditation": [ "s-binaural" ],
+ "s-woche": [ "s-analysen" ],
+ "s-muster": [ "s-kontext" ]
+};
+
+const TAB_ZIEL = {
+ "s-checkin": "s-home",
+ "s-schlaf": "s-recovery",
+ "s-binaural": "s-meditation",
+ "s-analysen": "s-woche",
+ "s-kontext": "s-muster"
 };
 
 const RAIL_AUS_IDS = new Set([ "s-home", "s-reset", "s-meditation", "s-binaural", "s-journal", "s-denken", "s-ausrichtung", "s-training", "s-mobility", "s-labor", "s-recovery", "s-schlaf", "s-checkin", "s-gut", "s-tag", "s-karriere", "s-finanzen", "s-kontext", "s-zeit" ]);
@@ -41655,23 +41692,23 @@ const RAIL_AUS_IDS = new Set([ "s-home", "s-reset", "s-meditation", "s-binaural"
 const NAV2 = [ {
  g: "lx-heute",
  titel: "Heute",
- ids: [ "s-home", "s-checkin", "s-woche", "s-gewohnheiten", "s-zeit", "s-ziele", "s-tag" ]
+ ids: [ "s-home" ]
 }, {
  g: "lx-koerper",
  titel: "Körper",
- ids: [ "s-recovery", "s-gut", "s-ernaehrung", "s-training", "s-mobility", "s-schlaf", "s-labor" ]
+ ids: [ "s-training", "s-mobility", "s-ernaehrung", "s-gut", "s-recovery" ]
 }, {
  g: "lx-geist",
  titel: "Geist",
- ids: [ "s-journal", "s-denken", "s-ausrichtung", "s-reset", "s-meditation", "s-binaural" ]
+ ids: [ "s-journal", "s-denken", "s-reset", "s-meditation", "s-ausrichtung" ]
 }, {
  g: "lx-insights",
- titel: "Insights",
- ids: [ "s-muster", "s-analysen" ]
+ titel: "Rückblick",
+ ids: [ "s-woche", "s-gewohnheiten", "s-ziele", "s-muster", "s-tag" ]
 }, {
  g: "lx-mehr",
- titel: "Organisation",
- ids: [ "s-aufgaben", "s-notizen", "s-lese", "s-karriere", "s-finanzen", "s-kontext" ]
+ titel: "Mehr",
+ ids: [ "s-aufgaben", "s-notizen", "s-lese", "s-zeit", "s-labor", "s-finanzen", "s-karriere" ]
 } ];
 
 const NAV2_AUS = new Set([ "s-befinden", "s-roh" ]);
@@ -41684,6 +41721,14 @@ const nav2Grp = {};
   nav2Grp[id] = blk.g;
   const a = tabLinks.find(x => x.getAttribute("href") === "#" + id);
   if (a) a.style.setProperty("--lx-o", String(o++));
+ }
+ for (const z in TAB_ZIEL) nav2Grp[z] = "lx-unter";
+ {
+  const ci = document.getElementById("s-checkin"), hero = document.getElementById("home-hero");
+  if (ci && hero) {
+   hero.after(ci);
+   ci.classList.add("home-voll", "ci-in-heute");
+  }
  }
  for (const id of tabIds) if (!nav2Grp[id] && !NAV2_AUS.has(id)) nav2Grp[id] = "lx-mehr";
 }
@@ -41804,6 +41849,10 @@ function hashAnwenden(scrollen) {
 function navZustand(id) {
  const g = gruppeVon(id);
  for (const a of tabLinks) a.classList.toggle("aus", gruppeVonLink(a) !== g);
+ {
+  const nj = document.querySelector("nav.jump");
+  if (nj) nj.classList.toggle("einzeln", tabLinks.filter(a => !a.classList.contains("aus")).length < 2);
+ }
  for (const b of grpBtns) {
   const lx = b.dataset.grp.indexOf("lx-") === 0;
   b.setAttribute("aria-pressed", String(b.dataset.grp === (lx ? nav2Grp[id] : tabGrp[id])));
@@ -41813,6 +41862,8 @@ function navZustand(id) {
 
 function zeigeTab(id, scrollen) {
  if (tabIds.indexOf(id) < 0) id = tabIds[0];
+ const unter = TAB_ZIEL[id] ? id : null;
+ if (unter) id = TAB_ZIEL[id];
  if (NAV2_AUS.has(id)) id = "s-home";
  const mit = TAB_PAARE[id] || [];
  document.documentElement.setAttribute("data-tab", id);
@@ -41829,13 +41880,19 @@ function zeigeTab(id, scrollen) {
  if (state.journal) render();
  if (id === "s-mobility") mobZeigen();
  if (id === "s-training") trsZeigen();
- if (id === "s-binaural") bbZeigen();
+ if (id === "s-binaural" || mit.includes("s-binaural")) bbZeigen();
  try {
   localStorage.setItem(TAB_KEY, id);
  } catch (e) {}
  if (scrollen) window.scrollTo({
   top: 0,
   behavior: "instant"
+ });
+ if (unter && unter !== "s-checkin") requestAnimationFrame(() => {
+  const u = document.getElementById(unter);
+  if (u) u.scrollIntoView({
+   block: "start"
+  });
  });
  const aktiv = tabLinks.find(a => a.getAttribute("href") === "#" + id);
  if (aktiv && aktiv.scrollIntoView) aktiv.scrollIntoView({
@@ -42799,5 +42856,13 @@ html:root[data-theme="lifeos"] #s-checkin .ckb.cka{--accent:#E88AA0;--accent-hi:
 html:root[data-theme="lifeos"] .hb-hero{background:linear-gradient(135deg,#FFD36E 0%,#FFA97E 50%,#FF6F91 100%) !important;color:#170800 !important;}
 html:root[data-theme="lifeos"] .theme-swatch.lifeos{background:linear-gradient(135deg,#FFD36E,#FF6F91) !important;}
 .theme-swatch.lifeos{background:linear-gradient(135deg,#FFD36E,#FF6F91) !important;}
+.ci-in-heute { grid-column: 1 / -1; margin: 0; }
+.ci-in-heute > h2 { display: none; }
+.ci-in-heute.ci-zu > .grid { display: none; }
+.ci-kompakt { display: flex; align-items: center; justify-content: space-between; gap: .8rem; padding: .7rem 1rem;
+  border: 1px solid var(--line, rgba(255,255,255,.12)); border-radius: 14px; background: var(--card, rgba(255,255,255,.04)); }
+.ci-kompakt[hidden] { display: none; }
+.ci-k-txt b { margin-right: .4rem; }
+@media (max-width: 60rem) { nav.jump.einzeln { display: none !important; } }
 </style>
 </body></html>
