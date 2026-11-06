@@ -2965,7 +2965,6 @@ td.theme { min-width: 18rem; color: var(--ink-soft); }
 }
 
 
-:root[data-theme="lifeos"] .nur-konsole { display: none !important; }
 
 
 @media (min-width: 52rem) {
@@ -6769,7 +6768,7 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
         <path d="M9 4.5v15M15.5 10l-2 2 2 2"/></svg>
     </button>
   </div>
-  <div class="sidenav-h nur-konsole">Bereiche</div>
+  
   <div id="sidenav-grp"></div>
   
   <div id="sidenav-flach" class="nur-lifeos"></div>
@@ -6821,11 +6820,7 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
 
     <span id="grp-anchor" hidden></span>
     <nav class="grp" id="grp" aria-label="Bereiche">
-      <button type="button" class="nur-konsole" data-grp="home" aria-pressed="true"><svg class="grp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Start</button>
-      <button type="button" class="nur-konsole" data-grp="health" aria-pressed="false"><svg class="grp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.4A4.1 4.1 0 0 1 12 8a4.1 4.1 0 0 1 7 2.6c0 5-7 9.4-7 9.4Z"/></svg>Health</button>
-      <button type="button" class="nur-konsole" data-grp="journal" aria-pressed="false"><svg class="grp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h13v16H5z"/><path d="M8 8h7M8 12h7M8 16h4"/></svg>Journal</button>
-      <button type="button" class="nur-konsole" data-grp="brain" aria-pressed="false"><svg class="grp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9V15h7v-1.1A6 6 0 0 0 12 3Z"/></svg>Brain</button>
-      
+
       <button type="button" class="nur-lifeos" data-grp="lx-heute" aria-pressed="false"><svg class="grp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Heute</button>
       <button type="button" class="nur-lifeos" data-grp="lx-koerper" aria-pressed="false"><svg class="grp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.4A4.1 4.1 0 0 1 12 8a4.1 4.1 0 0 1 7 2.6c0 5-7 9.4-7 9.4Z"/></svg>Körper</button>
       <button type="button" class="nur-lifeos" data-grp="lx-geist" aria-pressed="false"><svg class="grp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M5 20l4-6h6l4 6M9 14v-3h6v3"/></svg>Geist</button>
@@ -6912,142 +6907,12 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
       <div class="plot" id="hh-trend"></div>
    </div>
 
-   <div class="card panel lead home-voll nur-konsole">
-      <div class="p-head"><h3>Heute</h3>
-        <span class="p-meta" id="op-online">&nbsp;</span></div>
-      <div class="sess-kopf">
-        <div>
-          <p class="hallo-gross" id="home-gruss">&nbsp;</p>
-          <p class="hallo-sub" id="home-satz">&nbsp;</p>
-        </div>
-        
-        <div class="sess-uhr" id="home-uhr">&nbsp;</div>
-      </div>
-      <form class="kap" id="kap-form" autocomplete="off">
-        <input type="text" id="kap-text" placeholder="Gedanke, Aufgabe, Notiz — Enter legt sie unter Aufgaben ab">
-        <button type="submit" id="kap-go">Erfassen</button>
-      </form>
-      <p class="kap-msg" id="kap-msg"></p>
-
-      <div class="home-heute-drei">
-        <div class="home-sub-block">
-          <div class="p-head"><h4>Heute steuern</h4>
-            <span class="p-meta" id="ber-meta">&nbsp;</span></div>
-          <div id="ber-body"></div>
-        </div>
-
-        <div class="home-sub-block">
-          <div class="p-head"><h4>Gewohnheiten</h4>
-            <span class="p-meta" id="hab-quote">&nbsp;</span></div>
-          <div class="hab-head">
-            <div class="ring" id="hab-ring"></div>
-            <div class="hab-meta">
-              <div class="hab-frac" id="hab-frac">&nbsp;</div>
-              <p class="hab-note" id="hab-note">&nbsp;</p>
-            </div>
-            <div class="segbar" id="hab-seg"></div>
-          </div>
-          <a class="nbtn" href="#s-gewohnheiten" data-jump="s-gewohnheiten"
-             style="display:inline-block;margin-top:.6rem">Alle ansehen</a>
-        </div>
-
-        <div class="home-sub-block">
-          <div class="p-head"><h4>Check-in</h4>
-            <span class="p-meta" id="ci-home-meta">&nbsp;</span></div>
-          
-          <p class="sub" id="ci-home-sub">&nbsp;</p>
-        </div>
-      </div>
-
-      <div class="home-heute-unten">
-        <div class="home-sub-block" id="sup-block">
-          <div class="p-head"><h4>Supplemente</h4>
-            <span class="p-meta" id="sup-meta">&nbsp;</span></div>
-          <p class="sub" id="sup-sub">tippen zum An- und Abwählen</p>
-          <div id="sup-chips"></div>
-          <div id="sup-foot"></div>
-        </div>
-
-        <div class="home-sub-block">
-          <div class="p-head"><h4>Koffein</h4>
-            <span class="p-meta" id="gtr-meta">&nbsp;</span></div>
-          <p class="sub">Ein Tipp je Getränk — schreibt in die Notion-Tabelle „Koffein“</p>
-          <div id="gtr-body"></div>
-        </div>
-
-        <div class="home-sub-block">
-          <div class="p-head"><h4>Verlauf 7 Tage</h4>
-            <span class="p-meta" id="v7-meta">&nbsp;</span></div>
-          <div id="v7-body"></div>
-        </div>
-      </div>
-   </div>
-
-   <div class="hcol left nur-konsole">
-
-    <div class="card panel">
-      <div class="p-head"><h3>Woran es hakt</h3></div>
-      <p class="sub">was die Daten sagen — nicht was gut aussieht</p>
-      <ul class="mini" id="home-hakt"></ul>
-    </div>
-
-    <div class="card panel">
-      <div class="p-head"><h3>Urlaubsmodus</h3>
-        <span class="p-meta" id="url-meta">&nbsp;</span></div>
-      <p class="sub">Gewohnheiten zählen an Urlaubstagen nicht als verpasst — Streaks bleiben stehen</p>
-      <div id="url-body"></div>
-    </div>
-   </div>
-
-   <div class="hcol mid nur-konsole">
-    
-    <div class="card panel" id="hm-card">
-      <div class="p-head"><h3>Kennzahlen im Verlauf</h3>
-        <span class="p-meta" id="hm-meta">&nbsp;</span></div>
-      <p class="sub">Energie, Stimmung, Stress, Schlaf-Score, Ruhepuls, Schlafdauer, Kalorien, Schritte — antippen zeigt den Verlauf</p>
-      <div class="hm-tiles" id="hm-tiles"></div>
-      <div id="hm-chart"></div>
-    </div>
-
-    <div class="card panel">
-      <div class="p-head"><h3>Termine</h3>
-        <span class="p-meta" id="term-meta">&nbsp;</span></div>
-      <p class="sub">Bewerbungstermine und Aufgaben mit Frist, aus Notion</p>
-      <ul class="mini" id="term-body"></ul>
-    </div>
-   </div>
-
-   <div class="hcol right nur-konsole">
-    <div class="card panel">
-      <div class="p-head"><h3>Wochenfokus</h3>
-        <span class="p-meta" id="wf-meta">&nbsp;</span></div>
-      <div id="wf-body"></div>
-    </div>
-
-    <div class="card panel">
-      <div class="p-head"><h3>Ziele</h3>
-        <span class="p-meta" id="ziel-meta">&nbsp;</span></div>
-      <div id="ziel-quartal"></div>
-      <div id="ziel-jahr"></div>
-      <div id="ziel-neu"></div>
-      <p class="hab-msg" id="ziel-msg"></p>
-    </div>
-
-    <div class="card panel">
-      <div class="p-head"><h3>Die 3 wichtigsten Dinge</h3>
-        <span class="p-meta" id="home-auf-meta">&nbsp;</span></div>
-      <p class="sub" id="home-auf-sub">die wichtigsten offenen Punkte, überfälliges zuerst</p>
-      <ul class="mini" id="home-auf"></ul>
-    </div>
-
-   </div>
-
    <div class="home-voll nur-lifeos" id="home-woche" hidden></div>
    <div class="lx-home-reihe home-voll nur-lifeos" id="home-reihe">
      
      <div class="card panel" id="hk-wf">
-       <div class="p-head"><h3>Wochenfokus</h3><span class="p-meta" id="hk-wf-meta"></span></div>
-       <div id="hk-wf-slot"></div>
+       <div class="p-head"><h3>Wochenfokus</h3><span class="p-meta" id="hk-wf-meta"><span class="p-meta" id="wf-meta">&nbsp;</span></span></div>
+       <div id="hk-wf-slot"><div id="wf-body"></div></div>
        
      </div>
      <div class="card panel" id="hk-auf">
@@ -7056,7 +6921,13 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
        <div id="hh-auf"></div>
      </div>
      <div class="card panel" id="hk-sup">
-       <div id="hk-sup-slot"></div>
+       <div id="hk-sup-slot"><div class="home-sub-block" id="sup-block">
+          <div class="p-head"><h4>Supplemente</h4>
+            <span class="p-meta" id="sup-meta">&nbsp;</span></div>
+          <p class="sub" id="sup-sub">tippen zum An- und Abwählen</p>
+          <div id="sup-chips"></div>
+          <div id="sup-foot"></div>
+        </div></div>
      </div>
    </div>
 
@@ -7064,7 +6935,13 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
      <div class="p-head"><h3>Ziele</h3><span class="p-meta" id="hz-meta">&nbsp;</span></div>
      <div id="hz-body"><div class="empty">wird geladen</div></div>
    </div>
-   <div class="home-voll nur-lifeos" id="hk-hm-slot"></div>
+   <div class="home-voll nur-lifeos" id="hk-hm-slot"><div class="card panel" id="hm-card">
+      <div class="p-head"><h3>Kennzahlen im Verlauf</h3>
+        <span class="p-meta" id="hm-meta">&nbsp;</span></div>
+      <p class="sub">Energie, Stimmung, Stress, Schlaf-Score, Ruhepuls, Schlafdauer, Kalorien, Schritte — antippen zeigt den Verlauf</p>
+      <div class="hm-tiles" id="hm-tiles"></div>
+      <div id="hm-chart"></div>
+    </div></div>
 
   </div>
   </section>
@@ -7100,9 +6977,9 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
       <div class="lx-reihe3" id="rec-health"></div>
     </div>
     <div class="card side rec-hero" id="rec-karte-score">
-      <h3 class="nur-konsole">Heute</h3>
+      
       <h3 class="nur-lifeos">Warum heute dieser Wert?</h3>
-      <p class="sub nur-konsole" id="rec-date">–</p>
+      
       <p class="sub nur-lifeos">jeder Eingang als Abstand zu deinem eigenen Normalzustand</p>
       <div id="rec-score"></div>
     </div>
@@ -7112,7 +6989,7 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
       <div class="plot" id="p-recovery"></div>
     </div>
     <div class="card full" id="rec-karte-ready">
-      <h3 class="nur-konsole">Bereitschaft heute</h3>
+      
       <h3 class="nur-lifeos">Dein Plan für heute</h3>
       <p class="sub" id="ready-sub">was die Werte über Belastbarkeit sagen — und was nicht</p>
       <div id="ready"></div>
@@ -7131,7 +7008,7 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
 
   </section>
   <section id="s-tag">
-  <h2>Tagesansicht <span class="h-note">ein einzelner Tag, vollst&auml;ndig</span></h2>
+  <h2>Tag <span class="h-note">alles, was an einem Tag passiert ist</span></h2>
   <div class="daypick">
     <button id="day-prev" aria-label="Vorheriger Tag mit Daten">&#9666;</button>
     <input type="date" id="day-input" aria-label="Datum w&auml;hlen">
@@ -7140,6 +7017,11 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
     <span class="daypick-lbl" id="day-label"></span>
   </div>
   <div class="grid">
+    
+    <div class="card full panel" id="day-prot-karte">
+      <div class="p-head"><h3>Alles an diesem Tag</h3><span class="p-meta" id="day-prot-meta">&nbsp;</span></div>
+      <div id="day-prot"></div>
+    </div>
     <div class="card hero">
       <div class="p-head"><h3>Alles, was du geschrieben hast</h3>
         <button type="button" id="day-copy" class="nbtn">Kopieren</button></div>
@@ -7221,15 +7103,7 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
       <p class="sub">Stufen und erwarteter Monatssaldo</p>
       <div id="fin-plan"></div>
     </div>
-    <div class="card full panel nur-konsole">
-      <div class="p-head"><h3>Verm&ouml;gensverlauf</h3>
-        <span class="p-meta" id="verm-meta">&nbsp;</span></div>
-      <p class="sub">Krypto, Wertpapiere und Kontostand &mdash; alles in Euro</p>
-      <div id="verm-kpi"></div>
-      <div id="lg-verm" class="legend"></div>
-      <div class="plot" id="p-verm"></div>
-    </div>
-    
+
     <div class="card full panel">
       <div class="p-head"><h3>Stand erfassen</h3></div>
       <div id="verm-body"></div>
@@ -7326,33 +7200,25 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
           <div class="p-head"><h3>Gehaltsentwicklung</h3><span class="p-meta" id="kos-entw-meta">&nbsp;</span></div>
           <div id="kos-entw"></div>
         </div>
-        <div class="card panel" id="kos-pipe-karte">
+        <div class="card panel kar-bew" id="kos-pipe-karte">
           <div class="p-head"><h3>Bewerbungs-Pipeline</h3><span class="p-meta kos-akzent" id="kos-pipe-meta">&nbsp;</span></div>
           <div id="kos-pipe"></div>
         </div>
       </div>
+      
+      <div class="kar-bew-schalter"><span class="lxm-klein" id="kar-bew-info">Bewerbungen ausgeblendet</span>
+        <button type="button" class="nbtn" id="kar-bew-btn" aria-pressed="false">Bewerbungen anzeigen</button></div>
     </div>
-    <div class="card full">
-      <h3><span class="nur-konsole">Pipeline</span><span class="nur-lifeos">Alle Vorgänge</span></h3>
+    <div class="card full kar-bew" id="kar-alle-karte">
+      <h3><span class="nur-lifeos">Alle Vorgänge</span></h3>
       <p class="sub" id="kar-sub">alle Vorgänge, aktiver Stand zuerst</p>
       <div id="kar-pipe"></div>
-    </div>
-    <div class="card hero nur-konsole">
-      <h3>Gehalt im Vergleich</h3>
-      <p class="sub">Jahresbrutto gegen den aktuellen Stand</p>
-      <div id="kar-geld"></div>
-    </div>
-    
-    <div class="card side nur-konsole">
-      <h3>Offene Schritte</h3>
-      <p class="sub">aus Aufgaben und Pipeline</p>
-      <div id="kar-todo"></div>
     </div>
     <div class="card full panel">
       <div class="p-head"><h3>Gehaltsverlauf</h3>
         <span class="p-meta" id="kg-meta">&nbsp;</span></div>
       <p class="sub">eigene Stationen über die Zeit, von Hand gepflegt — kein HR-Anschluss</p>
-      <div class="plot nur-konsole" id="p-kargehalt"></div>
+      
       <div id="kg-body"></div>
     </div>
   </div>
@@ -7690,24 +7556,6 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
         Trainingseinheit (Tab Training) als Startpunkt ladbar, dort aber frei änderbar.</p>
       <div id="wov-form"></div>
     </div>
-    <div class="card full panel nur-konsole">
-      <div class="p-head"><h3>Vorlagen</h3>
-        <span class="p-meta" id="wov-meta">&nbsp;</span></div>
-      <div id="wov-liste"></div>
-    </div>
-    
-    <div class="card full panel nur-konsole">
-      <div class="p-head"><h3>Bibliothek durchsuchen</h3>
-        <span class="p-meta" id="ueb-meta">&nbsp;</span></div>
-      <button type="button" class="toggle-table" id="ueb-toggle" aria-expanded="false">▸ Bibliothek einblenden</button>
-      <div id="ueb-wrap" hidden>
-        <p class="sub">Alex hat die Tabelle „Übungen_Calisthenics“ selbst in Notion angelegt — hier nur zum
-          Nachschlagen (Kategorie/Bewegungsmuster/Level, Technikhinweis, Standardpause). Übungen für eine
-          Vorlage oder eine geloggte Einheit auswählen: die Suche + Kategorie-Filter oben in den
-          jeweiligen Formularen.</p>
-        <div id="ueb-body"></div>
-      </div>
-    </div>
   </div>
   </section>
   <section id="s-kontext">
@@ -7743,22 +7591,7 @@ button.hbox:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
       <p class="sub">Wann du was einträgst — Anzahl Einträge je Feld im gewählten Zeitraum</p>
       <div id="ktx-hm"></div>
     </div>
-    <div class="kpis k2x2 halb nur-konsole" id="ctx-kpis"></div>
-    <div class="card halb nur-konsole">
-      <h3>Bildschirmzeit</h3>
-      <p class="sub">Vortag, aus Digital Wellbeing · manuell erfasst</p>
-      <div class="plot" id="p-screen"></div>
-    </div>
-    <div class="card halb nur-konsole">
-      <h3>Bewerbungen</h3>
-      <p class="sub">Stand und nächster Schritt</p>
-      <div id="ctx-jobs"></div>
-    </div>
-    <div class="card halb nur-konsole">
-      <h3>Tagesverlauf mit Auslösern</h3>
-      <p class="sub">Termine aus dem Kalender neben deinen eigenen Notizen — damit ein Ausschlag nicht ohne Kontext dasteht</p>
-      <div id="ctx-table"></div>
-    </div>
+
   </div>
 
   </section>
@@ -15855,7 +15688,6 @@ function renderRecovery(allDays, days) {
   const sc = rec.scores.get(latest.d);
   const b = bandOf(sc, provisional);
   const datumTxt = latest.d + (latest.d === allDays[allDays.length - 1].d ? "" : " (letzter Tag mit Messwerten)");
-  $("#rec-date").textContent = datumTxt;
   const rd2 = $("#rec-date2");
   if (rd2) rd2.textContent = datumTxt + " · Vergleich " + (state.days ? state.days + " Tage" : "gesamt");
   const z = rec.zByDay.get(latest.d);
@@ -15867,7 +15699,7 @@ function renderRecovery(allDays, days) {
    const col = zv >= 0 ? "var(--good)" : "var(--stop)";
    parts += '<div class="rec-part"><span>' + esc(inp.name) + "</span>" + '<span class="bar"><span style="' + (zv >= 0 ? "left:50%;width:" + w.toFixed(1) + "%" : "right:50%;width:" + (-w).toFixed(1) + "%") + ";background:" + col + '"></span></span>' + '<span class="z">' + (zv >= 0 ? "+" : "−") + fmt(Math.abs(z[inp.key]), 1) + "</span></div>";
   }
-  box.innerHTML = '<div class="rec-big nur-konsole">' + sc + "</div>" + '<span class="rec-band ' + b.cls + '">' + b.label + "</span>" + '<p class="rec-expl">Besser als <strong>' + sc + " %</strong> deiner bisherigen " + rec.usable + " gemessenen Tage. " + "Ein relativer Wert — rund ein Drittel deiner Tage landet zwangsläufig im unteren Bereich.</p>" + '<div class="rec-parts">' + parts + "</div>";
+  box.innerHTML = '<span class="rec-band ' + b.cls + '">' + b.label + "</span>" + '<p class="rec-expl">Besser als <strong>' + sc + " %</strong> deiner bisherigen " + rec.usable + " gemessenen Tage. " + "Ein relativer Wert — rund ein Drittel deiner Tage landet zwangsläufig im unteren Bereich.</p>" + '<div class="rec-parts">' + parts + "</div>";
   const ringFarbe = b.cls === "gruen" ? "var(--good)" : b.cls === "gelb" ? "var(--warn)" : b.cls === "rot" ? "var(--stop)" : null;
   const rr = $("#rec-ring");
   if (rr) rr.innerHTML = heroRing(sc, {
@@ -16256,51 +16088,6 @@ function renderContext(days, allDays) {
  renderKtxWochentag(ktxGroessen, ktxTage);
  renderKtxPeaks(ktxTage, zBelastung);
  renderKtxHeatmap();
- const mitBezieh = days.filter(o => o.bezieh);
- const mitStress = days.filter(o => o.stress && !/^\s*(kein|keine|keiner|keinen|nichts|nein|-|–)(?![a-zäöüß])/i.test(o.stress));
- const screenTage = days.filter(o => o.screen != null);
- const oScreen = avg(screenTage.map(o => o.screen));
- $("#ctx-kpis").innerHTML = '<div class="kpi"><span class="k-label">Beziehungsthema</span><span class="k-val">' + mitBezieh.length + '</span><span class="k-sub">von ' + days.length + " Tagen notiert</span></div>" + '<div class="kpi"><span class="k-label">Stress notiert</span><span class="k-val">' + mitStress.length + '</span><span class="k-sub">von ' + days.length + " Tagen</span></div>" + '<div class="kpi"><span class="k-label">Ø Bildschirmzeit</span><span class="k-val">' + (oScreen == null ? "–" : hhmm(oScreen)) + '</span><span class="k-sub">' + (screenTage.length ? screenTage.length + " Tage erfasst" : "noch nicht erfasst") + "</span></div>" + '<div class="kpi"><span class="k-label">Termine</span><span class="k-val">' + days.reduce((a, o) => a + o.termine.length, 0) + '</span><span class="k-sub">' + (state.calOn ? "aus dem Kalender" : "Kalender nicht verbunden") + "</span></div>";
- if (!screenTage.length) {
-  $("#p-screen").innerHTML = '<div class="empty">Noch keine Werte.<br>' + "Digital Wellbeing hat keine Schnittstelle — die Zahl wird beim Morgeneintrag " + "für den Vortag mit angegeben und von dort übernommen.</div>";
- } else {
-  lineChart("#p-screen", days, [ {
-   name: "Bildschirmzeit",
-   color: S1,
-   values: days.map(o => o.screen)
-  } ], {
-   zero: true,
-   format: v => hhmm(v) + " h",
-   axisFmt: v => hhmm(v),
-   aria: "Bildschirmzeit im Verlauf"
-  });
- }
- const jobs = (state.jobs || []).map(r => r.cellValuesByFieldId || {});
- if (!jobs.length) {
-  $("#ctx-jobs").innerHTML = '<div class="empty">Keine Bewerbungen erfasst.</div>';
- } else {
-  const heute = heuteIso();
-  const naechster = jobs.filter(c => c[J.termin] && c[J.termin] >= heute).sort((a, b) => a[J.termin] < b[J.termin] ? -1 : 1)[0];
-  let hinweis = "";
-  if (naechster) {
-   const tage = Math.round((Date.parse(naechster[J.termin]) - Date.parse(heute)) / 864e5);
-   hinweis = '<p class="rec-expl" style="margin:0 0 .6rem"><strong>' + esc(naechster[J.firma]) + "</strong> — " + esc(naechster[J.schritt] || "Termin") + " am " + esc(naechster[J.termin]) + (tage >= 0 ? ", in " + tage + (tage === 1 ? " Tag" : " Tagen") : "") + "</p>";
-  }
-  const zeilen = jobs.sort((a, b) => (b[J.kontakt] || b[J.beworben] || "") < (a[J.kontakt] || a[J.beworben] || "") ? -1 : 1).map(c => '<li><span class="mt">' + (c[J.status] && c[J.status].name ? esc(c[J.status].name) : "–") + "</span>" + "<span><b>" + esc(c[J.firma] || "?") + "</b>" + (c[J.position] ? "<small>" + esc(c[J.position]) + "</small>" : "") + (c[J.fit] != null ? '<small><span class="stat go">Fit ' + fmt(c[J.fit], 1) + "</span></small>" : "") + "</span></li>").join("");
-  $("#ctx-jobs").innerHTML = hinweis + '<ul class="mini">' + zeilen + "</ul>" + '<p class="rec-expl">Ein Fit-Score erscheint erst, wenn eine echte Analyse mit <code>job-fit-analysis</code> vorliegt — geschätzt wäre er wertlos.</p>';
- }
- const relevant = [ ...days ].reverse().filter(o => o.termine.length || o.stress || o.bezieh || o.mStimmung != null);
- if (!relevant.length) {
-  $("#ctx-table").innerHTML = '<div class="empty">Keine Einträge im Zeitraum.</div>';
-  return;
- }
- const zeilen = relevant.slice(0, 60).map(o => {
-  const werte = [ o.mEnergie, o.mStimmung ].filter(v => v != null);
-  const auffaellig = werte.length && avg(werte) <= 5;
-  const termine = o.termine.length ? o.termine.map(t => "<div>" + esc(t.zeit) + " · " + esc(t.titel) + (t.extern ? ' <span class="tag">extern</span>' : "") + "</div>").join("") : '<span style="color:var(--ink-faint)">–</span>';
-  return "<tr" + (auffaellig ? ' style="background:var(--surface-alt)"' : "") + "><td>" + esc(o.d) + "</td>" + '<td class="num">' + (o.mEnergie == null ? "–" : fmt(o.mEnergie)) + " / " + (o.mStimmung == null ? "–" : fmt(o.mStimmung)) + "</td>" + '<td style="font-size:.74rem">' + termine + "</td>" + '<td class="theme">' + esc(o.stress || "") + "</td>" + '<td class="theme">' + esc(o.bezieh || "") + "</td></tr>";
- }).join("");
- $("#ctx-table").innerHTML = '<div class="tablewrap" style="border:none"><table>' + "<thead><tr><th>Datum</th><th>Ene / Sti</th><th>Termine</th><th>Stress</th><th>Beziehungsthema</th></tr></thead><tbody>" + zeilen + "</tbody></table></div>" + '<p class="rec-expl">Grau hinterlegt: Tage mit Energie/Stimmung im Mittel ≤ 5. ' + "Nebeneinander gelesen, nicht als Ursache verrechnet — was zusammenfällt, muss nicht zusammenhängen.</p>";
 }
 
 function stackChart(mount, tage, serien, opts) {
@@ -17149,8 +16936,8 @@ function renderVermoegenHero() {
  const erster = werte[0];
  setz("#vx-stats", '<div class="vx-stats">' + [ "<div><span>Startwert</span><b>" + eur(erster) + "</b></div>", '<div><span>Endwert</span><b style="color:var(--accent)">' + eur(jetzt) + "</b></div>", '<div><span>Veränderung</span><b class="' + (jetzt >= erster ? "auf" : "ab") + '">' + (jetzt >= erster ? "+" : "−") + eur(Math.abs(jetzt - erster)) + "</b></div>", "<div><span>seit</span><b>" + esc(String(recs[0].c[V.datum])) + "</b></div>" ].join("") + "</div>");
  const ziel = vxZahl(FIRE_KEY);
- if (ziel == null) {
-  setz("#vx-fire", vxEingabe("fire", "FIRE-Zielwert in Euro", "z. B. 1200000", "Steht in keiner Tabelle — trag ihn einmal ein, dann rechnet die Karte."));
+ if (ziel == null || vxFireBearbeiten) {
+  setz("#vx-fire", vxEingabe("fire", "FIRE-Zielwert in Euro", "z. B. 1500000", "Standard 1.500.000 € — hier anpassen.", ziel));
  } else {
   const pz = Math.max(0, Math.min(100, jetzt / ziel * 100));
   const rest = Math.max(0, ziel - jetzt);
@@ -17520,17 +17307,27 @@ function bpAuswertung() {
 
 const FIRE_KEY = "gz.fire", SPAR_KEY = "gz.sparziel", AUSG_KEY = "gz.ausgaben";
 
+const FIRE_STANDARD = 15e5;
+
+try {
+ if (localStorage.getItem("gz.fireStandard232") !== "1") {
+  localStorage.setItem(FIRE_KEY, String(FIRE_STANDARD));
+  localStorage.setItem("gz.fireStandard232", "1");
+ }
+} catch (e) {}
+
+let vxFireBearbeiten = false;
+
 function vxZahl(key) {
  try {
   const v = parseFloat(localStorage.getItem(key));
-  return isFinite(v) && v > 0 ? v : null;
- } catch (e) {
-  return null;
- }
+  if (isFinite(v) && v > 0) return v;
+ } catch (e) {}
+ return key === FIRE_KEY ? FIRE_STANDARD : null;
 }
 
-function vxEingabe(id, label, platz, hinweis) {
- return '<form class="vx-form" data-vx-form="' + id + '">' + "<label>" + esc(label) + '<input type="number" min="1" step="1" inputmode="numeric" ' + 'id="vx-in-' + id + '" placeholder="' + esc(platz) + '"></label>' + '<button type="submit" class="hab-save">OK</button></form>' + '<div class="vx-klein">' + esc(hinweis) + " Bleibt im Browser, geht nicht nach Notion.</div>";
+function vxEingabe(id, label, platz, hinweis, wert) {
+ return '<form class="vx-form" data-vx-form="' + id + '">' + "<label>" + esc(label) + '<input type="number" min="1" step="1" inputmode="numeric" ' + 'id="vx-in-' + id + '" placeholder="' + esc(platz) + '"' + (wert ? ' value="' + Math.round(wert) + '"' : "") + "></label>" + '<button type="submit" class="hab-save">OK</button></form>' + '<div class="vx-klein">' + esc(hinweis) + " Bleibt im Browser, geht nicht nach Notion.</div>";
 }
 
 function vxEingabenVerdrahten(neuZeichnen) {
@@ -17550,6 +17347,7 @@ function vxEingabenVerdrahten(neuZeichnen) {
    try {
     localStorage.setItem(schluessel[id], String(v));
    } catch (e) {}
+   if (id === "fire") vxFireBearbeiten = false;
    neuZeichnen();
   });
  });
@@ -17557,9 +17355,11 @@ function vxEingabenVerdrahten(neuZeichnen) {
   if (b.dataset.vxWired) return;
   b.dataset.vxWired = "1";
   b.addEventListener("click", () => {
-   try {
-    localStorage.removeItem(b.dataset.vxNeu);
-   } catch (e) {}
+   if (b.dataset.vxNeu === FIRE_KEY) vxFireBearbeiten = true; else {
+    try {
+     localStorage.removeItem(b.dataset.vxNeu);
+    } catch (e) {}
+   }
    neuZeichnen();
   });
  });
@@ -18383,27 +18183,11 @@ function renderVermoegen() {
  if (!el) return;
  if (state.verm == null) {
   el.innerHTML = '<div class="empty">' + (state.errors.verm ? "Vermögen nicht erreichbar (" + esc(String(state.errors.verm)) + ")." : "wird geladen") + "</div>";
-  $("#verm-kpi").innerHTML = "";
-  $("#verm-meta").innerHTML = "";
   return;
  }
  const recs = vermRecs();
  const letzte = recs[recs.length - 1];
  const vorletzte = recs[recs.length - 2];
- $("#verm-meta").innerHTML = '<span class="dot ' + (recs.length ? "" : "warn") + '"></span><b>' + recs.length + "</b> " + (recs.length === 1 ? "Stand" : "Stände") + (letzte ? " · zuletzt " + esc(letzte.c[V.datum]) : "");
- if (letzte) {
-  const g = vermSumme(letzte.c);
-  const gv = vorletzte ? vermSumme(vorletzte.c) : null;
-  const delta = gv == null ? null : g - gv;
-  const pct = gv == null || !gv ? null : delta / gv * 100;
-  const teil = (label, v) => {
-   const a = g ? (v || 0) / g * 100 : 0;
-   return '<div class="vm-teil"><span>' + esc(label) + "</span><b>" + eur(v) + "</b>" + "<small>" + fmt(a, 0) + " %</small></div>";
-  };
-  $("#verm-kpi").innerHTML = '<div class="vm-kopf"><div class="vm-gesamt"><span>Gesamt</span><b>' + eur(g) + "</b>" + (delta == null ? "<small>erster Stand — noch kein Vergleich</small>" : '<small class="' + (delta >= 0 ? "up" : "down") + '">' + (delta >= 0 ? "+" : "−") + eur(Math.abs(delta)).replace("−", "") + (pct == null ? "" : " · " + (delta >= 0 ? "+" : "−") + fmt(Math.abs(pct), 1) + " %") + " seit " + esc(vorletzte.c[V.datum]) + "</small>") + "</div>" + '<div class="vm-teile">' + teil("Krypto", letzte.c[V.krypto]) + teil("Wertpapiere", letzte.c[V.wertpapiere]) + teil("Kontostand", letzte.c[V.konto]) + teil("Vorsorge", letzte.c[V.pensplan]) + "</div></div>";
- } else {
-  $("#verm-kpi").innerHTML = '<div class="empty">Noch kein Stand erfasst. ' + "Trag unten den ersten ein — ab dem zweiten zeigt die Grafik einen Verlauf.</div>";
- }
  let h = '<div class="vm-form">' + '<label>Datum<input type="date" id="verm-datum" value="' + esc(heuteIso()) + '"></label>' + '<label>Krypto<input type="text" inputmode="decimal" id="verm-krypto" placeholder="€"></label>' + '<label>Wertpapiere<input type="text" inputmode="decimal" id="verm-wp" placeholder="€"></label>' + '<label>Kontostand<input type="text" inputmode="decimal" id="verm-konto" placeholder="€"></label>' + '<label>Vorsorge<input type="text" inputmode="decimal" id="verm-pens" placeholder="€"></label>' + '<label class="breit">Notiz<input type="text" id="verm-notiz" placeholder="optional — z. B. Einzahlung, Verkauf"></label>' + "</div>" + '<button type="button" class="hab-save" id="verm-go"' + (vermState.busy ? " disabled" : "") + ">Stand speichern</button>";
  if (vermState.msg) h += '<p class="hab-msg ' + vermState.msgArt + '">' + vermState.msg + "</p>";
  if (recs.length) {
@@ -18418,43 +18202,6 @@ function renderVermoegen() {
  el.innerHTML = h;
  const go = $("#verm-go");
  if (go) go.addEventListener("click", vermSpeichern);
- const S1 = cvar("--s1") || "#4B8FE8", S2 = cvar("--s2") || "#E87A3C", S3 = cvar("--s3") || "#3FCF97", S4 = cvar("--s4") || "#EBC94A";
- const serienBasis = [ {
-  key: "krypto",
-  name: "Krypto",
-  color: S4
- }, {
-  key: "wertpapiere",
-  name: "Wertpapiere",
-  color: S1
- }, {
-  key: "konto",
-  name: "Kontostand",
-  color: S3
- }, {
-  key: "pensplan",
-  name: "Vorsorge",
-  color: S2
- } ];
- const letzteWerte = letzte ? letzte.c : {};
- const wertVon = s => letzteWerte[V[s.key]] || 0;
- const serien = serienBasis.slice().sort((a, b) => wertVon(b) - wertVon(a));
- legend("#lg-verm", serien.map(x => ({
-  name: x.name,
-  color: x.color
- })));
- stackChart("#p-verm", recs.map(x => ({
-  d: x.c[V.datum],
-  krypto: x.c[V.krypto] || 0,
-  wertpapiere: x.c[V.wertpapiere] || 0,
-  konto: x.c[V.konto] || 0,
-  pensplan: x.c[V.pensplan] || 0
- })), serien, {
-  einheit: "€",
-  aria: "Vermögen nach Bereich im Verlauf",
-  axisFmt: v => Math.round(v / 1e3) + "k",
-  leer: "Noch kein Stand erfasst."
- });
 }
 
 const kgState = {
@@ -21021,21 +20768,6 @@ function renderReady(allDays) {
  $("#ready-sub").textContent = "Stand " + b.tag.d + (b.tag.wbQuelle ? " · inklusive deinem Wohlbefinden-Check" : " · ohne Check-in");
 }
 
-function renderBereitschaft(allDays) {
- if (!abschnittAn("s-home")) return;
- const el = $("#ber-body");
- if (!el) return;
- const b = bereitschaft(allDays);
- if (!b || b.prozent == null) {
-  $("#ber-meta").innerHTML = '<span class="dot"></span>–';
-  el.innerHTML = '<div class="empty">' + (state.journal == null ? "wird geladen" : "Für eine Einschätzung fehlen Messwerte.") + "</div>";
-  return;
- }
- const alt = b.tag.d !== heuteIso();
- $("#ber-meta").innerHTML = '<span class="dot ' + b.band[0] + '"></span>' + (alt ? esc(b.tag.d) : "heute früh");
- el.innerHTML = '<div class="ber-zahl"><b class="' + b.band[0] + '">' + b.prozent + "</b><span>%</span>" + statPill(b.band[0], b.band[1]) + "</div>" + '<div class="ber-bar"><i class="' + b.band[0] + '" style="width:' + b.prozent + '%"></i></div>' + '<p class="ber-satz">' + esc(b.band[2]) + "</p>" + '<div class="ber-teile">' + b.teile.map(t => '<span class="bt ' + t.cls[0] + '" title="' + esc(t.label + ": " + t.wert + " · " + t.sub) + '">' + esc(t.label) + " <b>" + t.wert + "</b></span>").join("") + "</div>" + (b.vollstaendig ? "" : '<p class="ber-fuss">' + b.gewicht + " von " + b.maxGewicht + " Gewichtspunkten belegt — der Rest wurde heute nicht gemessen.</p>") + (b.hartGestern ? '<p class="ber-fuss">Gestern ' + fmt0(b.hartGestern.srpe) + " AU Training (RPE × Minuten) — eine gedämpfte HRV danach ist die normale Reaktion.</p>" : "");
-}
-
 function montagVon(iso) {
  const t = new Date(iso + "T00:00:00Z");
  t.setUTCDate(t.getUTCDate() - (t.getUTCDay() + 6) % 7);
@@ -21669,8 +21401,6 @@ function renderKarriere() {
  })).filter(c => c[J.firma]);
  if (!recs.length) {
   $("#kar-pipe").innerHTML = '<div class="empty">Keine Vorgänge erfasst.</div>';
-  $("#kar-geld").innerHTML = "";
-  $("#kar-todo").innerHTML = "";
   return;
  }
  const rang = c => KAR_RANG[selName(c[J.status])] ?? 9;
@@ -21700,33 +21430,6 @@ function renderKarriere() {
  karBreiteSetzen();
  const aktiv = recs.filter(c => rang(c) <= 3 && !karArchiviert(c)).length;
  $("#kar-sub").textContent = aktiv + (aktiv === 1 ? " aktiver Vorgang" : " aktive Vorgänge") + " · " + nArchiv + " im Archiv · " + recs.length + " insgesamt";
- const ist = recs.find(c => /aktueller/i.test(selName(c[J.status]) || ""));
- const kgLetzt = (() => {
-  const k = kgRecs();
-  return k.length ? k[k.length - 1].c : null;
- })();
- const basis = ist && ist[J.gehaltVon] != null ? ist[J.gehaltVon] : kgLetzt ? num(kgLetzt[KG.gehalt]) : null;
- const basisName = ist && ist[J.gehaltVon] != null ? ist[J.firma] || "aktuell" : kgLetzt ? (kgLetzt[KG.firma] || "aktuell") + " (Gehaltsverlauf " + String(kgLetzt[KG.datum]).slice(0, 4) + ")" : "aktuell";
- const mitGeld = recs.filter(c => c !== ist && c[J.gehaltVon] != null && !karArchiviert(c));
- if (!basis || !mitGeld.length) {
-  $("#kar-geld").innerHTML = '<div class="empty">Für einen Vergleich fehlen Gehaltsangaben. ' + "Trag sie in der Tabelle Bewerbungen ein — geschätzt wird hier nichts.</div>";
- } else {
-  const maxWert = Math.max(basis, ...mitGeld.map(c => c[J.gehaltBis] ?? c[J.gehaltVon]));
-  const balken = (label, von, bis, ref) => {
-   const b = bis ?? von;
-   const l = von / maxWert * 100, w = Math.max(1.5, (b - von) / maxWert * 100);
-   const d = ref == null ? null : (von - ref) / ref * 100;
-   const dBis = ref == null || bis == null ? null : (bis - ref) / ref * 100;
-   return '<div style="margin-bottom:.75rem">' + '<div style="display:flex;justify-content:space-between;gap:.6rem;font-size:.8rem">' + "<span>" + esc(label) + '</span><b style="font-variant-numeric:tabular-nums">' + fmt0(von / 1e3) + (b !== von ? "–" + fmt0(b / 1e3) : "") + "k</b></div>" + '<div style="height:.55rem;background:var(--surface-alt);border-radius:3px;position:relative;margin:.25rem 0">' + '<span style="position:absolute;left:' + l.toFixed(1) + "%;width:" + w.toFixed(1) + "%;top:0;bottom:0;background:" + (ref == null ? "var(--ink-faint)" : "var(--accent)") + ';border-radius:3px"></span>' + "</div>" + (d == null ? '<span class="dsub" style="font-size:.7rem;color:var(--ink-faint)">Referenz</span>' : '<span class="dsub" style="font-size:.7rem;color:var(--ink-soft)">' + (d >= 0 ? "+" : "−") + fmt(Math.abs(d), 1) + " %" + (dBis != null && dBis !== d ? " bis " + (dBis >= 0 ? "+" : "−") + fmt(Math.abs(dBis), 1) + " %" : "") + "</span>") + "</div>";
-  };
-  $("#kar-geld").innerHTML = balken(basisName + " · aktuell", basis, null, null) + mitGeld.map(c => balken(c[J.firma], c[J.gehaltVon], c[J.gehaltBis], basis)).join("") + '<p class="rec-expl">Nur Jahresbrutto. Was hier nicht steht und trotzdem zählt: ' + "Weiterbildung, Fahrtzeit, Autonomie, Entwicklungspfad. Eine Differenz im niedrigen " + "einstelligen Prozentbereich trägt für sich genommen keinen Wechsel.</p>";
- }
- const ausAufgaben = aufOffen().filter(c => selName(c[A.bereich]) === "Karriere");
- const ausPipe = sortiert.filter(c => c[J.schritt] && rang(c) <= 3 && !/aktueller/i.test(selName(c[J.status]) || ""));
- const zeilen = ausAufgaben.map(c => aufZeile(c, heute, false).html);
- for (const c of ausPipe) zeilen.push('<div class="rail-row" style="align-items:flex-start">' + '<span class="r-what"><b>' + esc(c[J.firma]) + "</b><small>" + esc(c[J.schritt]) + "</small></span>" + '<span class="r-mark">' + statPill("grau", "Pipeline") + "</span></div>");
- $("#kar-todo").innerHTML = zeilen.length ? zeilen.join("") : '<div class="empty">Nichts offen.</div>';
- aufHakenBinden($("#kar-todo"));
  document.querySelectorAll("[data-karopen]").forEach(tr => tr.addEventListener("click", ev => {
   if (ev.target.closest("textarea, button, a")) return;
   const id = tr.dataset.karopen;
@@ -22427,13 +22130,8 @@ function renderHabitCard(allDays, tr) {
  const list = $("#hab-list"), foot = $("#hab-foot");
  if (!list) return;
  const leer = txt => {
-  $("#hab-frac").textContent = "";
-  $("#hab-quote").textContent = "";
   list.innerHTML = '<div class="empty">' + txt + "</div>";
   foot.innerHTML = "";
-  $("#hab-ring").innerHTML = "";
-  $("#hab-seg").innerHTML = "";
-  $("#hab-note").textContent = "";
  };
  if (state.gew == null) {
   leer(state.errors.gew ? "Gewohnheiten konnten nicht geladen werden (" + esc(String(state.errors.gew)) + ")." : "wird geladen");
@@ -22481,19 +22179,6 @@ function renderHabitCard(allDays, tr) {
  }
  const tag = habitTag(iso, allDays, tr);
  const score = tag.score;
- const spaeterTag = (new Date).getHours() >= 18 || iso !== heuteIso();
- const band = score == null || score === 0 && !spaeterTag ? "" : score >= 80 ? "go" : score >= 50 ? "warn" : spaeterTag ? "stop" : "warn";
- const farbe = band === "go" ? "var(--good)" : band === "warn" ? "var(--warn)" : band === "stop" ? "var(--stop)" : "var(--rule)";
- const anteil = score == null ? 0 : score / 100;
- $("#hab-ring").innerHTML = '<svg viewBox="0 0 92 92" aria-hidden="true">' + '<circle class="bahn" cx="46" cy="46" r="38"></circle>' + '<circle class="wert" cx="46" cy="46" r="38" stroke="' + farbe + '" stroke-dasharray="' + (anteil * RING_U).toFixed(1) + " " + RING_U.toFixed(1) + '"></circle></svg>' + '<div class="mitte"><b>' + (score == null ? "–" : score) + "</b></div>";
- const faellig = tag.zeilen.filter(z => z.faellig && z.bekannt);
- const fertig = tag.zeilen.filter(z => z.fertig);
- const nenner = faellig.length || fertig.length;
- $("#hab-quote").innerHTML = nenner ? '<span class="dot ' + band + '"></span><b>' + fertig.length + "/" + nenner + "</b> · " + (score == null ? "–" : score + " %") : "";
- $("#hab-frac").innerHTML = "Daily Score · setzt um 00:00 zurück";
- const offenZ = tag.zeilen.filter(z => z.status === "offen");
- $("#hab-note").innerHTML = score == null ? "Für heute liegt noch nichts vor." : score >= 100 ? "Alles erledigt." : !fertig.length ? "Noch nichts — fang mit einer an." : score >= 80 ? "Fast durch — " + esc(offenZ[0] ? offenZ[0].def.name.toLowerCase() : "einer fehlt") + " fehlt." : "Noch offen — " + offenZ.length + (offenZ.length === 1 ? " Gewohnheit." : " Gewohnheiten.");
- $("#hab-seg").innerHTML = tag.zeilen.map(z => '<i class="' + (z.fertig ? "voll" : z.status === "unbek" ? "unbek" : "offen") + '" title="' + esc(z.def.name) + '"></i>').join("");
  const grp = new Map;
  for (const z of tag.zeilen) (grp.get(z.def.bereich) || grp.set(z.def.bereich, []).get(z.def.bereich)).push(z);
  let html = "";
@@ -22845,53 +22530,6 @@ async function habitFormSpeichern(deaktivieren) {
 const kapState = {
  busy: false
 };
-
-async function kapSenden(ev, pre) {
- if (ev) ev.preventDefault();
- const p = "#" + (pre || "kap");
- const feld = $(p + "-text"), msg = $(p + "-msg");
- if (!feld || !msg || kapState.busy) return;
- const text = feld.value.trim();
- if (!text) return;
- if (!mcp) {
-  msg.className = "kap-msg bad";
-  msg.textContent = "Kein Notion-Connector.";
-  return;
- }
- kapState.busy = true;
- const goBtn = $(p + "-go");
- if (goBtn) goBtn.disabled = true;
- msg.className = "kap-msg";
- msg.textContent = "legt ab …";
- const felder = {};
- felder[A.titel] = text;
- felder[A.status] = "offen";
- felder[A.notiz] = "Schnellerfassung im Lagebild, " + heuteIso();
- try {
-  const angelegt = await notionCreate(DS.aufgaben, A_PROP, felder);
-  if (!angelegt) {
-   msg.className = "kap-msg bad";
-   msg.innerHTML = "Antwort unerwartet. <b>Kann angekommen sein</b> — vor dem zweiten Versuch nachsehen.";
-  } else {
-   const c = angelegt.cellValuesByFieldId = angelegt.cellValuesByFieldId || {};
-   c[A.titel] = text;
-   c[A.status] = {
-    name: "offen"
-   };
-   (state.auf = state.auf || []).push(angelegt);
-   feld.value = "";
-   msg.className = "kap-msg ok";
-   msg.textContent = "Unter Aufgaben abgelegt.";
-   render();
-  }
- } catch (e) {
-  msg.className = "kap-msg bad";
-  msg.innerHTML = schreibFehler(e, "es versuchst");
- }
- kapState.busy = false;
- const go = $(p + "-go");
- if (go) go.disabled = false;
-}
 
 function renderHabits(days, allDays) {
  if (!abschnittAn("s-gewohnheiten")) return;
@@ -23258,25 +22896,7 @@ function kfZeitHtml() {
 
 function kfZeitBinden(root) {
  const inp = root.querySelector(".kf-uhr");
- if (inp) inp.addEventListener("change", () => {
-  kfState.zeit = inp.value && inp.value !== kfJetzt() ? inp.value : "";
-  renderKoffein();
-  renderGetraenke();
- });
- root.querySelectorAll("[data-kfmin]").forEach(b => b.addEventListener("click", () => {
-  const d = new Date(Date.now() + +b.dataset.kfmin * 6e4);
-  if (isoLokal(d) !== heuteIso()) {
-   kfState.zeit = "00:00";
-  } else kfState.zeit = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
-  renderKoffein();
-  renderGetraenke();
- }));
  const j = root.querySelector(".kf-zjetzt");
- if (j) j.addEventListener("click", () => {
-  kfState.zeit = "";
-  renderKoffein();
-  renderGetraenke();
- });
 }
 
 async function kfZeitKorrigieren(id, hhmm) {
@@ -23291,7 +22911,6 @@ async function kfZeitKorrigieren(id, hhmm) {
  kfState.busy = true;
  kfState.msg = null;
  renderKoffein();
- renderGetraenke();
  try {
   await notionUpdate(id, KF_PROP, felder);
   c[KF.zeitpunkt] = felder[KF.zeitpunkt];
@@ -23304,7 +22923,6 @@ async function kfZeitKorrigieren(id, hhmm) {
  }
  kfState.busy = false;
  renderKoffein();
- renderGetraenke();
 }
 
 const KF_GRENZE = "14:00";
@@ -23443,14 +23061,12 @@ async function kfLoggen(getraenk, mg) {
  kfState.busy = true;
  kfState.msg = null;
  renderKoffein();
- renderGetraenke();
  const hhmm = kfState.zeit || kfJetzt();
  if (hhmm > kfJetzt()) {
   kfState.busy = false;
   kfState.msgArt = "bad";
   kfState.msg = "Uhrzeit " + esc(hhmm) + " liegt in der Zukunft — bitte anpassen.";
   renderKoffein();
-  renderGetraenke();
   return;
  }
  const zeitpunkt = heuteIso() + "T" + hhmm;
@@ -23481,7 +23097,6 @@ async function kfLoggen(getraenk, mg) {
  }
  kfState.busy = false;
  renderKoffein();
- renderGetraenke();
 }
 
 const ernState = {
@@ -24146,25 +23761,6 @@ async function ernSpeichern(fav) {
  renderBald();
 }
 
-function renderGetraenke() {
- if (!abschnittAn("s-home")) return;
- const el = $("#gtr-body"), meta = $("#gtr-meta");
- if (!el) return;
- if (state.koffein == null) {
-  el.innerHTML = '<div class="empty">' + (state.errors.koffein ? "Koffein-Tabelle nicht erreichbar (" + esc(String(state.errors.koffein)) + ")" : "wird geladen") + "</div>";
-  if (meta) meta.textContent = "";
-  return;
- }
- const heute = heuteIso();
- const h = kfRecs().filter(x => x.zeit.slice(0, 10) === heute);
- const mg = h.reduce((s, x) => s + (x.mg || 0), 0);
- const letzt = h.length ? h[h.length - 1] : null;
- if (meta) meta.innerHTML = kfState.busy ? "speichert …" : "<b>" + fmt0(mg) + "</b> mg heute";
- el.innerHTML = '<div class="kfm">' + '<p class="kfm-stand">' + (letzt ? h.length + (h.length === 1 ? " Getränk" : " Getränke") + " · zuletzt " + esc(letzt.zeit.slice(11, 16)) + " (" + esc(letzt.getraenk) + ", " + kfSeit(letzt.zeit) + ")" : "Heute noch kein Koffein.") + "</p>" + kfZeitHtml() + '<div class="kfm-knoepfe">' + KF_GETRAENKE.slice(0, 4).map(([n, m], i) => '<button type="button" class="' + (i === 0 ? "hab-save" : "nbtn") + '" data-kfm="' + esc(n) + '" data-mg="' + m + '"' + (kfState.busy ? " disabled" : "") + ">+ " + esc(n) + "</button>").join("") + "</div>" + (kfState.msg ? '<p class="hab-msg ' + kfState.msgArt + '">' + kfState.msg + "</p>" : "") + "</div>";
- el.querySelectorAll("[data-kfm]").forEach(b => b.addEventListener("click", () => kfLoggen(b.dataset.kfm, +b.dataset.mg)));
- kfZeitBinden(el);
-}
-
 function supRoster(iso) {
  const gespeichert = supGespeichert(iso);
  const erwartet = supErwartet(iso);
@@ -24643,6 +24239,122 @@ function dayIndex(allDays) {
 
 let dayKopieText = "";
 
+function dayProtokoll(iso) {
+ const out = [], cv = r => r.cellValuesByFieldId || {};
+ const tagVon = v => v ? String(v).slice(0, 10) : "";
+ const uhrVon = v => {
+  const m = /T(\d{2}:\d{2})/.exec(String(v || ""));
+  return m ? m[1] : "";
+ };
+ const sel = v => v && typeof v === "object" && !Array.isArray(v) ? selName(v) || "" : Array.isArray(v) ? v.map(x => x && x.name ? x.name : String(x)).join(", ") : v == null ? "" : String(v);
+ const n = v => {
+  const x = num(v);
+  return x == null ? null : x;
+ };
+ const add = (zeit, art, titel, zeilen, text, ziel) => out.push({
+  zeit: zeit || "",
+  art: art,
+  titel: titel || "",
+  zeilen: (zeilen || []).filter(Boolean),
+  text: text || "",
+  ziel: ziel
+ });
+ const jeTabelle = (key, f) => {
+  for (const r of state[key] || []) {
+   try {
+    f(cv(r));
+   } catch (e) {}
+  }
+ };
+ jeTabelle("journal", c => {
+  if (tagVon(c[F.datum]) !== iso) return;
+  const typ = sel(c[F.typ]) || "Check-in";
+  add(String(c[F.uhr] || "").slice(0, 5), typ === "Morgen" || typ === "Abend" ? typ + "-Check-in" : typ, "", [ "Details weiter unten unter „Check-ins“" ], "", "s-checkin");
+ });
+ jeTabelle("jfrei", c => {
+  if (tagVon(c[JF.zeitpunkt]) !== iso) return;
+  const fw = sel(c[JF.framework]), art = sel(c[JF.art]);
+  const name = fw === EI_FW ? "Einstein entladen" : art === "Framework" ? "Denken · " + (fw || "Framework") : art === "Abschluss" ? "Tagesabschluss" : "Journal";
+  const text = [ c[JF.t1], c[JF.t2], c[JF.t3], c[JF.t4], c[JF.entscheidung] ? "Entscheidung: " + c[JF.entscheidung] : "" ].filter(Boolean).join("\n\n");
+  add(uhrVon(c[JF.zeitpunkt]), name, c[JF.takeaway] || "", [ sel(c[JF.emoKi]) ? "Emotion (Claude): " + sel(c[JF.emoKi]) : "", c[JF.themen] ? "Themen: " + c[JF.themen] : "" ], text, fw === EI_FW ? "s-reset" : art === "Framework" ? "s-denken" : "s-journal");
+ });
+ jeTabelle("reset", c => {
+  if (tagVon(c[R.datum]) !== iso) return;
+  const iv = c[R.intVorher], inn = c[R.intNachher];
+  add(String(c[R.uhrzeit] || "").slice(0, 5), "Nerve Reset" + (sel(c[R.modus]) ? " · " + sel(c[R.modus]) : ""), c[R.uebung] || "", [ c[R.vorher] ? "vorher: " + c[R.vorher] + (iv ? " (" + iv + ")" : "") : "", c[R.nachher] ? "nachher: " + c[R.nachher] + (inn ? " (" + inn + ")" : "") : "" ], c[R.notiz] || "", "s-reset");
+ });
+ jeTabelle("med", c => {
+  if (tagVon(c[MED.zeitpunkt]) !== iso) return;
+  const d = n(c[MED.dauer]);
+  add(uhrVon(c[MED.zeitpunkt]), sel(c[MED.thema]) === "Binaural Beats" ? "Binaural Beats" : sel(c[MED.art]) || "Meditation", sel(c[MED.thema]) === "Binaural Beats" ? "" : sel(c[MED.thema]), [ d ? d + " Min" : "", c[MED.zustandN] ? "danach: " + c[MED.zustandN] : "" ], c[MED.notiz] || "", "s-meditation");
+ });
+ jeTabelle("gut", c => {
+  if (tagVon(c[VD.zeitpunkt]) !== iso) return;
+  add(uhrVon(c[VD.zeitpunkt]), "Healthy Gut", sel(c[VD.ereignis]) || c[VD.titel] || "", [ sel(c[VD.befinden]) ? "Befinden: " + sel(c[VD.befinden]) : "", n(c[VD.bristol]) ? "Bristol " + n(c[VD.bristol]) : "", sel(c[VD.bauchgefuehl]) ? "Bauchgefühl: " + sel(c[VD.bauchgefuehl]) : "" ], c[VD.notiz] || "", "s-gut");
+ });
+ jeTabelle("ern", c => {
+  if (tagVon(c[ER.zeitpunkt]) !== iso) return;
+  const k = n(c[ER.kcal]), p = n(c[ER.protein]), b = n(c[ER.ballast]);
+  add(uhrVon(c[ER.zeitpunkt]), sel(c[ER.mahlzeit]) || "Mahlzeit", c[ER.titel] || "", [ k != null ? Math.round(k) + " kcal" : "", p != null ? Math.round(p) + " g Protein" : "", b != null ? Math.round(b) + " g Ballaststoffe" : "" ], c[ER.notiz] || "", "s-ernaehrung");
+ });
+ jeTabelle("koffein", c => {
+  if (tagVon(c[KF.zeitpunkt]) !== iso) return;
+  const mg = n(c[KF.mg]);
+  add(uhrVon(c[KF.zeitpunkt]), "Koffein", sel(c[KF.getraenk]) || c[KF.titel] || "", [ mg != null ? Math.round(mg) + " mg" : "" ], c[KF.notiz] || "", "s-ernaehrung");
+ });
+ jeTabelle("training", c => {
+  if (tagVon(c[G.datum]) !== iso) return;
+  add(String(c[G.startzeit] || "").slice(0, 5), "Training", c[G.sportRoh] || "", [ c[G.dauerRoh] ? c[G.dauerRoh] + " Min" : "", c[G.rpeRoh] ? "RPE " + c[G.rpeRoh] : "", c[G.kurz] || "" ], "", "s-training");
+ });
+ jeTabelle("mobl", c => {
+  if (tagVon(c[MB.zeitpunkt]) !== iso) return;
+  const d = n(c[MB.dauer]), ab = c[MB.abbruch] === true || c[MB.abbruch] === "__YES__";
+  add(uhrVon(c[MB.zeitpunkt]), "Mobility", c[MB.plan] || "", [ d ? d + " Min" : "", ab ? "abgebrochen" : "", c[MB.ziel] || "" ], c[MB.notiz] || "", "s-mobility");
+ });
+ jeTabelle("lelog", c => {
+  if (tagVon(c[LL.datum]) !== iso) return;
+  const sn = n(c[LL.seiten]), bis = n(c[LL.bis]);
+  add("", "Lesen", String(c[LL.titel] || "").replace(/^\d{4}-\d{2}-\d{2} · /, ""), [ sn ? sn + " Seiten" : "", bis ? "bis Seite " + bis : "" ], c[LL.notiz] || "", "s-lese");
+ });
+ jeTabelle("zeit", c => {
+  if (tagVon(c[ZT.start]) !== iso) return;
+  const t = String(c[ZT.titel] || ""), s0 = ztMs(c[ZT.start]), e0 = ztMs(c[ZT.ende]);
+  const min = s0 != null && e0 != null ? Math.round((e0 - s0) / 6e4) : null;
+  if (/^Dublette/.test(t) || min === 0) return;
+  add(uhrVon(c[ZT.start]), "Zeit · " + (sel(c[ZT.kategorie]) || "–"), ztNotizSauber(c[ZT.notiz]) || t.split(" · ")[0], [ min != null ? ztStdMin(min) + " h" : "läuft", ztAutoKey(c[ZT.notiz]) ? "automatisch" : "" ], "", "s-zeit");
+ });
+ jeTabelle("auf", c => {
+  if (tagVon(c[A.erledigt]) !== iso) return;
+  add("", "Aufgabe erledigt", c[A.titel] || "", [ sel(c[A.bereich]) ], "", "s-aufgaben");
+ });
+ jeTabelle("notizen", c => {
+  if (tagVon(c[N.erstellt]) !== iso) return;
+  add(uhrVon(c[N.erstellt]), "Notiz", c[N.titel] || "", [ sel(c[N.typ]) ], c[N.text] || "", "s-notizen");
+ });
+ jeTabelle("ausr", c => {
+  if (tagVon(c[AU.zeitpunkt]) !== iso) return;
+  add(uhrVon(c[AU.zeitpunkt]), "Ausrichtung" + (sel(c[AU.art]) ? " · " + sel(c[AU.art]) : ""), c[AU.fokus] || c[AU.titel] || "", [ c[AU.wenn] ? "Wenn " + c[AU.wenn] + " → " + (c[AU.dann] || "") : "" ], [ c[AU.t1], c[AU.t2], c[AU.notiz] ].filter(Boolean).join("\n\n"), "s-ausrichtung");
+ });
+ jeTabelle("glog", c => {
+  if (tagVon(c[GL.datum]) !== iso) return;
+  const e = sel(c[GL.erledigt]);
+  if (e) add("", "Gewohnheiten", e, [], c[GL.notiz] || "", "s-gewohnheiten");
+ });
+ jeTabelle("jobs", c => {
+  for (const [k, lab] of [ [ J.termin, "Termin" ], [ J.kontakt, "Kontakt" ], [ J.beworben, "Beworben" ] ]) if (tagVon(c[k]) === iso) add(uhrVon(c[k]), "Karriere · " + lab, (c[J.firma] || "") + (c[J.position] ? " · " + c[J.position] : ""), [ sel(c[J.status]) ], "", "s-karriere");
+ });
+ out.sort((a, b) => (a.zeit ? 0 : 1) - (b.zeit ? 0 : 1) || a.zeit.localeCompare(b.zeit));
+ return out;
+}
+
+function renderDayProtokoll(iso) {
+ const el = $("#day-prot"), meta = $("#day-prot-meta");
+ if (!el) return;
+ const liste = dayProtokoll(iso);
+ if (meta) meta.textContent = liste.length ? liste.length + (liste.length === 1 ? " Eintrag" : " Einträge") : "";
+ el.innerHTML = liste.length ? '<ol class="dprot">' + liste.map(x => '<li><span class="dprot-zeit">' + esc(x.zeit || "–") + "</span>" + '<div class="dprot-inhalt"><a href="#' + x.ziel + '" data-jump="' + x.ziel + '" class="dprot-art">' + esc(x.art) + "</a>" + (x.titel ? "<b>" + esc(x.titel) + "</b>" : "") + (x.zeilen.length ? '<span class="dprot-z">' + x.zeilen.map(esc).join(" · ") + "</span>" : "") + (x.text ? '<details class="dprot-text"><summary>Text</summary><p>' + esc(x.text).replace(/\n/g, "<br>") + "</p></details>" : "") + "</div></li>").join("") + "</ol>" : '<div class="empty">An diesem Tag ist nichts eingetragen.</div>';
+}
+
 function renderDay(allDays) {
  if (!abschnittAn("s-tag")) return;
  const liste = dayIndex(allDays);
@@ -24669,6 +24381,7 @@ function renderDay(allDays) {
  const heuteDa = liste.indexOf(heute) >= 0;
  $("#day-today").disabled = !heuteDa || dayState.d === heute;
  $("#day-today").title = heuteDa ? "Zum heutigen Tag springen" : "Für heute liegen noch keine Daten vor";
+ renderDayProtokoll(dayState.d);
  const o = allDays.find(x => x.d === dayState.d) || {
   entries: []
  };
@@ -28665,7 +28378,7 @@ function renderHomeB(allDays) {
  const zeilen = tag ? tag.zeilen.filter(z => z.faellig || z.fertig) : [];
  const nF = zeilen.filter(z => z.fertig).length;
  const insIn = insTopHtml(g1AllDays);
- let x = '<div class="hb">' + '<div class="hb-kopf"><div><span class="hb-gruss">' + esc(gruss) + '</span><b class="rsb-titel hb-titel">' + esc(WT[jetzt.getDay()]) + " " + jetzt.getDate() + "." + (jetzt.getMonth() + 1) + ".</b></div>" + '<div class="hb-ci"><span class="rsb-mini">Check-ins</span><div class="hh-ci" id="hb-ci"></div></div></div>' + '<div class="rsb-hero hb-hero"><div class="rsb-orb" aria-hidden="true"></div>' + '<div class="rsb-hero-t"><span class="rsb-mini">' + esc(jd.k) + "</span><b" + (jd.t.length > 28 ? ' class="hb-lang"' : "") + ">" + esc(jd.t) + "</b></div>" + '<span class="hb-txt">' + esc(jd.x) + "</span>" + (insIn ? '<a class="hb-ins" href="#s-muster" data-jump="s-muster" aria-label="Alle Insights öffnen">' + insIn + "</a>" : "") + '<div class="hb-fuss"><span class="rsb-dauer">' + esc(jd.danach || "") + '</span><button type="button" class="rsb-play" data-hbgo="' + esc(jd.go) + '" aria-label="' + esc(jd.aria) + '"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></button></div></div>' + '<div class="rsb-grid">' + '<a class="rsb-tile" href="#s-recovery" data-jump="s-recovery"><span class="rsb-mini">Recovery</span><span class="rsb-ring">' + g1Ring(sc, fb) + "<b>" + (sc == null ? "–" : sc + "%") + "</b></span><em>" + (bez ? "HRV " + (bez.hrv == null ? "–" : fmt0(bez.hrv)) + " · Puls " + (bez.rhrN == null ? "–" : fmt0(bez.rhrN)) : "keine Messwerte") + "</em></a>" + '<a class="rsb-tile" href="#s-schlaf" data-jump="s-schlaf"><span class="rsb-mini">Schlaf</span><b class="rsb-gross">' + (bez && bez.dauer != null ? hhmm(bez.dauer) : "–") + "</b>" + '<span class="hb-bars">' + t7.map((o, i) => '<i style="height:' + Math.max(3, Math.round((o.dauer || 0) / maxD * 22)) + "px" + (i === t7.length - 1 ? ";background:var(--sleep-1, #8E7CF0)" : "") + '"></i>').join("") + "</span></a>" + '<a class="rsb-tile rsb-breit hb-gew" href="#s-gewohnheiten" data-jump="s-gewohnheiten"><span class="hb-gew-k"><span class="rsb-mini">Gewohnheiten heute</span><b>' + (tag ? nF + "/" + zeilen.length : "–") + '</b></span><span class="hb-chips">' + (tag ? zeilen.map(z => '<span class="' + (z.fertig ? "da" : "") + '">' + esc(z.def.name) + "</span>").join("") : "<span>wird geladen</span>") + "</span></a>" + '<div class="rsb-tile hb-termine"><span class="rsb-mini">Termine heute</span>' + (kommend.length ? kommend.slice(0, 3).map(e => '<span class="hb-term"><b>' + esc(e.zeit) + "</b> " + esc(e.titel) + "</span>").join("") : "<em>" + (ev.length ? "keine mehr heute" : "keine Termine") + "</em>") + "</div>" + "</div>" + '<div class="rsb-chips">' + [ [ "s-ernaehrung", "+ Mahlzeit" ], [ "s-ernaehrung", "+ Koffein" ], [ "s-gut", "+ Healthy Gut" ], [ "s-reset", "Reset" ], [ "s-mobility", "Mobility" ], [ "s-meditation", "Meditation" ], [ "s-ausrichtung", "Ausrichtung" ] ].map(([z, n]) => '<a href="#' + z + '" data-jump="' + z + '" class="hb-chip">' + n + "</a>").join("") + "</div></div>";
+ let x = '<div class="hb">' + '<div class="hb-kopf"><div><span class="hb-gruss">' + esc(gruss) + '</span><b class="rsb-titel hb-titel">' + esc(WT[jetzt.getDay()]) + " " + jetzt.getDate() + "." + (jetzt.getMonth() + 1) + ".</b></div>" + '<div class="hb-ci"><span class="rsb-mini">Check-ins</span><div class="hh-ci" id="hb-ci"></div></div></div>' + '<div class="rsb-hero hb-hero"><div class="rsb-orb" aria-hidden="true"></div>' + '<div class="rsb-hero-t"><span class="rsb-mini">' + esc(jd.k) + "</span><b" + (jd.t.length > 28 ? ' class="hb-lang"' : "") + ">" + esc(jd.t) + "</b></div>" + '<span class="hb-txt">' + esc(jd.x) + "</span>" + (insIn ? '<a class="hb-ins" href="#s-muster" data-jump="s-muster" aria-label="Alle Insights öffnen">' + insIn + "</a>" : "") + '<div class="hb-fuss"><span class="rsb-dauer">' + esc(jd.danach || "") + '</span><button type="button" class="rsb-play" data-hbgo="' + esc(jd.go) + '" aria-label="' + esc(jd.aria) + '"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></button></div></div>' + '<div class="rsb-grid">' + '<a class="rsb-tile" href="#s-recovery" data-jump="s-recovery"><span class="rsb-mini">Recovery</span><span class="rsb-ring">' + g1Ring(sc, fb) + "<b>" + (sc == null ? "–" : sc + "%") + "</b></span><em>" + (bez ? "HRV " + (bez.hrv == null ? "–" : fmt0(bez.hrv)) + " · Puls " + (bez.rhrN == null ? "–" : fmt0(bez.rhrN)) : "keine Messwerte") + "</em></a>" + '<a class="rsb-tile" href="#s-schlaf" data-jump="s-schlaf"><span class="rsb-mini">Schlaf</span><b class="rsb-gross">' + (bez && bez.dauer != null ? hhmm(bez.dauer) : "–") + "</b>" + '<span class="hb-bars">' + t7.map((o, i) => '<i style="height:' + Math.max(3, Math.round((o.dauer || 0) / maxD * 22)) + "px" + (i === t7.length - 1 ? ";background:var(--sleep-1, #8E7CF0)" : "") + '"></i>').join("") + "</span></a>" + '<a class="rsb-tile rsb-breit hb-gew" href="#s-gewohnheiten" data-jump="s-gewohnheiten"><span class="hb-gew-k"><span class="rsb-mini">Gewohnheiten heute</span><b>' + (tag ? nF + "/" + zeilen.length : "–") + '</b></span><span class="hb-chips">' + (tag ? zeilen.map(z => '<span class="' + (z.fertig ? "da" : "") + '">' + esc(z.def.name) + "</span>").join("") : "<span>wird geladen</span>") + "</span></a>" + '<div class="rsb-tile hb-termine"><span class="rsb-mini">Termine heute</span>' + (kommend.length ? kommend.slice(0, 3).map(e => '<span class="hb-term"><b>' + esc(e.zeit) + "</b> " + esc(e.titel) + "</span>").join("") : "<em>" + (ev.length ? "keine mehr heute" : "keine Termine") + "</em>") + "</div>" + "</div>" + '<div class="rsb-chips">' + [ [ "s-tag", "Tag ansehen" ], [ "s-ernaehrung", "+ Mahlzeit" ], [ "s-ernaehrung", "+ Koffein" ], [ "s-gut", "+ Healthy Gut" ], [ "s-reset", "Reset" ], [ "s-mobility", "Mobility" ], [ "s-meditation", "Meditation" ], [ "s-ausrichtung", "Ausrichtung" ] ].map(([z, n]) => '<a href="#' + z + '" data-jump="' + z + '" class="hb-chip">' + n + "</a>").join("") + "</div></div>";
  el.innerHTML = x;
  hbCiSync();
  el.querySelectorAll("[data-hbgo]").forEach(b => b.addEventListener("click", () => {
@@ -29615,53 +29328,16 @@ function renderHomeFokus() {
 }
 
 function renderHome(allDays, days, tr, alleTrainTage) {
- if (abschnittAn("s-home")) renderHomeEigen(allDays, days, tr);
  renderHomeKaskade(allDays, days, tr, alleTrainTage);
-}
-
-function renderHomeEigen(allDays, days, tr) {
- const heute = heuteIso();
- const h = (new Date).getHours();
- const kaputt = [ "journal", "gew", "auf", "jobs" ].filter(k => state.errors[k]).length;
- $("#op-online").innerHTML = '<span class="dot ' + (kaputt ? "stop" : "go") + '"></span>' + (kaputt ? "gestört" : "online");
- $("#home-gruss").innerHTML = (h < 5 ? "Noch wach, " : h < 11 ? "Guten Morgen, " : h < 14 ? "Mittag, " : h < 18 ? "Guten Nachmittag, " : h < 22 ? "Guten Abend, " : "Später Abend, ") + "<i>Alex</i>.";
- uhrTick();
- const heutO = allDays.find(o => o.d === heute);
- const eintraegeHeute = heutO ? (heutO.entries || []).length : 0;
- $("#home-satz").textContent = WOTAG[new Date(heute + "T12:00:00Z").getUTCDay()] + ", " + heute + " · " + (eintraegeHeute ? eintraegeHeute + (eintraegeHeute === 1 ? " Journaleintrag" : " Journaleinträge") + " heute" : "heute noch kein Journaleintrag");
- const offen = aufOffen();
- const mitFrist = offen.filter(c => c[A.faellig]).sort((a, b) => a[A.faellig] < b[A.faellig] ? -1 : 1);
- const spaet = mitFrist.filter(c => c[A.faellig] < heute);
- $("#home-auf").innerHTML = state.auf == null ? '<li><span class="mt">…</span><span>wird geladen</span></li>' : mitFrist.length ? mitFrist.slice(0, 3).map(c => '<li style="display:flex;align-items:flex-start;gap:.4rem">' + (c.__id ? aufHakenBtn(c.__id) : "") + "<span><b>" + esc(c[A.titel]) + "</b></span></li>").join("") : '<li><span class="mt">–</span><span>Nichts mit Frist offen.</span></li>';
- aufHakenBinden($("#home-auf"));
- $("#home-auf-sub").textContent = state.auf == null ? "wird geladen" : offen.length + " offen" + (spaet.length ? " · " + spaet.length + " überfällig" : "") + (mitFrist.length > 3 ? " · die nächsten 3" : "");
- $("#home-auf-meta").innerHTML = state.auf == null ? "" : '<span class="dot ' + (spaet.length ? "stop" : "go") + '"></span><b>' + offen.length + "</b> offen";
- renderTermine();
- const hakt = [];
- if (spaet.length) hakt.push([ "überfällig", "<b>" + spaet.length + (spaet.length === 1 ? " Aufgabe" : " Aufgaben") + "</b><small>" + esc(spaet.map(c => c[A.titel]).slice(0, 2).join(" · ")) + "</small>" ]);
- if (!eintraegeHeute && h >= 11) hakt.push([ "Journal", "<b>Heute noch nichts eingetragen</b><small>der Tag läuft seit " + h + " Stunden</small>" ]);
- const schwach = [];
- for (const def of habitDefs()) {
-  const f = (days && days.length ? days : allDays).filter(o => def.bekannt(o));
-  if (f.length < 5) continue;
-  const quote = f.filter(o => def.erfuellt(o, tr)).length / f.length;
-  if (quote < .5) schwach.push([ def.name, Math.round(quote * 100) ]);
- }
- for (const [n, pz] of schwach.slice(0, 3)) hakt.push([ "Quote " + pz + " %", "<b>" + esc(n) + "</b><small>im gewählten Zeitraum</small>" ]);
- const labFlags = (state.lab || []).map(r => r.cellValuesByFieldId || {}).filter(c => c[L.flag]);
- if (labFlags.length) hakt.push([ "Labor", "<b>" + labFlags.length + " auffällige Marker</b><small>" + esc(labFlags.map(c => c[L.marker]).slice(0, 3).join(" · ")) + "</small>" ]);
- $("#home-hakt").innerHTML = hakt.length ? hakt.map(([t, txt]) => '<li><span class="mt">' + esc(t) + "</span><span>" + txt + "</span></li>").join("") : '<li><span class="mt">–</span><span>Nichts, was gerade schiefläuft.</span></li>';
 }
 
 function renderHomeKaskade(allDays, days, tr, alleTrainTage) {
  if (renderAn("s-gut")) renderHealthyGut();
  if (renderAn("s-meditation")) renderMeditation();
- if (renderAn("s-zeit")) renderZeit();
+ if (renderAn("s-zeit")) renderZeit(); else if (renderAn("s-home")) renderZeitTimer();
  if (renderAn("s-workouts")) {
-  renderUebungen();
   renderWov();
  }
- if (renderAn("s-home")) renderZiele();
  if (renderAn("s-ziele")) renderZielTab();
  if (renderAn("s-home")) renderHomeZiele();
  if (renderAn("s-mobility")) mobZeigen();
@@ -29676,8 +29352,6 @@ function renderHomeKaskade(allDays, days, tr, alleTrainTage) {
   renderResetListe();
  }
  if (renderAn("s-home")) {
-  renderBereitschaft(allDays);
-  renderVerlauf7(allDays, alleTrainTage);
   renderWochenfokus();
  }
  if (renderAn("s-woche")) renderWochenreflexion();
@@ -29685,105 +29359,6 @@ function renderHomeKaskade(allDays, days, tr, alleTrainTage) {
  if (renderAn("s-journal")) renderJournal();
  if (renderAn("s-denken")) renderDenken();
  if (renderAn("s-ausrichtung")) renderAusrichtung();
-}
-
-function uhrTick() {
- const el = $("#home-uhr");
- if (!el) return;
- const t = new Date;
- const zz = n => String(n).padStart(2, "0");
- el.innerHTML = zz(t.getHours()) + ":" + zz(t.getMinutes()) + "<small>" + zz(t.getSeconds()) + "</small><span>Ortszeit</span>";
-}
-
-function terminListe() {
- const heute = heuteIso();
- const items = aufOffen().filter(c => c[A.faellig]).map(c => ({
-  d: c[A.faellig],
-  typ: "aufgabe",
-  titel: c[A.titel],
-  sub: c[A.schritt] || "",
-  spaet: c[A.faellig] < heute
- }));
- const jobs = (state.jobs || []).map(r => r.cellValuesByFieldId || {});
- jobs.filter(c => c[J.termin] && c[J.termin] >= heute).forEach(c => items.push({
-  d: c[J.termin],
-  typ: "termin",
-  titel: c[J.firma] || "?",
-  sub: c[J.schritt] ? c[J.schritt] + " · Termin" : "Termin",
-  spaet: false
- }));
- items.sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0);
- return items;
-}
-
-function renderTermine() {
- if (!abschnittAn("s-home")) return;
- const el = $("#term-body");
- if (!el) return;
- if (state.auf == null && state.jobs == null) {
-  $("#term-meta").innerHTML = "";
-  el.innerHTML = '<li><span class="mt">…</span><span>wird geladen</span></li>';
-  return;
- }
- const heute = heuteIso();
- const items = terminListe();
- const spaet = items.filter(x => x.spaet).length;
- $("#term-meta").innerHTML = '<span class="dot ' + (spaet ? "stop" : items.length ? "warn" : "go") + '"></span><b>' + items.length + "</b>" + (spaet ? " · " + spaet + " überfällig" : "");
- el.innerHTML = items.length ? items.slice(0, 6).map(x => {
-  const tage = Math.round((Date.parse(x.d) - Date.parse(heute)) / 864e5);
-  const lbl = x.spaet ? Math.abs(tage) + " T über" : tage === 0 ? "heute" : tage === 1 ? "morgen" : "in " + tage + " T";
-  return '<li><span class="mt' + (x.spaet ? " spaet" : "") + '">' + lbl + "</span><span>" + "<b>" + esc(x.titel) + "</b>" + (x.sub ? "<small>" + esc(x.sub) + "</small>" : "") + "</span></li>";
- }).join("") : '<li><span class="mt">–</span><span>Nichts Anstehendes.</span></li>';
-}
-
-function verlauf7Reihen(allDays, alleTrainTage) {
- if (!allDays || !allDays.length) return null;
- const n = allDays.length;
- const tage = allDays.slice(Math.max(0, n - 7));
- const rec = tage.map(o => {
-  if (o.hrv == null && o.rhrN == null) return null;
-  const idx = allDays.indexOf(o);
-  const b = bereitschaft(allDays.slice(0, idx + 1));
-  return b && b.tag.d === o.d ? b.prozent : null;
- });
- const lsAbdeckung = alleTrainTage && alleTrainTage.length ? alleTrainTage[0].d : null;
- const lsWerte = tage.map(o => lsScoreFuerMonat(o.d.slice(0, 7), allDays, alleTrainTage || [], lsAbdeckung).score);
- return {
-  tage: tage,
-  reihen: [ {
-   label: "Recovery",
-   color: "var(--accent)",
-   lo: 0,
-   hi: 100,
-   einheit: " %",
-   nk: 0,
-   werte: rec
-  }, {
-   label: "Energie",
-   color: "var(--s1)",
-   lo: 0,
-   hi: 10,
-   einheit: "",
-   nk: 1,
-   werte: tage.map(o => o.mEnergie == null ? null : o.mEnergie)
-  }, {
-   label: "Stimmung",
-   color: "var(--s2)",
-   lo: 0,
-   hi: 10,
-   einheit: "",
-   nk: 1,
-   werte: tage.map(o => o.mStimmung == null ? null : o.mStimmung)
-  }, {
-   label: "Longevity",
-   color: "var(--s3)",
-   lo: 0,
-   hi: 100,
-   einheit: "",
-   nk: 0,
-   werte: lsWerte
-  } ]
- };
 }
 
 function miniSpark(vals, lo, hi, color) {
@@ -29802,27 +29377,6 @@ function miniSpark(vals, lo, hi, color) {
  });
  const dot = letzter == null ? "" : '<circle cx="' + x(letzter).toFixed(1) + '" cy="' + y(vals[letzter]).toFixed(1) + '" r="2.6" fill="' + color + '"/>';
  return '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + " " + h + '" aria-hidden="true">' + (d ? '<path d="' + d.trim() + '" fill="none" stroke="' + color + '" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>' : "") + dot + "</svg>";
-}
-
-function renderVerlauf7(allDays, alleTrainTage) {
- if (!abschnittAn("s-home")) return;
- const el = $("#v7-body");
- if (!el) return;
- const r = verlauf7Reihen(allDays, alleTrainTage);
- if (!r) {
-  $("#v7-meta").innerHTML = "";
-  el.innerHTML = '<div class="empty">' + (state.journal == null ? "wird geladen" : "Noch keine Tage erfasst.") + "</div>";
-  return;
- }
- $("#v7-meta").textContent = r.tage[0].d.slice(5) + " – " + r.tage[r.tage.length - 1].d.slice(5);
- el.innerHTML = r.reihen.map(s => {
-  let letzter = null;
-  for (let i = s.werte.length - 1; i >= 0; i--) if (s.werte[i] != null) {
-   letzter = s.werte[i];
-   break;
-  }
-  return '<div class="v7-row"><span class="v7-lab">' + esc(s.label) + "</span>" + '<span class="v7-spark">' + miniSpark(s.werte, s.lo, s.hi, s.color) + "</span>" + '<span class="v7-val">' + (letzter == null ? "–" : fmt(letzter, s.nk) + s.einheit) + "</span></div>";
- }).join("");
 }
 
 const WF_MAX = 3, WF_GEWOHNHEIT = "Wochenfokus: Top 3 gesetzt";
@@ -34270,8 +33824,34 @@ function ztAutoHinweisHtml() {
  return h + "</div>";
 }
 
+const ztHeute = {
+ auf: false
+};
+
+function ztHeuteKompakt() {
+ const k = document.querySelector(".zt-in-heute");
+ if (!k) return;
+ const lauf = state.zeit != null && ztLaufend();
+ let bar = k.querySelector(".zt-kompakt");
+ if (!bar) {
+  bar = document.createElement("div");
+  bar.className = "zt-kompakt";
+  k.insertBefore(bar, k.firstChild);
+ }
+ const zu = !lauf && !ztHeute.auf;
+ k.classList.toggle("zt-zu", zu);
+ bar.hidden = !!lauf;
+ if (lauf) return;
+ bar.innerHTML = '<span><b>Zeit</b> kein Timer aktiv</span><button type="button" class="nbtn" id="zt-k-auf">' + (zu ? "Timer starten" : "schließen") + "</button>";
+ bar.querySelector("#zt-k-auf").addEventListener("click", () => {
+  ztHeute.auf = !ztHeute.auf;
+  ztHeuteKompakt();
+ });
+}
+
 function renderZeitTimer() {
- if (!abschnittAn("s-zeit")) return;
+ if (!abschnittAn("s-zeit") && !abschnittAn("s-home")) return;
+ ztHeuteKompakt();
  const el = $("#zt-timer");
  if (!el) return;
  if (state.zeit == null) {
@@ -34952,55 +34532,6 @@ function wovById(id) {
  return wovRecs().find(x => x.id === id) || null;
 }
 
-function wovUebungenText(x) {
- if (!x.uebungen.length) return "keine Übungen zugeordnet";
- const rohMap = saetzeParse(x.saetze);
- const m = {};
- uebRecs().forEach(u => {
-  m[u.id] = u.titel;
- });
- const ssLbl = wvSsLabels(x.uebungen, id => saetzeEintragNormalisieren(rohMap[id]));
- const zeile = id => {
-  if (!m[id]) return null;
-  const eintrag = saetzeEintragNormalisieren(rohMap[id]);
-  let extra = eintrag.reps.length ? eintrag.reps.join("/") : "";
-  if (eintrag.kg) extra = (extra ? extra + " " : "") + "+" + eintrag.kg + "kg";
-  return (ssLbl[id] ? ssLbl[id] + " " : "") + m[id] + (extra ? " (" + extra + ")" : "");
- };
- const phaseVon = id => saetzeEintragNormalisieren(rohMap[id]).phase;
- const genutztePhasen = new Set(x.uebungen.map(phaseVon));
- if (genutztePhasen.size <= 1) return x.uebungen.map(zeile).filter(Boolean).join(", ");
- return WV_PHASEN.map(ph => {
-  const namen = x.uebungen.filter(id => phaseVon(id) === ph).map(zeile).filter(Boolean);
-  return namen.length ? ph + ": " + namen.join(", ") : null;
- }).filter(Boolean).join(" · ");
-}
-
-function renderUebungen() {
- if (!abschnittAn("s-workouts")) return;
- const el = $("#ueb-body");
- if (!el) return;
- if (state.ueb == null) {
-  el.innerHTML = '<div class="empty">' + (state.errors.ueb ? "Übungsbibliothek nicht erreichbar." : "wird geladen") + "</div>";
-  $("#ueb-meta").innerHTML = "";
-  return;
- }
- const alle = uebRecs();
- $("#ueb-meta").innerHTML = "<b>" + alle.length + "</b> Übungen";
- let h = '<div class="nfilter">' + [ "Alle" ].concat(UE_KATEGORIEN).map(k => '<button type="button" class="nchip' + (uebState.kat === k ? " on" : "") + '" data-ukat="' + esc(k) + '">' + esc(k) + "</button>").join("") + '<button type="button" class="nchip' + (uebState.nurAktiv ? " on" : "") + '" data-uakt="1">nur aktive</button>' + "</div>";
- const gefiltert = alle.filter(x => uebState.kat === "Alle" || x.kategorie === uebState.kat).filter(x => !uebState.nurAktiv || x.aktiv);
- h += gefiltert.length ? '<div class="nliste">' + gefiltert.map(x => '<div class="ag-zeile" style="align-items:flex-start">' + '<span class="ag-zeit" style="width:5.5rem">' + esc(x.kategorie || "–") + "</span>" + '<span class="ag-was"><b>' + esc(x.titel) + "</b>" + "<small>" + [ x.level, x.bewegung, x.metrik ].filter(Boolean).join(" · ") + (x.koerper.length ? " · " + x.koerper.join(", ") : "") + "</small>" + (x.technik ? "<small>" + esc(x.technik) + "</small>" : "") + '<small style="color:var(--ink-faint)">' + (x.pause != null ? "Pause " + fmt0(x.pause) + " s" : "") + (x.zusatzgewicht ? " · Zusatzgewicht möglich" : "") + (x.einseitig ? " · einseitig" : "") + (x.eigen ? " · eigene Übung" : "") + (!x.aktiv ? " · inaktiv" : "") + "</small>" + "</span></div>").join("") + "</div>" : '<div class="empty">Nichts unter diesem Filter.</div>';
- el.innerHTML = h;
- el.querySelectorAll("[data-ukat]").forEach(b => b.addEventListener("click", () => {
-  uebState.kat = b.dataset.ukat;
-  renderUebungen();
- }));
- el.querySelectorAll("[data-uakt]").forEach(b => b.addEventListener("click", () => {
-  uebState.nurAktiv = !uebState.nurAktiv;
-  renderUebungen();
- }));
-}
-
 function uebPickerHtml(idPrefix, kat, ausgewaehlt, suche) {
  const gewaehlt = ausgewaehlt || [];
  const q = String(suche || "").trim().toLowerCase();
@@ -35028,12 +34559,10 @@ const wovState = {
 
 function renderWov() {
  if (!abschnittAn("s-workouts")) return;
- const form = $("#wov-form"), liste = $("#wov-liste"), meta = $("#wov-meta");
- if (!form || !liste) return;
+ const form = $("#wov-form");
+ if (!form) return;
  if (state.wov == null || state.ueb == null) {
   form.innerHTML = '<div class="empty">' + (state.errors.wov || state.errors.ueb ? "Workout-Vorlagen nicht erreichbar." : "wird geladen") + "</div>";
-  liste.innerHTML = "";
-  if (meta) meta.innerHTML = "";
   return;
  }
  let h = "";
@@ -35186,9 +34715,6 @@ function renderWov() {
   renderWov();
  });
  const alle = wovRecs();
- if (meta) meta.innerHTML = "<b>" + alle.length + "</b> Vorlagen";
- liste.innerHTML = alle.length ? '<div class="nliste">' + alle.map(x => '<div class="ag-zeile wov-zeile" data-wov-id="' + esc(x.id) + '" style="align-items:flex-start;cursor:pointer" title="antippen zum Bearbeiten">' + '<span class="ag-zeit" style="width:6rem">' + esc(x.fokus || "–") + "</span>" + '<span class="ag-was"><b>' + esc(x.titel) + "</b>" + (!x.aktiv ? statPill("grau", "inaktiv") : "") + "<small>" + esc(wovUebungenText(x)) + "</small>" + (x.notiz ? "<small>" + esc(x.notiz) + "</small>" : "") + "</span></div>").join("") + "</div>" : '<div class="empty">Noch keine Vorlage angelegt.</div>';
- liste.querySelectorAll(".wov-zeile").forEach(z => z.addEventListener("click", () => wovBearbeiten(z.dataset.wovId)));
 }
 
 function wovBearbeiten(id) {
@@ -40902,139 +40428,6 @@ document.addEventListener("click", e => {
  }
 });
 
-function renderZiele() {
- if (!abschnittAn("s-home")) return;
- const heute = heuteIso();
- const merkTxt = ($("#zn-titel") || {}).value || "";
- const merkDat = ($("#zn-datum") || {}).value || "";
- const perQ = quartalVon(heute), perJ = heute.slice(0, 4);
- const alle = (state.ziele || []).filter(r => {
-  const c = r.cellValuesByFieldId || {};
-  return c[Z.titel] && selName(c[Z.status]) !== "verworfen";
- });
- const zeile = r => {
-  const c = r.cellValuesByFieldId || {};
-  const fertig = selName(c[Z.status]) === "erreicht";
-  return '<div class="zrow' + (fertig ? " done" : "") + '">' + '<button type="button" class="zbox" data-ziel="' + esc(r.id) + '" aria-pressed="' + fertig + '" aria-label="' + esc(c[Z.titel]) + ' erreicht">' + (fertig ? "✓" : "") + "</button>" + '<span class="ztxt">' + esc(c[Z.titel]) + (c[Z.zieldatum] ? '<small style="color:var(--ink-faint)"> · bis ' + esc(c[Z.zieldatum].slice(8, 10) + "." + c[Z.zieldatum].slice(5, 7) + "." + c[Z.zieldatum].slice(0, 4)) + "</small>" : "") + "</span>" + '<button type="button" class="zweg" data-weg="' + esc(r.id) + '" aria-label="' + esc(c[Z.titel]) + ' entfernen">×</button></div>';
- };
- const block = (art, periode, wohin, label) => {
-  const el = $(wohin);
-  if (!el) return 0;
-  const liste = alle.filter(r => {
-   const c = r.cellValuesByFieldId || {};
-   return selName(c[Z.zeitraum]) === art && c[Z.periode] === periode;
-  });
-  el.innerHTML = '<span class="zg-lab">' + esc(label) + "</span>" + (state.ziele == null ? '<div class="empty">' + (state.errors.ziele ? "nicht erreichbar (" + esc(String(state.errors.ziele)) + ")" : "wird geladen") + "</div>" : liste.length ? '<div class="zliste">' + liste.map(zeile).join("") + "</div>" : '<div class="empty" style="padding:.2rem 0">–</div>');
-  return liste.length;
- };
- const nQ = block("Quartal", perQ, "#ziel-quartal", "Dieses Quartal · " + perQ);
- const nJ = block("Jahr", perJ, "#ziel-jahr", "Dieses Jahr · " + perJ);
- const erreicht = alle.filter(r => {
-  const c = r.cellValuesByFieldId || {};
-  const p = c[Z.periode];
-  return (p === perQ || p === perJ) && selName(c[Z.status]) === "erreicht";
- }).length;
- $("#ziel-meta").innerHTML = state.ziele == null ? "" : '<span class="dot ' + (nQ + nJ === 0 ? "" : erreicht === nQ + nJ ? "go" : "warn") + '"></span><b>' + erreicht + "/" + (nQ + nJ) + "</b>";
- const neuEl = $("#ziel-neu");
- if (neuEl) {
-  neuEl.innerHTML = '<div class="zneu">' + '<input type="text" id="zn-titel" placeholder="Neues Ziel">' + '<input type="date" id="zn-datum" title="Zieldatum (optional) - bestimmt automatisch Quartal/Jahr">' + '<button type="button" id="zn-go" aria-label="Ziel hinzufügen"' + (zielState.busy ? " disabled" : "") + ">+</button></div>";
-  const ti = $("#zn-titel"), da = $("#zn-datum");
-  if (ti) {
-   ti.value = merkTxt;
-   ti.addEventListener("keydown", ev => {
-    if (ev.key === "Enter") {
-     ev.preventDefault();
-     zielAnlegen();
-    }
-   });
-  }
-  if (da) da.value = merkDat;
-  const go = $("#zn-go");
-  if (go) go.addEventListener("click", zielAnlegen);
- }
- const msg = $("#ziel-msg");
- if (msg) {
-  msg.className = "hab-msg " + (zielState.msgArt || "");
-  msg.innerHTML = zielState.msg || "";
- }
- document.querySelectorAll("[data-ziel]").forEach(b => b.addEventListener("click", () => zielStatus(b.dataset.ziel, b.getAttribute("aria-pressed") === "true" ? "offen" : "erreicht")));
- document.querySelectorAll("[data-weg]").forEach(b => b.addEventListener("click", () => zielStatus(b.dataset.weg, "verworfen")));
-}
-
-async function zielAnlegen() {
- const inp = $("#zn-titel"), datInp = $("#zn-datum");
- if (!inp || zielState.busy) return;
- const titel = inp.value.trim();
- if (!titel) return;
- if (!mcp) {
-  zielState.msgArt = "bad";
-  zielState.msg = "Kein Notion-Connector.";
-  renderZiele();
-  return;
- }
- zielState.busy = true;
- zielState.msg = null;
- zielState.msgArt = null;
- const heute = heuteIso();
- const datum = datInp && datInp.value || null;
- const {art: art, periode: periode} = zielEinordnen(datum, heute);
- const felder = {};
- felder[Z.titel] = titel;
- felder[Z.zeitraum] = art;
- felder[Z.periode] = periode;
- felder[Z.status] = "offen";
- if (datum) felder[Z.zieldatum] = datum;
- try {
-  const angelegt = await notionCreate(DS.ziele, Z_PROP, felder);
-  if (!angelegt) {
-   zielState.msgArt = "bad";
-   zielState.msg = "Antwort von Notion unerwartet. <b>Das Ziel kann angelegt sein</b> — " + "Seite neu laden und nachsehen.";
-  } else {
-   const c = angelegt.cellValuesByFieldId = angelegt.cellValuesByFieldId || {};
-   c[Z.titel] = titel;
-   c[Z.zeitraum] = {
-    name: art
-   };
-   c[Z.periode] = periode;
-   c[Z.status] = {
-    name: "offen"
-   };
-   if (datum) c[Z.zieldatum] = datum;
-   (state.ziele = state.ziele || []).push(angelegt);
-   inp.value = "";
-   if (datInp) datInp.value = "";
-   zielState.msgArt = "ok";
-   zielState.msg = "Angelegt unter <b>" + (art === "Quartal" ? "Dieses Quartal" : "Dieses Jahr") + "</b>.";
-  }
- } catch (e) {
-  zielState.msgArt = "bad";
-  zielState.msg = schreibFehler(e, "es versuchst");
- }
- zielState.busy = false;
- renderZiele();
-}
-
-async function zielStatus(id, status) {
- if (!mcp || zielState.busy) return;
- zielState.busy = true;
- zielState.msg = null;
- zielState.msgArt = null;
- const felder = {};
- felder[Z.status] = status;
- try {
-  await notionUpdate(id, Z_PROP, felder);
-  const rec = (state.ziele || []).find(r => r.id === id);
-  if (rec) (rec.cellValuesByFieldId = rec.cellValuesByFieldId || {})[Z.status] = {
-   name: status
-  };
- } catch (e) {
-  zielState.msgArt = "bad";
-  zielState.msg = schreibFehler(e, "es versuchst");
- }
- zielState.busy = false;
- renderZiele();
-}
-
 function mitFokusErhalt(fn) {
  const ae = document.activeElement;
  const merk = ae && ae.id && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName) ? {
@@ -41468,7 +40861,6 @@ function renderKern() {
  if (renderAn("s-tag")) renderDay(allDays);
  if (renderAn("s-home")) renderSup();
  if (renderAn("s-ernaehrung")) renderSupEdit();
- if (renderAn("s-home")) renderGetraenke();
  if (renderAn("s-ernaehrung")) {
   renderKoffein();
   renderErn();
@@ -41692,7 +41084,7 @@ const RAIL_AUS_IDS = new Set([ "s-home", "s-reset", "s-meditation", "s-binaural"
 const NAV2 = [ {
  g: "lx-heute",
  titel: "Heute",
- ids: [ "s-home" ]
+ ids: [ "s-home", "s-tag" ]
 }, {
  g: "lx-koerper",
  titel: "Körper",
@@ -41704,7 +41096,7 @@ const NAV2 = [ {
 }, {
  g: "lx-insights",
  titel: "Rückblick",
- ids: [ "s-woche", "s-gewohnheiten", "s-ziele", "s-muster", "s-tag" ]
+ ids: [ "s-woche", "s-gewohnheiten", "s-ziele", "s-muster" ]
 }, {
  g: "lx-mehr",
  titel: "Mehr",
@@ -41728,6 +41120,11 @@ const nav2Grp = {};
   if (ci && hero) {
    hero.after(ci);
    ci.classList.add("home-voll", "ci-in-heute");
+  }
+  const zt = document.getElementById("zt-timer"), ztKarte = zt && zt.closest(".card");
+  if (ztKarte && ci) {
+   ci.after(ztKarte);
+   ztKarte.classList.add("home-voll", "zt-in-heute");
   }
  }
  for (const id of tabIds) if (!nav2Grp[id] && !NAV2_AUS.has(id)) nav2Grp[id] = "lx-mehr";
@@ -41911,13 +41308,18 @@ const mobFab = document.getElementById("mob-fab");
 if (mobFab) mobFab.addEventListener("click", () => {
  springeZuTab("s-home");
  requestAnimationFrame(() => {
-  const feld = document.getElementById("kap-text");
-  if (feld) {
-   feld.scrollIntoView({
+  const leiste = document.querySelector("#s-home .rsb-chips");
+  if (leiste) {
+   leiste.scrollIntoView({
     behavior: "smooth",
     block: "center"
    });
-   feld.focus();
+   leiste.classList.add("rsb-chips-blink");
+   setTimeout(() => leiste.classList.remove("rsb-chips-blink"), 1400);
+   const b = leiste.querySelector("button,a");
+   if (b) b.focus({
+    preventScroll: true
+   });
   }
  });
 });
@@ -42062,76 +41464,6 @@ mqMobil.addEventListener("change", navPlatzieren);
 
 mqSchiene.addEventListener("change", navPlatzieren);
 
-(function() {
- const wrap = document.getElementById("theme-switch");
- const btn = document.getElementById("theme-switch-btn");
- const pop = document.getElementById("theme-pop");
- if (!wrap || !btn || !pop) return;
- const opts = Array.from(pop.querySelectorAll("[data-theme-choice]"));
- function aktuellesTheme() {
-  return document.documentElement.getAttribute("data-theme") || "";
- }
- function markieren() {
-  const cur = aktuellesTheme();
-  opts.forEach(o => o.setAttribute("aria-checked", String(o.dataset.themeChoice === cur)));
- }
- function oeffnen(offen) {
-  pop.classList.toggle("open", offen);
-  btn.setAttribute("aria-expanded", String(offen));
- }
- function themeSetzen(name) {
-  if (name) {
-   document.documentElement.setAttribute("data-theme", name);
-   try {
-    localStorage.setItem("dash-theme", name);
-   } catch (e) {}
-  } else {
-   document.documentElement.removeAttribute("data-theme");
-   try {
-    localStorage.setItem("dash-theme", "konsole");
-   } catch (e) {}
-  }
-  markieren();
-  const aktiv = document.querySelector("section[id].on");
-  if (aktiv && typeof navZustand === "function") navZustand(aktiv.id);
-  if (typeof homeUmhaengen === "function") homeUmhaengen();
-  requestAnimationFrame(() => render());
- }
- const nopts = Array.from(pop.querySelectorAll("[data-nav-choice]"));
- function navMarkieren() {
-  nopts.forEach(o => o.setAttribute("aria-checked", String(o.dataset.navChoice === navPos)));
- }
- navMarkieren();
- nopts.forEach(o => o.addEventListener("click", () => {
-  navPos = o.dataset.navChoice === "oben" ? "oben" : "links";
-  try {
-   localStorage.setItem("gz.nav", navPos);
-  } catch (e) {}
-  navMarkieren();
-  oeffnen(false);
-  navPlatzieren();
-  requestAnimationFrame(() => render());
- }));
- markieren();
- btn.addEventListener("click", e => {
-  e.stopPropagation();
-  oeffnen(!pop.classList.contains("open"));
- });
- opts.forEach(o => o.addEventListener("click", () => {
-  themeSetzen(o.dataset.themeChoice);
-  oeffnen(false);
- }));
- document.addEventListener("click", e => {
-  if (pop.classList.contains("open") && !wrap.contains(e.target)) oeffnen(false);
- });
- document.addEventListener("keydown", e => {
-  if (e.key === "Escape" && pop.classList.contains("open")) {
-   oeffnen(false);
-   btn.focus();
-  }
- });
-})();
-
 document.addEventListener("click", ev => {
  const a = ev.target.closest && ev.target.closest("a[data-jump]");
  if (!a) return;
@@ -42165,12 +41497,6 @@ for (const a of tabLinks) {
  });
 }
 
-const kapForm = $("#kap-form");
-
-if (kapForm) kapForm.addEventListener("submit", kapSenden);
-
-setInterval(uhrTick, 1e3);
-
 for (const b of grpBtns) {
  b.addEventListener("click", () => {
   let erste;
@@ -42192,28 +41518,6 @@ window.addEventListener("popstate", () => {
 window.addEventListener("hashchange", () => {
  hashAnwenden(true);
 });
-
-const LX_UMZUG = [ [ "sup-block", "hk-sup-slot" ], [ "wf-meta", "hk-wf-meta" ], [ "wf-body", "hk-wf-slot" ], [ "hm-card", "hk-hm-slot" ] ];
-
-function homeUmhaengen() {
- const lx = true;
- for (const [id, slot] of LX_UMZUG) {
-  const el = document.getElementById(id), ziel = document.getElementById(slot);
-  if (!el || !ziel) continue;
-  let heim = document.querySelector('[data-heim="' + id + '"]');
-  if (!heim) {
-   heim = document.createElement("span");
-   heim.hidden = true;
-   heim.dataset.heim = id;
-   el.parentNode.insertBefore(heim, el);
-  }
-  if (lx) {
-   if (el.parentNode !== ziel) ziel.appendChild(el);
-  } else if (heim.nextSibling !== el) heim.parentNode.insertBefore(el, heim.nextSibling);
- }
-}
-
-homeUmhaengen();
 
 (function() {
  let fortsetzen = false;
@@ -42258,15 +41562,6 @@ $("#gut-toggle").addEventListener("click", () => {
  $("#gut-toggle").setAttribute("aria-expanded", String(gutListeOffen));
  $("#gut-toggle").textContent = gutListeOffen ? "▾ Einträge ausblenden" : "▸ Einträge einblenden";
  vorschauAlle();
-});
-
-let uebListeOffen = false;
-
-$("#ueb-toggle").addEventListener("click", () => {
- uebListeOffen = !uebListeOffen;
- $("#ueb-wrap").hidden = !uebListeOffen;
- $("#ueb-toggle").setAttribute("aria-expanded", String(uebListeOffen));
- $("#ueb-toggle").textContent = uebListeOffen ? "▾ Bibliothek ausblenden" : "▸ Bibliothek einblenden";
 });
 
 $("#med-toggle").addEventListener("click", () => {
@@ -42367,6 +41662,30 @@ renderStatus();
 let mcp = null;
 
 cacheLaden().finally(uhrArchivEinmischen);
+
+(function() {
+ const sec = document.getElementById("s-karriere"), btn = document.getElementById("kar-bew-btn"), info = document.getElementById("kar-bew-info");
+ if (!sec || !btn) return;
+ let an = false;
+ try {
+  an = localStorage.getItem("gz.karBew") === "an";
+ } catch (e) {}
+ const setz = () => {
+  sec.classList.toggle("bew-aus", !an);
+  btn.textContent = an ? "Bewerbungen ausblenden" : "Bewerbungen anzeigen";
+  btn.setAttribute("aria-pressed", String(an));
+  if (info) info.textContent = an ? "Bewerbungs-Pipeline sichtbar" : "Bewerbungen ausgeblendet · Daten bleiben in Notion";
+ };
+ btn.addEventListener("click", () => {
+  an = !an;
+  try {
+   localStorage.setItem("gz.karBew", an ? "an" : "aus");
+  } catch (e) {}
+  setz();
+  if (an && typeof renderBald === "function") renderBald();
+ });
+ setz();
+})();
 
 (async function boot() {
  mcp = await Promise.resolve(window.__DEMO_MCP);
@@ -42864,5 +42183,25 @@ html:root[data-theme="lifeos"] .theme-swatch.lifeos{background:linear-gradient(1
 .ci-kompakt[hidden] { display: none; }
 .ci-k-txt b { margin-right: .4rem; }
 @media (max-width: 60rem) { nav.jump.einzeln { display: none !important; } }
+#s-karriere.bew-aus .kar-bew { display: none !important; }
+#s-karriere.bew-aus .kos-b { grid-template-columns: 1fr !important; }
+.kar-bew-schalter { display: flex; align-items: center; justify-content: space-between; gap: .8rem; flex-wrap: wrap; margin-top: .8rem; }
+.zt-in-heute { grid-column: 1 / -1; }
+.zt-in-heute.zt-zu > :not(.zt-kompakt) { display: none !important; }
+.zt-kompakt { display: flex; align-items: center; justify-content: space-between; gap: .8rem; }
+.zt-in-heute:not(.zt-zu) .zt-kompakt { margin-bottom: .6rem; }
+.zt-kompakt[hidden] { display: none; }
+.zt-kompakt b { margin-right: .4rem; }
+.dprot { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.dprot li { display: grid; grid-template-columns: 3.4rem 1fr; gap: .8rem; padding: .7rem 0; border-top: 1px solid var(--line, rgba(255,255,255,.08)); }
+.dprot li:first-child { border-top: 0; }
+.dprot-zeit { font-family: var(--mono, ui-monospace, monospace); font-variant-numeric: tabular-nums; opacity: .7; padding-top: .1rem; }
+.dprot-inhalt { display: grid; gap: .2rem; min-width: 0; }
+.dprot-art { font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; opacity: .8; text-decoration: none; color: inherit; }
+.dprot-inhalt b { overflow-wrap: anywhere; }
+.dprot-z { font-size: .85rem; opacity: .75; }
+.dprot-text summary { cursor: pointer; font-size: .85rem; opacity: .8; }
+.dprot-text p { margin: .4rem 0 0; white-space: normal; overflow-wrap: anywhere; }
+.rsb-chips-blink { outline: 2px solid var(--accent, #FFD36E); outline-offset: 6px; border-radius: 14px; transition: outline-color .3s; }
 </style>
 </body></html>
