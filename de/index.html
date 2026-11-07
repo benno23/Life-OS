@@ -26542,6 +26542,19 @@ const TP_WOCHE = {
  6: "Gew."
 };
 
+const TP_SOLL = {
+ kg: 2,
+ g: 1
+};
+
+function tpWocheStand() {
+ const heute = heuteIso(), wo = isoLokal(tpWochenStart()), v = trsVerlaufAlle().filter(x => x.d >= wo && x.d < heute);
+ return {
+  kg: v.filter(x => /^Körpergewicht [AB]/.test(String(x.t))).length,
+  g: v.filter(x => /^Gewicht/.test(String(x.t))).length
+ };
+}
+
 const TP_TAGE = [ "So", "Mo", "Di", "Mi", "Do", "Fr", "Sa" ];
 
 const TP_AUS = /lauf|run|jog|radfahr|rad |bike|cycl|velo|spin|schwimm|swim|rudern|rowing|ellip|cross ?train|ski|wander|hik|tennis|padel|squash|fu(ß|ss)ball|badminton|stair|treppe/i;
@@ -27013,8 +27026,7 @@ function tpTypKG() {
 }
 
 function tpTyp() {
- const wt = (new Date).getDay();
- return wt === 0 || wt === 6 ? "G" : tpTypKG();
+ return tpTypKG();
 }
 
 function tpVorschlag(amp) {
@@ -27037,49 +27049,33 @@ function tpVorschlag(amp) {
   k: "Mob",
   warum: "Kraft heute schon erledigt"
  };
- if (amp.minimal) return {
-  k: "M",
-  warum: "wenig Zeit"
- };
- const plan = TP_WOCHE[wt];
- if (plan === "Gew.") return {
-  k: "G",
-  warum: "Samstag ist Gewicht-Tag"
- };
- if (plan === "KG") return {
-  k: tpTypKG(),
-  warum: "geplanter KG-Tag, A/B im Wechsel"
- };
  if (ein.some(e => e.d === heute && tpIstAus(e) && (e.min || 0) >= 20)) return {
   k: "Mob",
   warum: "Ausdauer heute schon erledigt"
  };
+ const st = tpWocheStand(), kgRest = Math.max(0, TP_SOLL.kg - st.kg), gRest = Math.max(0, TP_SOLL.g - st.g), rest = kgRest + gRest;
+ const tageUebrig = 7 - (wt + 6) % 7;
  const gestern = isoLokal(new Date(Date.now() - 864e5));
- if (!kraftTage.has(gestern)) {
-  const d0 = tpWochenStart(), wo = isoLokal(d0);
-  let kgSoll = 0, gSoll = 0;
-  for (let i = 0; i < 7; i++) {
-   const d = new Date(d0);
-   d.setDate(d0.getDate() + i);
-   if (isoLokal(d) >= heute) break;
-   const p = TP_WOCHE[d.getDay()];
-   if (p === "KG") kgSoll++;
-   if (p === "Gew.") gSoll++;
-  }
-  const kgIst = verlauf.filter(x => x.d >= wo && x.d < heute && /^Körpergewicht [AB]/.test(String(x.t))).length;
-  const gIst = verlauf.filter(x => x.d >= wo && x.d < heute && /^Gewicht/.test(String(x.t))).length;
-  if (gSoll > gIst) return {
-   k: "G",
-   warum: "Gewicht-Einheit dieser Woche nachholen"
-  };
-  if (kgSoll > kgIst && wt >= 1 && wt <= 5) return {
-   k: tpTypKG(),
-   warum: "KG-Einheit dieser Woche nachholen"
-  };
- }
- return {
+ const soll = "Woche: KG " + st.kg + "/" + TP_SOLL.kg + " · Gewicht " + st.g + "/" + TP_SOLL.g;
+ if (!rest) return {
   k: "AUS",
-  warum: "kein Krafttag laut Plan" + (amp.beine ? " · Beine belastet: Rad oder Schwimmen statt Lauf" : "")
+  warum: soll + " erledigt" + (amp.beine ? " · Beine belastet: Rad oder Schwimmen statt Lauf" : "")
+ };
+ if (kraftTage.has(gestern) && Math.ceil(tageUebrig / 2) > rest) return {
+  k: "AUS",
+  warum: "Kraft gestern · " + soll + " offen"
+ };
+ if (amp.minimal) return {
+  k: "M",
+  warum: "wenig Zeit · " + soll
+ };
+ const gZuerst = gRest && (!kgRest || amp.stufe === 0 && !amp.beine && gRest >= kgRest - 1);
+ return gZuerst ? {
+  k: "G",
+  warum: soll + " · Gewicht noch offen"
+ } : {
+  k: tpTypKG(),
+  warum: soll + " · A/B im Wechsel"
  };
 }
 
@@ -27217,12 +27213,15 @@ function tpWocheHtml() {
  for (let i = 0; i < 7; i++) {
   const d = new Date(d0);
   d.setDate(d0.getDate() + i);
-  const iso = isoLokal(d), wt = d.getDay(), plan = TP_WOCHE[wt] || "";
+  const iso = isoLokal(d), wt = d.getDay(), plan = "";
   const pa = tpPa().includes(iso);
   const cls = [ plan ? "k" : "", kraft.has(iso) ? "x" : "", !kraft.has(iso) && aus.has(iso) ? "a" : "", iso === heute ? "h" : "", pa ? "p" : "" ].filter(Boolean).join(" ");
   h += '<button type="button" data-tppa="' + iso + '" class="' + cls + '" aria-pressed="' + pa + '" aria-label="' + TP_TAGE[wt] + (pa ? ", Proactive" : "") + '"><b>' + TP_TAGE[wt] + "</b>" + (pa ? "PA" + (kraft.has(iso) ? "✓" : "") : kraft.has(iso) ? "✓" + (aus.has(iso) ? "∿" : "") : aus.has(iso) ? "∿" : plan ? esc(plan) : "·") + "</button>";
  }
- return h + '</div><p class="tpk-fuss tpk-pa-hint">' + esc(trsState.paMsg || "✓ Kraft · ∿ Ausdauer (Uhr) · Tag antippen = Proactive eintragen/entfernen") + "</p>";
+ return h + '</div><p class="tpk-fuss tpk-pa-hint">' + esc(trsState.paMsg || (() => {
+  const st = tpWocheStand();
+  return "Soll: KG " + st.kg + "/" + TP_SOLL.kg + " · Gewicht " + st.g + "/" + TP_SOLL.g + " · ✓ Kraft · ∿ Ausdauer · Tag antippen = Proactive";
+ })()) + "</p>";
 }
 
 function tpPaZeilen() {
