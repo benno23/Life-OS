@@ -26479,14 +26479,16 @@ const TP_GEWICHT = [ {
  lo: 4,
  hi: 8,
  s: 4,
- kmk: true
+ kmk: true,
+ pause: 180
 }, {
  t: "Weighted Dip",
  m: "Dips",
  lo: 5,
  hi: 10,
  s: 4,
- kmk: true
+ kmk: true,
+ pause: 180
 }, {
  t: "Bulgarian Split Squat",
  m: "Knie",
@@ -26495,6 +26497,13 @@ const TP_GEWICHT = [ {
  s: 3,
  start: 20,
  bein: true
+}, {
+ t: "Dragon Flag",
+ m: "Core",
+ lo: 3,
+ hi: 8,
+ s: 3,
+ nurWdh: true
 }, {
  t: "Einbeiniger RDL",
  m: "Hüfte",
@@ -26521,7 +26530,7 @@ const TP_SESSIONS = {
  G: {
   t: "Gewicht",
   s: "Gewicht",
-  l: [ "core" ],
+  l: [],
   warm: [ "Scapular Pull-Up", 10 ]
  }
 };
@@ -26544,10 +26553,9 @@ const TP_SS = {
   knie: "B"
  },
  G: {
-  "g:Weighted Pull-Up": "A",
-  "g:Weighted Dip": "A",
-  "g:Bulgarian Split Squat": "B",
-  core: "B"
+  "g:Bulgarian Split Squat": "A",
+  "g:Dragon Flag": "A",
+  "g:Einbeiniger RDL": "A"
  }
 };
 
@@ -26890,6 +26898,28 @@ function tpGewicht(def, halten, rirMap) {
  if (!u) return {
   fehlt: [ def.t ]
  };
+ if (def.nurWdh) {
+  const h0 = tpHist(u.id, false, rirMap)[0];
+  const min = h0 ? Math.min(...h0.reps) : null;
+  const ziel = min == null ? def.lo : halten ? Math.max(def.lo, Math.min(def.hi, min)) : Math.max(def.lo, Math.min(def.hi, min + 1));
+  const grund = min == null ? "Einstufung: saubere Wdh., langsam ablassen" : "zuletzt " + h0.reps.join("/") + (min >= def.hi ? " · oben angekommen: langsamer ablassen (4 s)" : "");
+  return {
+   key: "g:" + def.t,
+   m: def.m,
+   u: u,
+   stufe: null,
+   n: null,
+   lo: def.lo,
+   hi: def.hi,
+   ziel: ziel,
+   grund: grund,
+   art: min == null ? "neu" : !halten && min < def.hi ? "hoch" : "halten",
+   kg: 0,
+   saetze: def.s,
+   bein: false,
+   pause: def.pause || 0
+  };
+ }
  const hist = tpHist(u.id, true, rirMap), last = hist[0], prev = hist[1];
  const bw = def.kmk ? tpKoerperKg() : 0, abr = v => Math.max(0, Math.floor(v / TP_KG_SCHRITT) * TP_KG_SCHRITT);
  let kg, ziel, grund, art = "halten";
@@ -26934,7 +26964,8 @@ function tpGewicht(def, halten, rirMap) {
   art: art,
   kg: kg,
   saetze: def.s,
-  bein: !!def.bein
+  bein: !!def.bein,
+  pause: def.pause || 0
  };
 }
 
@@ -27175,7 +27206,8 @@ function tpPlan(wahl) {
    kg: z.kg ? trsKgText(z.kg) : "",
    ph: "Strength",
    ss: z.ss,
-   tpKey: z.key
+   tpKey: z.key,
+   pause: z.pause || 0
   });
   meta[z.u.id] = {
    m: z.m,
@@ -27354,7 +27386,7 @@ function tpKarteHtml() {
    length: z.n
   }, (_, i) => '<i class="' + (i <= z.stufe ? "on" : "") + '"></i>').join("") + "</span>" : "") + '</div><div class="tpk-ziel tpk-' + z.art + '">' + esc(z.dosis) + "<em>" + esc(em) + "</em></div></div>";
  }).join("") + "</div>";
- if (tp.gesamt) h += '<p class="tpk-fuss">Runde = A1 → A2 → A3 (je 15 s Wechsel), dann ' + TP_RUNDEN_PAUSE + " s Pause · weiter, bis alle Ziele stehen (max. " + TP_RUNDEN_MAX + " Runden) · wer fertig ist, fällt raus, die Pause wird um " + TP_PARTNER_SEK + " s je Übung länger</p>"; else if (tp.zeilen.some(z => z.ssLbl)) h += '<p class="tpk-fuss">Supersätze: A1 → A2 im Wechsel (15 s Übergang), Pause erst nach der Runde</p>';
+ if (tp.gesamt) h += '<p class="tpk-fuss">Runde = A1 → A2 → A3 (je 15 s Wechsel), dann ' + TP_RUNDEN_PAUSE + " s Pause · weiter, bis alle Ziele stehen (max. " + TP_RUNDEN_MAX + " Runden) · wer fertig ist, fällt raus, die Pause wird um " + TP_PARTNER_SEK + " s je Übung länger</p>"; else if (tp.zeilen.some(z => z.ssLbl)) h += '<p class="tpk-fuss">' + (tp.zeilen.some(z => z.pause) ? "Pull-Ups und Dips einzeln, " + Math.round(Math.max(...tp.zeilen.map(z => z.pause || 0)) / 60) + " Min Pause je Satz · " : "") + "Supersatz: " + tp.zeilen.filter(z => z.ssLbl).map(z => z.ssLbl).join(" → ") + " im Wechsel (15 s Übergang), Pause erst nach der Runde</p>";
  if (p.fehlt.length) h += '<p class="tpk-warum">Fehlt in der Übungsbibliothek: ' + esc(p.fehlt.join(", ")) + "</p>";
  h += '<button type="button" class="tpk-go" data-trsstart="' + esc(p.id) + '"' + (p.items.length ? "" : " disabled") + ">▶ Starten · ~" + trsMin(trsDauerSek(p)) + " Min</button>" + '<p class="tpk-fuss">' + (tp.gesamt ? "Jeder Satz RIR 1–2, nicht bis zum Versagen · Messgröße: Sätze bis zum Ziel" : "RIR 1–2, letzter Satz bis zum Versagen") + " · nach jedem Satz „Noch drin“ antippen</p></div>";
  return h;
@@ -38708,6 +38740,10 @@ function trsFrei(u) {
  return u.metrik === "Minuten" || u.metrik === "Kilometer";
 }
 
+function trsPauseFest(b) {
+ return Math.max(15, Math.round(b * (TRS_TEMPO[trsState.tempo] || TRS_TEMPO.normal)[0] / 5) * 5);
+}
+
 function trsPauseSek(u) {
  const b = Number(u.pause) > 0 ? Number(u.pause) : 90;
  return Math.max(15, Math.round(b * (TRS_TEMPO[trsState.tempo] || TRS_TEMPO.normal)[0] / 5) * 5);
@@ -38836,6 +38872,7 @@ function trsPauseZwischen(s, n) {
   if (n.runde === s.runde) return TRS_SS_WECHSEL;
   return s.ssPause;
  }
+ if (s.it && s.it.pause) return trsPauseFest(s.it.pause);
  if (n.nr === s.nr) return trsPauseSek(s.it.u);
  return Math.max(TRS_UEB_PAUSE, Math.min(trsPauseSek(s.it.u), 120));
 }
