@@ -22913,7 +22913,22 @@ function kfZeitHtml() {
 
 function kfZeitBinden(root) {
  const inp = root.querySelector(".kf-uhr");
+ if (inp) inp.addEventListener("change", () => {
+  kfState.zeit = inp.value && inp.value !== kfJetzt() ? inp.value : "";
+  renderKoffein();
+ });
+ root.querySelectorAll("[data-kfmin]").forEach(b => b.addEventListener("click", () => {
+  const d = new Date(Date.now() + +b.dataset.kfmin * 6e4);
+  if (isoLokal(d) !== heuteIso()) {
+   kfState.zeit = "00:00";
+  } else kfState.zeit = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+  renderKoffein();
+ }));
  const j = root.querySelector(".kf-zjetzt");
+ if (j) j.addEventListener("click", () => {
+  kfState.zeit = "";
+  renderKoffein();
+ });
 }
 
 async function kfZeitKorrigieren(id, hhmm) {
@@ -26438,7 +26453,7 @@ const TP_LEITERN = {
   n: "Kniebeuge",
   lo: 8,
   hi: 15,
-  x: [ [ "Bulgarian Split Squat", 10, 20 ], [ "Shrimp Squat", 6, 12 ], [ "Pistol Squat Progression", 5, 10 ] ]
+  x: [ [ "Bulgarian Split Squat", 10, 20 ], [ "Shrimp Squat", 6, 12 ] ]
  },
  huefte: {
   m: "Hüfte",
@@ -26592,10 +26607,6 @@ const TP_ZIEL_FAKTOR = 3, TP_RUNDEN_MAX = 7, TP_RUNDEN_PAUSE = 60, TP_RUNDEN_SCH
 const TP_PARTNER_SEK = 45;
 
 const TP_START = {
- knie: {
-  t: "Pistol Squat Progression",
-  ziel: 30
- },
  chin: {
   t: "Chin-Up",
   ziel: 40
@@ -28804,9 +28815,11 @@ function ckbBinden(el) {
  const neu = () => {
   ciState.msg = null;
   renderCheckin();
+  ciAutoPlanen();
  };
  el.querySelectorAll("[data-ckbin]").forEach(i => i.addEventListener("input", () => {
   ciState.werte[i.dataset.ckbin] = i.value;
+  ciAutoPlanen(2500);
   if (i.dataset.ckbin === "fokus") {
    const w = el.querySelector(".ckb-fok .ckb-weiter");
    if (w) w.disabled = !i.value.trim();
@@ -29072,13 +29085,35 @@ function ciKnopf(typ, c, rec) {
  sv.textContent = ciState.busy ? "speichert …" : gleich && !leer ? "gespeichert" : leer ? "nichts eingetragen" : rec ? "Änderung speichern" : typ + "eintrag speichern";
 }
 
-async function ciSpeichern() {
+let ciAutoT = null;
+
+function ciAutoPlanen(ms) {
+ clearTimeout(ciAutoT);
+ ciAutoT = setTimeout(ciAuto, ms || 1500);
+}
+
+function ciAuto() {
+ if (!mcp || !ciState.werte || ciState.nachtrag || ciState.typ !== "Morgen") return;
+ const ae = document.activeElement;
+ if (ciState.busy || ae && ae.closest && ae.closest("#ci-body") && /^(INPUT|TEXTAREA)$/.test(ae.tagName)) {
+  ciAutoPlanen(2500);
+  return;
+ }
+ ckbSichern();
+ if (!Object.values(ciState.werte).some(v => String(v || "").trim())) return;
+ ciHeute.auf = true;
+ ciSpeichern(true);
+}
+
+async function ciSpeichern(still) {
+ still = still === true;
  if (!mcp || ciState.busy) return;
+ if (!still) clearTimeout(ciAutoT);
  const iso = ciState.d, typ = ciState.typ;
  const rec = ciRecord(iso, typ);
  ciState.busy = true;
  ciState.msg = null;
- renderCheckin();
+ if (!still) renderCheckin();
  if (typ === "Morgen") {
   const bAbg = befAusEnergie(ciState.werte.energie);
   if (bAbg) ciState.werte.befMorgen = bAbg;
@@ -29144,9 +29179,9 @@ async function ciSpeichern() {
   }
   ciState.busy = false;
   ciState.msgArt = "ok";
-  ciState.msg = oqSeit(oqT0) ? "Offline gespeichert — geht an Notion, sobald Netz da ist." : ciState.nachtrag ? "Gestern Abend nachgetragen." : "Gespeichert.";
+  ciState.msg = oqSeit(oqT0) ? "Offline gespeichert — geht an Notion, sobald Netz da ist." : ciState.nachtrag ? "Gestern Abend nachgetragen." : still ? "Automatisch gespeichert." : "Gespeichert.";
   if (mtxLesen) morgenTextLesen(mtxRec, iso, mtxNeu, mtxSkalen);
-  ciState.werte = null;
+  if (!still) ciState.werte = null;
   if (ciState.nachtrag) {
    ciState.nachtrag = false;
    ciState.d = heuteIso();
@@ -41761,6 +41796,47 @@ new MutationObserver(() => {
  attributes: true,
  attributeFilter: [ "data-lx" ]
 });
+
+(function() {
+ const wrap = document.getElementById("theme-switch");
+ const btn = document.getElementById("theme-switch-btn");
+ const pop = document.getElementById("theme-pop");
+ if (!wrap || !btn || !pop) return;
+ btn.setAttribute("aria-label", "Einstellungen");
+ btn.title = "Einstellungen";
+ function oeffnen(offen) {
+  pop.classList.toggle("open", offen);
+  btn.setAttribute("aria-expanded", String(offen));
+ }
+ const nopts = Array.from(pop.querySelectorAll("[data-nav-choice]"));
+ function navMarkieren() {
+  nopts.forEach(o => o.setAttribute("aria-checked", String(o.dataset.navChoice === navPos)));
+ }
+ navMarkieren();
+ nopts.forEach(o => o.addEventListener("click", () => {
+  navPos = o.dataset.navChoice === "oben" ? "oben" : "links";
+  try {
+   localStorage.setItem("gz.nav", navPos);
+  } catch (e) {}
+  navMarkieren();
+  oeffnen(false);
+  navPlatzieren();
+  requestAnimationFrame(() => render());
+ }));
+ btn.addEventListener("click", e => {
+  e.stopPropagation();
+  oeffnen(!pop.classList.contains("open"));
+ });
+ document.addEventListener("click", e => {
+  if (pop.classList.contains("open") && !wrap.contains(e.target)) oeffnen(false);
+ });
+ document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && pop.classList.contains("open")) {
+   oeffnen(false);
+   btn.focus();
+  }
+ });
+})();
 
 (function() {
  const btn = document.getElementById("vb-btn");
