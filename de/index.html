@@ -29143,17 +29143,34 @@ function ciAutoPlanen(ms) {
 }
 
 function ciAuto() {
- if (!mcp || !ciState.werte || ciState.nachtrag || ciState.typ !== "Morgen") return;
+ if (!mcp || !ciState.werte || ciState.nachtrag || ciState.typ !== "Morgen" && ciState.typ !== "Abend") return;
  const ae = document.activeElement;
  if (ciState.busy || ae && ae.closest && ae.closest("#ci-body") && /^(INPUT|TEXTAREA)$/.test(ae.tagName)) {
   ciAutoPlanen(2500);
   return;
  }
- ckbSichern();
+ if (ciState.typ === "Morgen") ckbSichern(); else {
+  for (const [k] of ciEcht("Abend")) {
+   const i = $("#ci-f-" + k);
+   if (i) ciState.werte[k] = i.value;
+  }
+  abendChipsSichern();
+ }
  if (!Object.values(ciState.werte).some(v => String(v || "").trim())) return;
  ciHeute.auf = true;
  ciSpeichern(true);
 }
+
+document.addEventListener("click", e => {
+ const t = e.target;
+ if (!t || !t.closest || !t.closest("#ci-body") || t.closest("#ci-save") || t.closest("[data-ci]")) return;
+ if (ciState.typ === "Abend") ciAutoPlanen();
+}, true);
+
+document.addEventListener("input", e => {
+ const t = e.target;
+ if (t && t.closest && t.closest("#ci-body") && ciState.typ === "Abend") ciAutoPlanen(2500);
+}, true);
 
 async function ciSpeichern(still) {
  still = still === true;
