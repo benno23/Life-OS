@@ -4582,6 +4582,10 @@ div.rsb-tile { cursor: default; }
 .tpk-vs { margin-top: -2px; }
 .rsb .tpk .tpk-link { background: none !important; border: 0 !important; padding: 0; color: inherit !important; font: inherit; text-decoration: underline; cursor: pointer; }
 .tpk-woche button.a { background: rgba(23,8,0,.12); box-shadow: inset 0 -3px 0 #170800; }
+
+.tpk-mob { margin-top: 10px; }
+.tpk-mob summary { cursor: pointer; font-weight: 700; font-size: .84rem; padding: 6px 0; }
+.tpk-mob .tpk-ex { margin-top: 6px; }
 .tpk-ex { display: grid; gap: 6px; }
 .tpk-r { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; align-items: center; background: rgba(255,255,255,.22); border-radius: 16px; padding: 10px 12px; }
 .tpk-r > div:first-child { min-width: 0; }
@@ -27121,6 +27125,12 @@ function tpVorschlag(amp) {
  };
 }
 
+function tpMobHtml(mp, danach) {
+ if (!mp) return "";
+ const n = (mp.x || []).length, min = n ? mobMin(mobDauerSek(mobPlanEintraege(mp))) : mp.zeit;
+ return '<div class="tpk-ex"><div class="tpk-r"><div><b>' + esc(mp.t) + "</b><small>" + esc(mp.gruende && mp.gruende.length ? "Belastet: " + mp.gruende.join(" · ") : mp.warum || mp.k || "") + " · " + (mp.bed === "rege" ? "ruhig, Regeneration" : "Beweglichkeit") + "</small></div>" + '<div class="tpk-ziel tpk-halten">~' + min + " Min<em>" + n + " Übungen</em></div></div></div>" + '<button type="button" class="tpk-go" data-tpmob="' + esc(mp.knopf || "jetzt") + '">▶ ' + (danach ? "Mobility danach" : "Mobility starten") + " · ~" + min + " Min</button>";
+}
+
 function tpAusdauerHtml(amp) {
  const wo = isoLokal(tpWochenStart()), woche = tpAusEinheiten(wo);
  const min = Math.round(woche.reduce((a, e) => a + (e.min || 0), 0));
@@ -27140,7 +27150,10 @@ function tpAusdauerHtml(amp) {
   text = "Locker: Nasenatmung, ganze Sätze sprechen möglich — die Basis, die die Recovery trägt.";
  }
  if (amp.beine) text += " Beine belastet: Rad, Schwimmen oder Rudern statt Lauf.";
- return '<div class="tpk-ex"><div class="tpk-r"><div><b>' + esc(titel) + "</b><small>" + esc(text) + "</small></div>" + '<div class="tpk-ziel tpk-halten">' + min + " Min<em>" + woche.length + (woche.length === 1 ? " Einheit" : " Einheiten") + " diese Woche</em></div></div></div>" + '<p class="tpk-fuss">Wird über die Uhr erfasst — kein Start hier nötig. Anstrengung (RPE) danach wie gewohnt unter „Einheiten ohne RPE“ ergänzen.</p></div>';
+ return '<div class="tpk-ex"><div class="tpk-r"><div><b>' + esc(titel) + "</b><small>" + esc(text) + "</small></div>" + '<div class="tpk-ziel tpk-halten">' + min + " Min<em>" + woche.length + (woche.length === 1 ? " Einheit" : " Einheiten") + " diese Woche</em></div></div></div>" + '<p class="tpk-fuss">Wird über die Uhr erfasst — kein Start hier nötig. Anstrengung (RPE) danach wie gewohnt unter „Einheiten ohne RPE“ ergänzen.</p>' + (() => {
+  const mp = tpMobPlan(amp, null);
+  return mp ? '<details class="tpk-mob"><summary>Mobility nach der Einheit</summary>' + tpMobHtml(mp, true) + "</details>" : "";
+ })() + "</div>";
 }
 
 function tpPlan(wahl) {
@@ -27374,8 +27387,9 @@ function tpKarteHtml() {
  const titel = kraftWahl ? p.t : wahl === "AUS" ? "Ausdauer" : "Mobility";
  let h = '<div class="tpk tpk-' + amp.cls + '"><div class="tpk-kopf">' + ampel + '<div><span class="rsb-mini">' + esc(amp.name) + " · " + esc(amp.text) + "</span>" + '<b class="tpk-titel">' + esc(titel) + "</b>" + '<span class="tpk-warum">' + esc(amp.gr.length ? amp.gr.join(" · ") : "Kein Check-in, keine Uhr-Daten — Ampel nur grob") + "</span></div></div>" + tpWocheHtml() + seg;
  if (wahl === "Mob") {
-  const txt = amp.paHeute ? "Heute ist Proactive — das ist deine Einheit. Danach 10 Min Mobility." : amp.stufe === 2 ? "Erholung hat Vorrang: 15–20 Min Mobility oder lockerer Spaziergang." : "15–20 Min Mobility — Erholung zwischen den Einheiten.";
-  h += '<p class="tpk-rot">' + esc(txt) + '</p><div class="tpk-knoepfe"><button type="button" class="tpk-go" data-trbmob="1">Mobility öffnen</button></div></div>';
+  const txt = amp.paHeute ? "Heute ist Proactive — das ist deine Einheit. Danach 10 Min Mobility." : amp.stufe === 2 ? "Erholung hat Vorrang: Mobility oder lockerer Spaziergang." : "Mobility — Erholung zwischen den Einheiten, passend zu dem, was zuletzt belastet war.";
+  const mp = tpMobPlan(amp, null);
+  h += '<p class="tpk-rot">' + esc(txt) + "</p>" + tpMobHtml(mp, false) + '<div class="tpk-knoepfe"><button type="button" class="tpk-neben" data-trbmob="1">Andere Mobility wählen</button></div></div>';
   return h;
  }
  if (wahl === "AUS") return h + tpAusdauerHtml(amp);
@@ -27388,7 +27402,10 @@ function tpKarteHtml() {
  }).join("") + "</div>";
  if (tp.gesamt) h += '<p class="tpk-fuss">Runde = A1 → A2 → A3 (je 15 s Wechsel), dann ' + TP_RUNDEN_PAUSE + " s Pause · weiter, bis alle Ziele stehen (max. " + TP_RUNDEN_MAX + " Runden) · wer fertig ist, fällt raus, die Pause wird um " + TP_PARTNER_SEK + " s je Übung länger</p>"; else if (tp.zeilen.some(z => z.ssLbl)) h += '<p class="tpk-fuss">' + (tp.zeilen.some(z => z.pause) ? "Pull-Ups und Dips einzeln, " + Math.round(Math.max(...tp.zeilen.map(z => z.pause || 0)) / 60) + " Min Pause je Satz · " : "") + "Supersatz: " + tp.zeilen.filter(z => z.ssLbl).map(z => z.ssLbl).join(" → ") + " im Wechsel (15 s Übergang), Pause erst nach der Runde</p>";
  if (p.fehlt.length) h += '<p class="tpk-warum">Fehlt in der Übungsbibliothek: ' + esc(p.fehlt.join(", ")) + "</p>";
- h += '<button type="button" class="tpk-go" data-trsstart="' + esc(p.id) + '"' + (p.items.length ? "" : " disabled") + ">▶ Starten · ~" + trsMin(trsDauerSek(p)) + " Min</button>" + '<p class="tpk-fuss">' + (tp.gesamt ? "Jeder Satz RIR 1–2, nicht bis zum Versagen · Messgröße: Sätze bis zum Ziel" : "RIR 1–2, letzter Satz bis zum Versagen") + " · nach jedem Satz „Noch drin“ antippen</p></div>";
+ h += '<button type="button" class="tpk-go" data-trsstart="' + esc(p.id) + '"' + (p.items.length ? "" : " disabled") + ">▶ Starten · ~" + trsMin(trsDauerSek(p)) + " Min</button>" + '<p class="tpk-fuss">' + (tp.gesamt ? "Jeder Satz RIR 1–2, nicht bis zum Versagen · Messgröße: Sätze bis zum Ziel" : "RIR 1–2, letzter Satz bis zum Versagen") + " · nach jedem Satz „Noch drin“ antippen</p>";
+ const mpD = tpMobPlan(amp, tp.zeilen);
+ if (mpD) h += '<details class="tpk-mob"><summary>Danach Mobility: ' + esc(mpD.t.replace(/^Nach dem Training · /, "")) + " · ~" + mobMin(mobDauerSek(mobPlanEintraege(mpD))) + " Min</summary>" + tpMobHtml(mpD, true) + "</details>";
+ h += "</div>";
  return h;
 }
 
@@ -27497,6 +27514,7 @@ function trsBBinden(el) {
  }));
  const m = el.querySelector("[data-trbmob]");
  if (m) m.addEventListener("click", () => zeigeTab("s-mobility", true));
+ el.querySelectorAll("[data-tpmob]").forEach(b => b.addEventListener("click", tpMobStarten));
  const r = el.querySelector("[data-trbrpe]");
  if (r) r.addEventListener("click", () => {
   const t = $("#tr-toggle");
@@ -37625,7 +37643,175 @@ function mobEigenPlan() {
  } : null;
 }
 
+const TP_MOB_ZONEN = {
+ Pull: {
+  schulter: 1,
+  bws: 1,
+  hand: .5
+ },
+ Push: {
+  schulter: 1,
+  hand: 1,
+  bws: .5
+ },
+ Dips: {
+  schulter: 1,
+  hand: 1,
+  bws: .3
+ },
+ Knie: {
+  beine: 1,
+  huefte: .6,
+  fuss: .4
+ },
+ "Hüfte": {
+  beine: 1,
+  huefte: 1,
+  lws: .5
+ },
+ Core: {
+  lws: 1,
+  huefte: .6
+ },
+ lauf: {
+  beine: 1,
+  fuss: .8,
+  huefte: .6
+ },
+ rad: {
+  beine: 1,
+  huefte: .8,
+  lws: .3
+ },
+ tennis: {
+  schulter: .8,
+  hand: .6,
+  beine: .8,
+  bws: .6
+ },
+ schwimm: {
+  schulter: 1,
+  bws: .8,
+  nacken: .4
+ },
+ ganz: {
+  schulter: .6,
+  beine: .6,
+  huefte: .6,
+  bws: .4
+ }
+};
+
+let tpMobPlanCache = null;
+
+const tpMobPlaene = {};
+
+function tpMobLast(danachZeilen) {
+ const heute = heuteIso(), last = {}, gr = new Map;
+ const add = (muster, menge, w, label, anzeige) => {
+  const z = TP_MOB_ZONEN[muster];
+  if (!z) return;
+  for (const k in z) last[k] = (last[k] || 0) + z[k] * menge * w;
+  gr.set(label, (gr.get(label) || 0) + (anzeige == null ? menge : anzeige));
+ };
+ const gewicht = d => {
+  const t = tpTageHer(d);
+  return t <= 1 ? 1 : t === 2 ? .5 : 0;
+ };
+ for (const x of trsVerlaufAlle()) {
+  const w = gewicht(x.d);
+  if (!w || !Array.isArray(x.saetze)) continue;
+  for (const st of x.saetze) {
+   if (st.ist == null) continue;
+   const u = trsUeb(st.u), m = u ? tsMuster(u) : null;
+   if (m) add(m, 1, w, m);
+  }
+ }
+ for (const e of state.wpOn ? wpEinheiten(true) : []) {
+  const w = gewicht(e.d), t = String(e.typ || "");
+  if (!w || !tpIstAus(e)) continue;
+  const art = /tennis|padel|squash|badminton/i.test(t) ? "tennis" : /schwimm|swim/i.test(t) ? "schwimm" : /rad|bike|cycl|velo|spin/i.test(t) ? "rad" : "lauf";
+  add(art, Math.max(1, Math.round((e.min || 30) / 15)), w, t + "|min", Math.round(e.min || 30));
+ }
+ for (const d of tpPa()) {
+  const w = gewicht(d);
+  if (w) add("ganz", 4, w, "Proactive|x", 0);
+ }
+ for (const z of danachZeilen || []) add(z.m, z.n_saetze || z.saetze || 3, 1.2, z.m + " heute");
+ const txt = ([k, n]) => {
+  const [name, art] = k.split("|");
+  return art === "min" ? name + " " + n + " Min" : art === "x" ? name : name + " " + n + " Sätze";
+ };
+ return {
+  last: last,
+  gruende: [ ...gr.entries() ].sort((a, b) => (b[0].endsWith("|min") ? b[1] / 10 : b[1]) - (a[0].endsWith("|min") ? a[1] / 10 : a[1])).slice(0, 4).map(txt)
+ };
+}
+
+function tpMobPlan(amp, danachZeilen) {
+ const {last: last, gruende: gruende} = tpMobLast(danachZeilen);
+ const zonen = Object.entries(last).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]);
+ const danach = !!(danachZeilen && danachZeilen.length);
+ const bed = danach || amp.stufe >= 1 ? "rege" : "flex", zeit = danach ? 10 : amp.stufe === 0 ? 15 : 10;
+ let p;
+ if (!zonen.length) {
+  p = Object.assign({}, MOB_PLAENE.find(x => x.id === (bed === "rege" ? "fb-rege" : "fb-flex")));
+  p.warum = "Keine Belastung in den letzten 2 Tagen — ganzer Körper.";
+ } else {
+  const max = zonen[0][1], heat = {};
+  zonen.filter(([, v]) => v >= max * .35).slice(0, 4).forEach(([k, v], i) => {
+   heat[k] = i === 0 || v >= max * .7 ? 2 : 1;
+  });
+  const alt = {
+   h: mobState.fdHeat,
+   b: mobState.fdBed,
+   z: mobState.fdZeit,
+   g: mobState.fdGef
+  };
+  mobState.fdHeat = heat;
+  mobState.fdBed = bed;
+  mobState.fdZeit = zeit;
+  mobState.fdGef = amp.stufe >= 1 ? "müde" : "fit";
+  try {
+   p = mobVorschlag();
+  } finally {
+   mobState.fdHeat = alt.h;
+   mobState.fdBed = alt.b;
+   mobState.fdZeit = alt.z;
+   mobState.fdGef = alt.g;
+  }
+  if (!p) return null;
+  const zNamen = Object.keys(heat).sort((a, b) => heat[b] - heat[a] || last[b] - last[a]).map(k => (MOB_FD_ZONEN.find(z => z.k === k) || {
+   n: k
+  }).n);
+  p = Object.assign({}, p, {
+   id: "training",
+   t: (danach ? "Nach dem Training · " : "Mobility · ") + zNamen.join(", "),
+   k: "Aus deinem Training: " + gruende.join(" · "),
+   warum: gruende.join(" · ")
+  });
+ }
+ p.gruende = gruende;
+ p.zeit = zeit;
+ p.bed = bed;
+ p.knopf = danach ? "danach" : "jetzt";
+ tpMobPlaene[p.knopf] = p;
+ return p;
+}
+
+function tpMobStarten(ev) {
+ const k = ev && ev.currentTarget && ev.currentTarget.dataset.tpmob;
+ tpMobPlanCache = tpMobPlaene[k] || null;
+ if (!tpMobPlanCache) return;
+ zeigeTab("s-mobility", true);
+ try {
+  mobRender();
+ } catch (e) {}
+ mobStart(tpMobPlanCache.id === "training" ? "training" : tpMobPlanCache.id);
+}
+
 function mobPlan(id) {
+ if (id === "training") return tpMobPlanCache;
  const p = id === "eigen" ? mobEigenPlan() : id === "vorschlag" ? mobVorschlag() : MOB_PLAENE.find(p => p.id === id) || null;
  if (p && p.z === "chal") {
   const c = mobChal();
