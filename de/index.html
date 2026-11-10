@@ -41245,6 +41245,7 @@ function renderKern() {
  }
  if (renderAn("s-gewohnheiten")) renderHabits(days, allDays);
  letzteTage = allDays;
+ g1AllDays = allDays;
  letzteTrain = new Set(allTrain.map(t => t.d));
  if (renderAn("s-gewohnheiten", "s-home")) renderHabitCard(letzteTage, letzteTrain);
  renderHome(allDays, days, letzteTrain, allTrain);
