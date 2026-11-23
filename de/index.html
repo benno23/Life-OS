@@ -2557,6 +2557,20 @@ main.col-main:has(> #s-reset.on):has(> #s-meditation.on) > #s-reset,main.col-mai
 
 .an-vt-body { font-size: .95rem; line-height: 1.65; color: var(--ink); }
 .an-vt { max-width: 46rem; }
+.an-kv { align-content: start; }   
+
+@media (min-width: 80rem) {
+  .an-vt { max-width: none; }
+  .an-vt-kopf { display: flex; flex-wrap: wrap; gap: .7rem; margin-bottom: .7rem; }
+  .an-vt-kopf .an-kv { margin: 0; flex: 1 1 18rem; }
+  .an-vt-mehr { column-count: 2; column-gap: 2.6rem; }
+  .an-vt-mehr > p { break-inside: avoid-column; }
+  .an-vt-wichtig > p.an-lead { max-width: 64rem; }
+  .an-vt-spalten { column-count: 2; column-gap: 2.6rem; }
+  .an-vt-spalten > .an-vt-sek { break-inside: avoid-column; display: inline-block; width: 100%; }
+  .an-vt-schritt > p { max-width: 70rem; }
+}
+@media (min-width: 120rem) { .an-vt-spalten { column-count: 3; } }
 .an-vt p { margin: 0 0 .8em; overflow-wrap: anywhere; }
 .an-vt .an-vt-unter { font-size: .78rem; color: var(--ink-soft); letter-spacing: .02em; margin-bottom: .9em; }
 .an-vt b, .an-vt strong { color: var(--ink); font-weight: 700; }
@@ -21435,11 +21449,26 @@ function volltextHtml(raw) {
  let h = "";
  if (kopf.unter) h += '<p class="an-vt-unter">' + anInlineHtml(kopf.unter) + "</p>";
  if (sek.length > 2) h += '<nav class="an-vt-nav" aria-label="Abschnitte">' + sek.map((x, i) => '<a href="#' + id + "-" + i + '" data-anvtsprung="' + id + "-" + i + '">' + anInlineHtml(x.titel) + "</a>").join("") + "</nav>";
- h += kopf.bloecke.map(b => block(b, false)).join("");
+ const kb = kopf.bloecke.map(b => block(b, false)), meta = kb.filter(x => x.indexOf("an-kv-meta") >= 0), rest = kb.filter(x => x.indexOf("an-kv-meta") < 0);
+ h += meta.join("") + (rest.length ? '<div class="an-vt-kopf">' + rest.join("") + "</div>" : "");
+ let gruppe = "";
+ const gruppeZu = () => {
+  if (gruppe) {
+   h += '<div class="an-vt-spalten">' + gruppe + "</div>";
+   gruppe = "";
+  }
+ };
  sek.forEach((x, i) => {
-  const schritt = /^ein schritt/i.test(x.titel), wichtig = /^das wichtigste/i.test(x.titel);
-  h += '<div class="an-vt-sek' + (schritt ? " an-vt-schritt" : "") + '" id="' + id + "-" + i + '"><h4 class="an-vt-h">' + anInlineHtml(x.titel) + "</h4>" + x.bloecke.map((b, k) => block(b, wichtig && k === 0)).join("") + "</div>";
+  const schritt = /^ein schritt/i.test(x.titel), wichtig = /^das wichtigste/i.test(x.titel), tab = x.bloecke.some(b => b.t === "tab");
+  const teile = x.bloecke.map((b, k) => block(b, wichtig && k === 0));
+  const inhalt = wichtig && teile.length > 1 ? teile[0] + '<div class="an-vt-mehr">' + teile.slice(1).join("") + "</div>" : teile.join("");
+  const html = '<div class="an-vt-sek' + (schritt ? " an-vt-schritt" : "") + (wichtig ? " an-vt-wichtig" : "") + (tab ? " an-vt-tab" : "") + '" id="' + id + "-" + i + '"><h4 class="an-vt-h">' + anInlineHtml(x.titel) + "</h4>" + inhalt + "</div>";
+  if (schritt || wichtig || tab) {
+   gruppeZu();
+   h += html;
+  } else gruppe += html;
  });
+ gruppeZu();
  return '<div class="an-vt">' + h + "</div>";
 }
 
