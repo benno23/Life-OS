@@ -20,7 +20,7 @@ The personal version runs as a Claude artifact and reads and writes Notion datab
 
 This demo replaces that data layer with a local generator and has no backend, tracking or connections. The AI features (meal estimates, "Ask your data", journal reading) need Claude and are switched off here.
 
-*Last updated: 19 November 2026.*
+*Last updated: 23 November 2026.*
 
 ## Feedback and ideas
 
